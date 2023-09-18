@@ -1,100 +1,156 @@
+#include <stdio.h>
 #include <iostream>
 
-void nextPermutation(int* arr, int n, int& minWay, int** matr) {
-    // 1. Находим максимальное значение i
-    int i = n - 2;
-    while (i >= 0 && arr[i] >= arr[i + 1]) {
-        i--;
-    }
-
-    // Если такого i не существует, процесс завершен
-    if (i < 0) {
-        return;
-    }
-
-    // 2. Находим максимальное значение j
-    int j = n - 1;
-    while (arr[j] <= arr[i]) {
-        j--;
-    }
-
-    // 3. Меняем P[i] и P[j] местами
-    int temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-
-    // 4. Упорядочиваем «хвост» по возрастанию
-    for (int k = i + 1; k < n - 1; k++) {
-        for (int l = i + 1; l < n - 1 - (k - i); l++) {
-            if (arr[l] > arr[l + 1]) {
-                int temp = arr[l];
-                arr[l] = arr[l + 1];
-                arr[l + 1] = temp;
-            }
-        }
-    }
-
-    // Вычисляем вес маршрута
-    int way = 0;
-    for (int k = 0; k < n - 1; k++) {
-        way += matr[arr[k] - 1][arr[k + 1] - 1];
-    }
-    way += matr[arr[n - 1] - 1][arr[0] - 1];
-
-    // Если полученный маршрут меньше минимального, обновляем значения
-    if (way < minWay) {
-        minWay = way;
+void OutputMatrix(int** matrix, int rows, int cols)
+{
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+            printf("%7d", matrix[i][j]);
+        printf("\n");
     }
 }
 
-int main() {
-    int count_city = 4; // Количество городов
+void PrintArray(int* array, int size)
+{
+    for (int i = 0; i < size; i++)
+        printf("%d ", array[i]);
+}
 
-    // Создаем и заполняем матрицу стоимостей маршрутов
-    int** Matr_Way_Weight = new int*[count_city];
-    for (int i = 0; i < count_city; i++) {
-        Matr_Way_Weight[i] = new int[count_city];
-        for (int j = 0; j < count_city; j++) {
-            // Заполнение случайными значениями
-            Matr_Way_Weight[i][j] = rand() % 20 + 1;
+void Swap(int& a, int& b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void RandomMatrix(int** matrix, int rows, int cols)
+{
+    srand(time(0));
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            matrix[i][j] = rand() % 9 + 1;
+}
+
+int CalculateTotalDistance(int* cities, int** matrix, int num_cities)
+{
+    int total_distance = 0;
+    for (int i = 0; i < num_cities - 1; i++)
+        total_distance += matrix[cities[i] - 1][cities[i + 1] - 1];
+
+    total_distance += matrix[cities[num_cities - 1] - 1][cities[0] - 1];
+    return total_distance;
+}
+
+bool NextPermutation(int n, int* array)
+{
+    int i = n - 2;
+    while (i >= 0 && array[i] >= array[i + 1])
+        i--;
+    if (i < 0)
+        return false;
+    int j = n - 1;
+    while (array[i] >= array[j])
+        j--;
+
+    Swap(array[i], array[j]);
+    int k = i + 1;
+    int l = n - 1;
+
+    while (k < l)
+    {
+        Swap(array[k], array[l]);
+        k++;
+        l--;
+    }
+    return true;
+}
+
+void CopyArray(int* source, int* destination, int size)
+{
+    for (int i = 0; i < size; i++)
+        destination[i] = source[i];
+}
+
+void InitializeMatrix(int**& matrix, int num_cities)
+{
+    matrix = new int*[num_cities];
+    for (int i = 0; i < num_cities; i++)
+        matrix[i] = new int[num_cities];
+}
+
+void DeleteMatrix(int**& matrix, int num_cities)
+{
+    for (int i = 0; i < num_cities; i++)
+        delete[] matrix[i];
+    delete[] matrix;
+}
+
+void FindBestPath(int** matrix, int num_cities, int start_city)
+{
+    int path[num_cities + 1];
+    path[0] = start_city;
+    path[num_cities] = start_city;
+
+    int n;
+    for (int i = 1, n = 1; i < num_cities; n++)
+    {
+        if (n != start_city)
+        {
+            path[i] = n;
+            i++;
         }
     }
 
-    int* Way = new int[count_city + 1]; // Массив маршрута
-    int minWay; // Минимальный вес маршрута
+    PrintArray(path, num_cities + 1);
 
-    // Инициализация массива маршрута
-    for (int i = 0; i < count_city + 1; i++) {
-        Way[i] = i + 1;
+    int min_distance = CalculateTotalDistance(path, matrix, num_cities - 1);
+    std::cout << " " << min_distance << std::endl;
+
+    int min_path[num_cities + 1];
+    CopyArray(path, min_path, num_cities + 1);
+
+    while (NextPermutation(num_cities, path))
+    {
+        PrintArray(path, num_cities + 1);
+        int distance = CalculateTotalDistance(path, matrix, num_cities - 1);
+        std::cout << " " << distance << std::endl;
+
+        if (distance < min_distance)
+        {
+            min_distance = distance;
+            CopyArray(path, min_path, num_cities + 1);
+        }
     }
 
-    // Вычисляем вес начального маршрута
-    minWay = 0;
-    for (int i = 0; i < count_city; i++) {
-        minWay += Matr_Way_Weight[Way[i] - 1][Way[i + 1] - 1];
-    }
+    std::cout << "best path: ";
+    PrintArray(min_path, num_cities + 1);
+    std::cout << " " << min_distance << std::endl;
+}
 
-    // Генерируем все перестановки
-    /* do {
-        nextPermutation(Way, count_city + 1, minWay, Matr_Way_Weight);
-    } while (true); */
+void solveTSP()
+{
+    int** matrix;
+    const int num_cities = 4;
 
-    // Выводим минимальный маршрут и его вес
-    std::cout << "Минимальный маршрут: ";
-    for (int i = 0; i < count_city + 1; i++) {
-        std::cout << Way[i] << " ";
-    }
+    InitializeMatrix(matrix, num_cities);
+    RandomMatrix(matrix, num_cities, num_cities);
+    for (int i = 0; i < num_cities; i++)
+        matrix[i][i] = 0;
+
+    OutputMatrix(matrix, num_cities, num_cities);
     std::cout << std::endl;
-    std::cout << "Вес минимального маршрута: " << minWay << std::endl;
 
-    // Освобождаем память
-    for (int i = 0; i < count_city; i++) {
-        delete[] Matr_Way_Weight[i];
-    }
-    delete[] Matr_Way_Weight;
-    delete[] Way;
+    int start_city = 1;
 
+    FindBestPath(matrix, num_cities, start_city);
+
+    DeleteMatrix(matrix, num_cities);
+}
+
+int main()
+{
+    solveTSP();
     return 0;
 }
-
 

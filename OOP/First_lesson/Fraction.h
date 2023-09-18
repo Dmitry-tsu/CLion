@@ -3,7 +3,7 @@ class Fraction
 {
 public:
     Fraction();
-    Fraction(int numerator, int denominaor);//ñïèñîê èíèöèàëèçàöèè
+    Fraction(int numerator, int denominaor);
     ~Fraction() = default;
     //Fraction sum(const Fraction a, const Fraction b);
     Fraction sum(const Fraction b);

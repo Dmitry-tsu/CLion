@@ -133,7 +133,7 @@ void FindBestPath(int** matrix, int num_cities, int start_city)
         }
     }
 
-    std::cout << "Лучший путь: ";
+    std::cout << "BEST PATH: ";
     PrintArray(min_path, num_cities + 1);
     std::cout << " " << min_distance << std::endl;
 }

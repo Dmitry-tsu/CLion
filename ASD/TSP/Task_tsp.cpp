@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 
+// Функция для вывода матрицы на экран
 void OutputMatrix(int** matrix, int rows, int cols)
 {
     for (int i = 0; i < rows; i++)
@@ -11,12 +12,14 @@ void OutputMatrix(int** matrix, int rows, int cols)
     }
 }
 
+// Функция для вывода массива на экран
 void PrintArray(int* array, int size)
 {
     for (int i = 0; i < size; i++)
         printf("%d ", array[i]);
 }
 
+// Функция для обмена значениями двух переменных
 void Swap(int& a, int& b)
 {
     int temp = a;
@@ -24,6 +27,7 @@ void Swap(int& a, int& b)
     b = temp;
 }
 
+// Функция для заполнения матрицы случайными числами
 void RandomMatrix(int** matrix, int rows, int cols)
 {
     srand(time(0));
@@ -32,6 +36,7 @@ void RandomMatrix(int** matrix, int rows, int cols)
             matrix[i][j] = rand() % 9 + 1;
 }
 
+// Функция для вычисления общего расстояния между городами
 int CalculateTotalDistance(int* cities, int** matrix, int num_cities)
 {
     int total_distance = 0;
@@ -42,6 +47,7 @@ int CalculateTotalDistance(int* cities, int** matrix, int num_cities)
     return total_distance;
 }
 
+// Функция для генерации следующей перестановки
 bool NextPermutation(int n, int* array)
 {
     int i = n - 2;
@@ -66,12 +72,14 @@ bool NextPermutation(int n, int* array)
     return true;
 }
 
+// Функция для копирования значений из одного массива в другой
 void CopyArray(int* source, int* destination, int size)
 {
     for (int i = 0; i < size; i++)
         destination[i] = source[i];
 }
 
+// Функция для инициализации матрицы
 void InitializeMatrix(int**& matrix, int num_cities)
 {
     matrix = new int*[num_cities];
@@ -79,6 +87,7 @@ void InitializeMatrix(int**& matrix, int num_cities)
         matrix[i] = new int[num_cities];
 }
 
+// Функция для освобождения памяти, занимаемой матрицей
 void DeleteMatrix(int**& matrix, int num_cities)
 {
     for (int i = 0; i < num_cities; i++)
@@ -86,6 +95,7 @@ void DeleteMatrix(int**& matrix, int num_cities)
     delete[] matrix;
 }
 
+// Функция для поиска лучшего пути
 void FindBestPath(int** matrix, int num_cities, int start_city)
 {
     int path[num_cities + 1];
@@ -123,7 +133,7 @@ void FindBestPath(int** matrix, int num_cities, int start_city)
         }
     }
 
-    std::cout << "best path: ";
+    std::cout << "Лучший путь: ";
     PrintArray(min_path, num_cities + 1);
     std::cout << " " << min_distance << std::endl;
 }

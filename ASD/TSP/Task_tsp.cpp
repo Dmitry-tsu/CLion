@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 
 // Функция для вывода матрицы на экран
 void OutputMatrix(int** matrix, int rows, int cols)
@@ -112,7 +113,7 @@ void FindBestPath(int** matrix, int num_cities, int start_city)
     PrintArray(path, num_cities + 1);
 
     int min_distance = CalculateTotalDistance(path, matrix, num_cities - 1);
-    std::cout << " " << min_distance << std::endl;
+    std::cout << " Total weight: " << min_distance << std::endl;
 
     int min_path[num_cities + 1];
     CopyArray(path, min_path, num_cities + 1);
@@ -121,7 +122,7 @@ void FindBestPath(int** matrix, int num_cities, int start_city)
     {
         PrintArray(path, num_cities + 1);
         int distance = CalculateTotalDistance(path, matrix, num_cities - 1);
-        std::cout << " " << distance << std::endl;
+        std::cout << " Total weight: " << distance << std::endl;
 
         if (distance < min_distance)
         {
@@ -132,7 +133,7 @@ void FindBestPath(int** matrix, int num_cities, int start_city)
 
     std::cout << "BEST PATH: ";
     PrintArray(min_path, num_cities + 1);
-    std::cout << " " << min_distance << std::endl;
+    std::cout << " TOTAL WEIGHT: " << min_distance << std::endl;
 }
 
 // Функция для поиска худшего пути
@@ -150,19 +151,13 @@ void FindWorstPath(int** matrix, int num_cities, int start_city)
         }
     }
 
-    PrintArray(path, num_cities + 1);
-
     int min_distance = CalculateTotalDistance(path, matrix, num_cities - 1);
-    std::cout << " " << min_distance << std::endl;
-
     int min_path[num_cities + 1];
     CopyArray(path, min_path, num_cities + 1);
 
     while (NextPermutation(num_cities, path))
     {
-        PrintArray(path, num_cities + 1);
         int distance = CalculateTotalDistance(path, matrix, num_cities - 1);
-        std::cout << " " << distance << std::endl;
 
         if (distance > min_distance)
         {
@@ -173,11 +168,12 @@ void FindWorstPath(int** matrix, int num_cities, int start_city)
 
     std::cout << "WORST PATH: ";
     PrintArray(min_path, num_cities + 1);
-    std::cout << " " << min_distance << std::endl;
+    std::cout << " TOTAL WEIGHT: " << min_distance << std::endl;
 }
 
+
 // Функция, реализующая решение
-void ExactSolveTSP()
+/*void ExactSolveTSP()
 {
     int** matrix;
     const int num_cities = 5;
@@ -198,6 +194,7 @@ void ExactSolveTSP()
 
     DeleteMatrix(matrix, num_cities);
 }
+*/
 // Эвристика
 // нахожд. мин. эл. в матрице
 int MinimalElement(int** matr_way_weight, int number_city, int& i_min, int& j_min)
@@ -288,6 +285,7 @@ int Heuristics(int* way, int **matr_way_weight, int number_city,
 }
 
 
+/*
 void HeuristicSolveTSP()
 {
     int number_city = 5;  // количество городов
@@ -295,6 +293,7 @@ void HeuristicSolveTSP()
 
 
     int** matr_way_weight; // инициализация матрицы путей
+    ... как передать?
 
     int* way = new int[2 * number_city];
     int* heuristics_min_way = new int[number_city + 1];
@@ -319,15 +318,25 @@ void HeuristicSolveTSP()
     delete[] way;
     delete[] heuristics_min_way;
 }
-
-
+*/
 
 
 
 int main()
 {
-    ExactSolveTSP();
-    HeuristicSolveTSP();
+    //ExactSolveTSP();
+    //HeuristicSolveTSP();
+    const int num_cities = 5;
+    int** matrix;
+    InitializeMatrix(matrix, num_cities);
+    RandomMatrix(matrix, num_cities, num_cities);
+    OutputMatrix(matrix, num_cities, num_cities);
+    std::cout << std::endl;
+    int start_city = 1;
+    FindBestPath(matrix, num_cities, start_city);
+    FindWorstPath(matrix, num_cities, start_city);
+    DeleteMatrix(matrix, num_cities);
+    // Эвристика
     return 0;
 }
 

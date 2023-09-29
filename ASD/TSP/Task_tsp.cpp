@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 
+
 // Функция для вывода матрицы на экран
 void OutputMatrix(int** matrix, int rows, int cols)
 {
@@ -46,7 +47,6 @@ int CalculateTotalDistance(const int* cities, int** matrix, int num_cities)
     total_distance += matrix[cities[num_cities - 1] - 1][cities[0] - 1];
     return total_distance;
 }
-
 // Функция для генерации следующей перестановки
 bool NextPermutation(int n, int* array)
 {
@@ -170,31 +170,6 @@ void FindWorstPath(int** matrix, int num_cities, int start_city)
     PrintArray(min_path, num_cities + 1);
     std::cout << " TOTAL WEIGHT: " << min_distance << std::endl;
 }
-
-
-// Функция, реализующая решение
-/*void ExactSolveTSP()
-{
-    int** matrix;
-    const int num_cities = 5;
-
-    InitializeMatrix(matrix, num_cities);
-    RandomMatrix(matrix, num_cities, num_cities);
-    for (int i = 0; i < num_cities; i++)
-        matrix[i][i] = 0;
-
-    OutputMatrix(matrix, num_cities, num_cities);
-    std::cout << std::endl;
-
-    int start_city = 1;
-
-    FindBestPath(matrix, num_cities, start_city);
-
-    // FindWorstPath(matrix, num_cities, start_city);
-
-    DeleteMatrix(matrix, num_cities);
-}
-*/
 // Эвристика
 // нахожд. мин. эл. в матрице
 int MinimalElement(int** matr_way_weight, int number_city, int& i_min, int& j_min)
@@ -215,6 +190,22 @@ int MinimalElement(int** matr_way_weight, int number_city, int& i_min, int& j_mi
     }
     return min_element;
 }
+
+int Find_cols(int* a, int n, int D)
+{
+    for (int i = 1; i < n; i+=2)
+        if (a[i] == D) return i;
+    return -1;
+}
+//исключение строк и столбцов
+bool Exceptions(int* arr, int n, int r, int c)
+{
+    int i;
+    for (i = 0; i < n; i += 2)
+        if (arr[i] == r || arr[i + 1] == c) return false;
+    return true;
+}
+
 // Функция использ. для проверки наличия цикла в пути
 bool SearchCycle(int* way, int number_city, int i, int j)
 {
@@ -236,11 +227,9 @@ void TransformMatrix(int** matr_way_weight, int i_min, int j_min, int number_cit
         matr_way_weight[j_min][i] = 0;
     }
 }
-// собственно само решение
+// решение
 
-int Heuristics(int* way, int **matr_way_weight, int number_city,
-               int &i_min, int &j_min, int min_element, int weight,
-               int *heuristics_min_way, int starting_city)
+int Heuristics(int* way, int **matr_way_weight, int number_city, int &i_min, int &j_min, int min_element, int weight, int *heuristics_min_way, int starting_city)
 {
     for (int i = 0, j = 1, k = 1;;)
     {
@@ -284,59 +273,81 @@ int Heuristics(int* way, int **matr_way_weight, int number_city,
     return weight;
 }
 
-
-/*
-void HeuristicSolveTSP()
+float Percentag_Quality(int way_weight_h, int min_way_weight, int max_way_weight)
 {
-    int number_city = 5;  // количество городов
-    // Инициализация матрицы путей и других переменных
-
-
-    int** matr_way_weight; // инициализация матрицы путей
-    ... как передать?
-
-    int* way = new int[2 * number_city];
-    int* heuristics_min_way = new int[number_city + 1];
-    int i_min, j_min, min_element = 1000, weight = 0;
-    int starting_city = 1; // указывает, с какого города начинается путь
-
-    weight = Heuristics(way, matr_way_weight, number_city,
-                        i_min, j_min, min_element, weight,
-                        heuristics_min_way, starting_city);
-
-    // Вывод результата
-    std::cout << "BEST PATH (Heuristics): ";
-    for (int i = 0; i < number_city; i++)
-    {
-        std::cout << heuristics_min_way[i] << " -> ";
-    }
-    std::cout << starting_city << std::endl;
-
-    std::cout << "Total weight: " << weight << std::endl;
-
-    // Освобождение памяти
-    delete[] way;
-    delete[] heuristics_min_way;
+    float p; float a = way_weight_h - min_way_weight; float b = max_way_weight - min_way_weight;
+    float d = a / b;
+    return 100 - d * 100;
 }
-*/
 
+float Percentag_Speed(float time_h,float time)
+{
+    return  time / time_h * 100;
 
+}
 
 int main()
 {
-    //ExactSolveTSP();
-    //HeuristicSolveTSP();
-    const int num_cities = 5;
-    int** matrix;
-    InitializeMatrix(matrix, num_cities);
-    RandomMatrix(matrix, num_cities, num_cities);
-    OutputMatrix(matrix, num_cities, num_cities);
-    std::cout << std::endl;
-    int start_city = 1;
-    FindBestPath(matrix, num_cities, start_city);
-    FindWorstPath(matrix, num_cities, start_city);
-    DeleteMatrix(matrix, num_cities);
-    // Эвристика
+    using std::cout;
+    using std::cin;
+    using std::endl;
+
+    int** Matr_Way_Weight;
+    int count_sity; // Number of cities
+    int start_sity; // Starting city
+
+    cout << "Number of cities: ";
+    cin >> count_sity;
+
+    cout << endl << "Starting city: ";
+    cin >> start_sity;
+
+    cout << endl;
+
+    InitializeMatrix(Matr_Way_Weight, count_sity);
+    RandomMatrix(Matr_Way_Weight, count_sity, count_sity);
+
+    for (int i = 0; i < count_sity; i++)
+    {
+        Matr_Way_Weight[i][i] = 0;
+    }
+
+    auto start_exact = std::chrono::high_resolution_clock::now();
+    FindBestPath(Matr_Way_Weight, count_sity, start_sity);
+    auto end_exact = std::chrono::high_resolution_clock::now();
+    float exact_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end_exact - start_exact).count();
+
+    auto start_worst = std::chrono::high_resolution_clock::now();
+    FindWorstPath(Matr_Way_Weight, count_sity, start_sity);
+    auto end_worst = std::chrono::high_resolution_clock::now();
+    float worst_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end_worst - start_worst).count();
+
+    auto start_heuristic = std::chrono::high_resolution_clock::now();
+    int* heuristic_path = new int[count_sity + 1];
+    int heuristic_weight = Heuristics(heuristic_path, Matr_Way_Weight, count_sity, i_min, j_min, min_element, weight, heuristics_min_way, starting_city);
+    auto end_heuristic = std::chrono::high_resolution_clock::now();
+    float heuristic_time = std::chrono::duration_cast<std::chrono::nanoseconds>(end_heuristic - start_heuristic).count();
+
+    cout << "The best path and its weight: ";
+    PrintArray(Min_Way, count_sity + 1);
+    cout << " " << min_way_weight << endl;
+
+    cout << "The worst path and its weight: ";
+    PrintArray(Max_Way, count_sity + 1);
+    cout << " " << max_way_weight << endl;
+
+    cout << "Heuristic decision; path and its weight: ";
+    PrintArray(heuristic_path, count_sity + 1);
+    cout << " " << heuristic_weight << endl;
+
+    float quality_percentage = Percentag_Quality(heuristic_weight, min_way_weight, max_way_weight);
+    float speed_percentage = Percentag_Speed(exact_time, heuristic_time);
+
+    cout << "Quality percentage: " << quality_percentage << "%" << endl;
+    cout << "Speed percentage: " << speed_percentage << "%" << endl;
+
+    delete[] heuristic_path;
+    DeleteMatrix(Matr_Way_Weight, count_sity);
+
     return 0;
 }
-

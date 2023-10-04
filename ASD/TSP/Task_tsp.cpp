@@ -151,25 +151,26 @@ void FindWorstPath(int** matrix, int num_cities, int start_city)
         }
     }
 
-    int min_distance = CalculateTotalDistance(path, matrix, num_cities - 1);
-    int min_path[num_cities + 1];
-    CopyArray(path, min_path, num_cities + 1);
+    int max_distance = CalculateTotalDistance(path, matrix, num_cities - 1);
+    int max_path[num_cities + 1];
+    CopyArray(path, max_path, num_cities + 1);
 
     while (NextPermutation(num_cities, path))
     {
         int distance = CalculateTotalDistance(path, matrix, num_cities - 1);
 
-        if (distance > min_distance)
+        if (distance > max_distance)
         {
-            min_distance = distance;
-            CopyArray(path, min_path, num_cities + 1);
+            max_distance = distance;
+            CopyArray(path, max_path, num_cities + 1);
         }
     }
 
     std::cout << "WORST PATH: ";
-    PrintArray(min_path, num_cities + 1);
-    std::cout << " TOTAL WEIGHT: " << min_distance << std::endl;
+    PrintArray(max_path, num_cities + 1);
+    std::cout << " TOTAL WEIGHT: " << max_distance << std::endl;
 }
+
 // Эвристика
 // нахожд. мин. эл. в матрице
 int MinimalElement(int** matr_way_weight, int number_city, int& i_min, int& j_min)

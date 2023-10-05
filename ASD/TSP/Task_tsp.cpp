@@ -3,15 +3,13 @@
 #include <random>
 #include <iomanip>
 
-
 void OutputMatrix(int** matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++)
-            std::cout << std::setw(7) << matrix[i][j];
+            std::cout << std::setw(7) << matrix[i][j]; //printf("%7d", matr[i][j]);
         std::cout << std::endl;
     }
 }
-
 
 void RandomMatrix(int** matrix, int rows, int cols) {
     std::random_device rd;
@@ -23,14 +21,10 @@ void RandomMatrix(int** matrix, int rows, int cols) {
             matrix[i][j] = dist(gen);
 }
 
-
-
 void OutputArray(int* array, int size) {
     for (int i = 0; i < size; i++)
         std::cout << array[i] << " ";
 }
-
-
 
 void Swap(int& a, int& b)
 {
@@ -62,7 +56,6 @@ bool NextPermutation(int n, int* array)
     }
     return true;
 }
-
 
 void CopyArray(const int* source, int* destination, int size)
 {
@@ -134,7 +127,6 @@ void Dijkstra(int const count_city, int start_city, int** Matrix_Way_Weight, int
     }
     delete[] Way;
 }
-
 
 int Heuristics(int const count_city, int start_city, int** Matrix_Way_Weight, int *Min_Way_H)
 {

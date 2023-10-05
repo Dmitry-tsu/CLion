@@ -174,6 +174,11 @@ void Fraction::intToFraction(const int a)
     m_denominator = 1;
 }
 
+void Fraction::multiplyByInt(const int integer)
+{
+    m_numerator *= integer;
+}
+
 Fraction Fraction::sumFractionByInt(const int a) const
 {
     Fraction f;

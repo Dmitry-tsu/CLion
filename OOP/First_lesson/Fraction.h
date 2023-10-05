@@ -33,8 +33,9 @@ public:
 
     // Custom methods
     void intToFraction(const int integer);
-    Fraction sumFractionByInt(const int integer) const;
+    void multiplyByInt(const int integer);
     void exponentiation(const int degree);
+    Fraction sumFractionByInt(const int integer) const;
     Fraction operator+(const int integer) const;
 
 private:

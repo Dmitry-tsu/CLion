@@ -156,6 +156,11 @@ int main()
     f_4.print();
     cout << endl;
 
+    f_4.multiplyByInt(a);
+    cout << "The numerator of a fraction multiplied by a given number ";
+    f_4.print();
+    cout << endl;
+
     cout << "Method summation fraction by integer:\n";
     sum = f_3.sumFractionByInt(a);
     cout << "f_3 + a = ";

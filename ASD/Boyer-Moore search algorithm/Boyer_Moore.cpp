@@ -47,6 +47,16 @@ std::vector<int> findAll(const std::string& text, const std::string& substring, 
     return indexes;
 }
 
+int findFirst(const std::string& text, const std::string& substring, int startIndex, int endIndex) {
+    std::vector<int> indexes = findAll(text, substring, startIndex, endIndex);
+
+    if (indexes.empty()) {
+        return -1; // если список индексов пустой, значит подстрока не найдена, возвращаем -1
+    }
+
+    return indexes[0]; // возвращаем первый индекс подстроки
+}
+
 int main() {
     std::string text = "std::move_iterator is an iterator adaptor which behaves exactly like the underlying iterator";
     std::string substring = "tor";
@@ -74,8 +84,19 @@ int main() {
     }
     std::cout << std::endl;
 
+    int firstIndex = findFirst(text, substring, 0, text.length() - 1);
+    std::cout << "First occurrence in the whole text: " << firstIndex << std::endl;
+
+    firstIndex = findFirst(text, substring, 17, text.length() - 1);
+    std::cout << "First occurrence in the substring: " << firstIndex << std::endl;
+
+    firstIndex = findFirst(text, substring, 28, 36);
+    std::cout << "First occurrence in the range (28, 36): " << firstIndex << std::endl;
+
     return 0;
 }
+
+
 
 
 

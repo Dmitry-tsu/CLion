@@ -99,6 +99,13 @@ Array Array::operator+(const Array& other) const
     return result;
 }
 
+Array& Array::operator+=(const Array& other)
+{
+    Array tmp = *this + other;
+    this->swap(tmp);
+    return *this;
+}
+
 void Array::swap(Array& other)
 {
     std::swap(m_size, other.m_size);
@@ -112,23 +119,13 @@ void Array::resize(int size)
         std::cerr << "Array::resize: size is negative, invert...\n";
         m_size = -size;
     }
-
     Array resized(size);
     int count = std::min(m_size, size);
-
     for (int i = 0; i < count; ++i)
     {
         resized.m_array[i] = m_array[i];
     }
-
-    resized.swap(*this);
-}
-
-Array& Array::operator+=(const Array& other)
-{
-    Array tmp = *this + other;
-    this->swap(tmp);
-    return *this;
+    swap(resized);
 }
 
 std::ostream& operator<<(std::ostream& stream, const Array& arr)
@@ -151,6 +148,39 @@ std::istream& operator>>(std::istream& stream, Array& arr)
         stream >> arr[i];
     }
     return stream;
+}
+
+int Array::find(const int value) const
+{
+    for (int i = 0; i < m_size; ++i)
+    {
+        if (m_array[i] == value)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+bool Array::insert(const int index, const int value)
+{
+    if (index < 0 || index > m_size)
+    {
+        return false;
+    }
+
+    ensureCapacity(m_size + 1);
+
+    for (int i = m_size - 1; i >= index; --i)
+    {
+        m_array[i + 1] = m_array[i];
+    }
+
+    m_array[index] = value;
+    ++m_size;
+
+    return true;
 }
 
 

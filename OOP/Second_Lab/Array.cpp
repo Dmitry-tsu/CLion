@@ -183,4 +183,63 @@ bool Array::insert(const int index, const int value)
     return true;
 }
 
+bool Array::remove(const int index)
+{
+    if (index < 0 || index >= m_size)
+    {
+        return false;
+    }
+
+    for (int i = index; i < m_size - 1; ++i)
+    {
+        m_array[i] = m_array[i + 1];
+    }
+
+    --m_size;
+
+    return true;
+}
+
+int Array::maxValue() const
+{
+    int maxValue = m_array[0];
+
+    for (int i = 1; i < m_size; ++i)
+    {
+        if (m_array[i] > maxValue)
+        {
+            maxValue = m_array[i];
+        }
+    }
+
+    return maxValue;
+}
+
+int Array::minValue() const
+{
+    int minValue = m_array[0];
+
+    for (int i = 1; i < m_size; ++i)
+    {
+        if (m_array[i] < minValue)
+        {
+            minValue = m_array[i];
+        }
+    }
+
+    return minValue;
+}
+
+bool Array::removeValue(const int value)
+{
+    int index = find(value);
+
+    if (index == -1)
+    {
+        return false;
+    }
+
+    return remove(index);
+}
+
 

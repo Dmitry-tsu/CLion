@@ -23,14 +23,22 @@ public:
     void resize(int size);
     int find(const int value) const;
     bool insert(const int index, const int value);
+    int maxValue() const;
+    int minValue() const;
+    bool remove(const int index);
+    bool removeValue(const int value);
+
 
 private:
     int* m_array = nullptr;
     int m_size = 0;
-    void ensureCapacity(int capacity); // Вспомогательный метод для изменения ёмкости массива
+    int m_capacity = 0; // Добавлено поле для хранения ёмкости массива
 
+    void ensureCapacity(int capacity); // Вспомогательный метод для изменения ёмкости массива
 };
+
 
 std::ostream& operator<<(std::ostream& stream, const Array& arr);
 std::istream& operator>>(std::istream& stream, Array& arr);
+
 

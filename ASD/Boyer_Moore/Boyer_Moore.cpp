@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-std::vector<int> findAll(const std::string& text, const std::string& substring, int startIndex, int endIndex, int costOccurrences)
+std::vector<int> findAll(const std::string& text, const std::string& substring, int startIndex, int endIndex, int occurrencesCount = 0)
 {
     std::vector<int> indexes;
     int textLength = text.length();
@@ -32,8 +32,8 @@ std::vector<int> findAll(const std::string& text, const std::string& substring, 
             if (j == 0)
             {
                 indexes.push_back(i);
-                costOccurrences--;
-                if (costOccurrences == 0)
+                occurrencesCount--;
+                if (occurrencesCount == 0)
                 {
                     return indexes; // достигнуто заданное количество вхождений
                 }

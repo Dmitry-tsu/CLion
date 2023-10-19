@@ -161,15 +161,6 @@ int main()
     f_4.print();
     cout << endl;
 
-    cout << "Method summation fraction by integer:\n";
-    sum = f_3.sumFractionByInt(a);
-    cout << "f_3 + a = ";
-    sum.print();
-    sum = f_3 + a;
-    cout << "Use operator+: f_3 + a = ";
-    sum.print();
-    cout << endl;
-
     cout << "Enter the degree of a number: a = ";
     cin >> a;
     cout << endl;

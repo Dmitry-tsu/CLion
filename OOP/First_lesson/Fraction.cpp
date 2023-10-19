@@ -179,19 +179,6 @@ void Fraction::multiplyByInt(const int integer)
     m_numerator *= integer;
 }
 
-Fraction Fraction::sumFractionByInt(const int a) const
-{
-    Fraction f;
-    f.intToFraction(a);
-    return summation(f);
-}
-
-Fraction Fraction::operator+(const int a) const
-{
-    Fraction f;
-    f.intToFraction(a);
-    return summation(f);
-}
 void Fraction::exponentiation(const int degree) {
     int num = m_numerator;
     int den = m_denominator;

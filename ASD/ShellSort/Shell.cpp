@@ -71,8 +71,8 @@ bool isSorted(const std::vector<int>& arr)
     return true;
 }
 int main() {
-    std::vector<int> arr(10); // Создаем вектор с размером 100
-    generateRandomArray(arr, 1, 100); // Заполняем вектор случайными числами от 1 до 1000
+    std::vector<int> arr(10);
+    generateRandomArray(arr, 1, 100);
     writeArrayToFile(arr, "input.txt"); // Записываем вектор в файл input.txt
 
     std::cout << "Array before sorting: ";

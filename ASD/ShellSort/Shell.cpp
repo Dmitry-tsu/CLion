@@ -33,7 +33,7 @@ void writeArrayToFile(const std::vector<int>& arr, const std::string& filename)
         std::cerr << "Unable to open file " << filename << std::endl;
     }
 }
-// Алгоритм Шелла с выбором длины промежутков по Хиббарду
+
 void shellSortHibbard(std::vector<int>& arr)
 {
     int n = arr.size();
@@ -57,7 +57,29 @@ void shellSortHibbard(std::vector<int>& arr)
         gap = (gap - 1) / 2;
     }
 }
-// Проверка отсортированности массива
+
+void shellSortPratt(std::vector<int>& arr) {
+    int n = arr.size();
+    std::vector<int> gaps;
+    int gap = 1;
+    while (gap <= n) {
+        gaps.push_back(gap);
+        gap = 3 * gap + 1;
+    }
+
+    for (int k = gaps.size() - 1; k >= 0; k--) {
+        gap = gaps[k];
+        for (int i = gap; i < n; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+}
+
 bool isSorted(const std::vector<int>& arr)
 {
     int n = arr.size();
@@ -70,10 +92,24 @@ bool isSorted(const std::vector<int>& arr)
     }
     return true;
 }
+
+double measureShellSort(const std::vector<int>& arr, void (*shellSort)(std::vector<int>&)) {
+    std::vector<int> temp = arr;
+
+    std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+    shellSort(temp);
+
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
+    std::chrono::duration<double> diff = end - start;
+
+    return diff.count();
+}
+
 int main() {
     std::vector<int> arr(10);
     generateRandomArray(arr, 1, 100);
-    writeArrayToFile(arr, "input.txt"); // Записываем вектор в файл input.txt
+    writeArrayToFile(arr, "input.txt");
 
     std::cout << "Array before sorting: ";
     for (int num : arr) {
@@ -81,18 +117,24 @@ int main() {
     }
     std::cout << std::endl;
 
-    shellSortHibbard(arr); // Сортируем вектор с помощью алгоритма Шелла
+    shellSortHibbard(arr);
 
-    if (isSorted(arr)) { // Проверяем, отсортирован ли вектор
-        std::cout << "Array is sorted" << std::endl;
+    if (isSorted(arr)) {
         std::cout << "Sorted Array: ";
         for (int num : arr) {
             std::cout << num << " ";
         }
         std::cout << std::endl;
+        std::cout << "Array is sorted" << std::endl;
     } else {
         std::cout << "Array is not sorted" << std::endl;
     }
+
+    double hibbardTime = measureShellSort(arr, shellSortHibbard);
+    double prattTime = measureShellSort(arr, shellSortPratt);
+
+    std::cout << "Time taken for Hibbard's Shell Sort: " << hibbardTime << " seconds" << std::endl;
+    std::cout << "Time taken for Pratt's Shell Sort: " << prattTime << " seconds" << std::endl;
 
     return 0;
 }

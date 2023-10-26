@@ -131,11 +131,8 @@ int main() {
     }
 
     double hibbardTime = measureShellSort(arr, shellSortHibbard);
-    double prattTime = measureShellSort(arr, shellSortPratt);
 
     std::cout << "Time taken for Hibbard's Shell Sort: " << hibbardTime << " seconds" << std::endl;
-    std::cout << "Time taken for Pratt's Shell Sort: " << prattTime << " seconds" << std::endl;
-
     return 0;
 }
 

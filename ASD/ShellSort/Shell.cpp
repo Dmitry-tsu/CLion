@@ -81,6 +81,36 @@ void shellSortPratt(std::vector<int>& arr)
     }
 }
 
+void shellSortSedgewick(std::vector<int>& arr)
+{
+    int n = arr.size();
+    std::vector<int> gaps;
+    int k = 1;
+    int gap = 1;
+    while (gap < n)
+    {
+        gaps.push_back(gap);
+        gap = (1 << k) * (1 << k + 1) - (1 << k) + 1;
+        k++;
+    }
+
+    for (int i = gaps.size() - 1; i >= 0; i--)
+    {
+        gap = gaps[i];
+        for (int j = gap; j < n; j++)
+        {
+            int temp = arr[j];
+            int k = j;
+            while (k >= gap && arr[k - gap] > temp)
+            {
+                arr[k] = arr[k - gap];
+                k -= gap;
+            }
+            arr[k] = temp;
+        }
+    }
+}
+
 bool isSorted(const std::vector<int>& arr)
 {
     int n = arr.size();
@@ -160,7 +190,28 @@ int main()
     }
 
     double prattTime = measureShellSort(arr, shellSortPratt);
-    std::cout << "Time taken for Pratt's Shell Sort: " << prattTime << " seconds" << std::endl;
+    std::cout << "Time taken for Pratt's Shell Sort: " << prattTime << " seconds\n" << std::endl;
+
+    std::vector<int> temp3 = arr;
+    shellSortSedgewick(temp1);
+    std::cout << "Sorted Array using Sedgewick's Shell Sort: ";
+    for (int num : temp1)
+    {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    if (isSorted(temp1))
+    {
+        std::cout << "Array is sorted" << std::endl;
+    }
+    else
+    {
+        std::cout << "Array is not sorted" << std::endl;
+    }
+
+    double sedgewickTime = measureShellSort(arr, shellSortSedgewick);
+    std::cout << "Time taken for Sedgewick's Shell Sort: " << sedgewickTime << " seconds\n" << std::endl;
 
     return 0;
 }

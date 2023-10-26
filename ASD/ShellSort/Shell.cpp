@@ -2,7 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <random>
-// #include <chrono>
+#include <chrono>
 
 
 
@@ -58,7 +58,8 @@ void shellSortHibbard(std::vector<int>& arr)
     }
 }
 
-void shellSortPratt(std::vector<int>& arr) {
+void shellSortPratt(std::vector<int>& arr)
+{
     int n = arr.size();
     std::vector<int> gaps;
     int gap = 1;
@@ -93,7 +94,8 @@ bool isSorted(const std::vector<int>& arr)
     return true;
 }
 
-double measureShellSort(const std::vector<int>& arr, void (*shellSort)(std::vector<int>&)) {
+double measureShellSort(const std::vector<int>& arr, void (*shellSort)(std::vector<int>&))
+{
     std::vector<int> temp = arr;
 
     std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
@@ -106,7 +108,8 @@ double measureShellSort(const std::vector<int>& arr, void (*shellSort)(std::vect
     return diff.count();
 }
 
-int main() {
+int main()
+{
     std::vector<int> arr(10);
     generateRandomArray(arr, 1, 100);
     writeArrayToFile(arr, "input.txt");
@@ -115,24 +118,50 @@ int main() {
     for (int num : arr) {
         std::cout << num << " ";
     }
+    std::cout << std::endl << "\n";
+
+    std::vector<int> temp1 = arr;
+    shellSortHibbard(temp1);
+    std::cout << "Sorted Array using Hibbard's Shell Sort: ";
+    for (int num : temp1)
+    {
+        std::cout << num << " ";
+    }
     std::cout << std::endl;
 
-    shellSortHibbard(arr);
-
-    if (isSorted(arr)) {
-        std::cout << "Sorted Array: ";
-        for (int num : arr) {
-            std::cout << num << " ";
-        }
-        std::cout << std::endl;
+    if (isSorted(temp1))
+    {
         std::cout << "Array is sorted" << std::endl;
-    } else {
+    }
+    else
+    {
         std::cout << "Array is not sorted" << std::endl;
     }
 
     double hibbardTime = measureShellSort(arr, shellSortHibbard);
+    std::cout << "Time taken for Hibbard's Shell Sort: " << hibbardTime << " seconds\n" << std::endl;
 
-    std::cout << "Time taken for Hibbard's Shell Sort: " << hibbardTime << " seconds" << std::endl;
+    std::vector<int> temp2 = arr;
+    shellSortPratt(temp2);
+    std::cout << "Sorted Array using Pratt's Shell Sort: ";
+    for (int num : temp2)
+    {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    if (isSorted(temp2))
+    {
+        std::cout << "Array is sorted" << std::endl;
+    }
+    else
+    {
+        std::cout << "Array is not sorted" << std::endl;
+    }
+
+    double prattTime = measureShellSort(arr, shellSortPratt);
+    std::cout << "Time taken for Pratt's Shell Sort: " << prattTime << " seconds" << std::endl;
+
     return 0;
 }
 

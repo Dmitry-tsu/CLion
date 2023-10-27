@@ -18,6 +18,7 @@ void generateRandomArray(std::vector<int>& arr, int minValue, int maxValue)
     }
 }
 
+
 void writeArrayToFile(const std::vector<int>& arr, const std::string& filename)
 {
     std::ofstream file(filename);
@@ -140,79 +141,24 @@ double measureShellSort(const std::vector<int>& arr, void (*shellSort)(std::vect
 
 int main()
 {
-    std::vector<int> arr(10);
-    generateRandomArray(arr, 1, 100);
-    writeArrayToFile(arr, "input.txt");
-
-    std::cout << "Array before sorting: ";
-    for (int num : arr) {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl << "\n";
-
-    std::vector<int> temp1 = arr;
-    shellSortHibbard(temp1);
-    std::cout << "Sorted Array using Hibbard's Shell Sort: ";
-    for (int num : temp1)
+    const std::vector<int> sizes = {10000, 100000, 1000000};
+    const std::vector<std::pair<int, int>> ranges = {{-10, 10}, {-1000, 1000}, {-100000, 100000}};
+// std::pair является контейнером стандартной библиотеки C++, который позволяет хранить пару значений разных типов
+    for (int size : sizes)
     {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
+        for (const auto &range: ranges)
+        {
+            std::vector<int> arr(size);
+            generateRandomArray(arr, range.first, range.second);
 
-    if (isSorted(temp1))
-    {
-        std::cout << "Array is sorted" << std::endl;
+            std::string filename = "array_" + std::to_string(size) + "_" +
+                                   std::to_string(range.first) + "_" + std::to_string(range.second) + ".txt";
+            writeArrayToFile(arr, filename);
+        }
     }
-    else
-    {
-        std::cout << "Array is not sorted" << std::endl;
-    }
-
-    double hibbardTime = measureShellSort(arr, shellSortHibbard);
-    std::cout << "Time taken for Hibbard's Shell Sort: " << hibbardTime << " seconds\n" << std::endl;
-
-    std::vector<int> temp2 = arr;
-    shellSortPratt(temp2);
-    std::cout << "Sorted Array using Pratt's Shell Sort: ";
-    for (int num : temp2)
-    {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
-
-    if (isSorted(temp2))
-    {
-        std::cout << "Array is sorted" << std::endl;
-    }
-    else
-    {
-        std::cout << "Array is not sorted" << std::endl;
-    }
-
-    double prattTime = measureShellSort(arr, shellSortPratt);
-    std::cout << "Time taken for Pratt's Shell Sort: " << prattTime << " seconds\n" << std::endl;
-
-    std::vector<int> temp3 = arr;
-    shellSortSedgewick(temp1);
-    std::cout << "Sorted Array using Sedgewick's Shell Sort: ";
-    for (int num : temp1)
-    {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
-
-    if (isSorted(temp1))
-    {
-        std::cout << "Array is sorted" << std::endl;
-    }
-    else
-    {
-        std::cout << "Array is not sorted" << std::endl;
-    }
-
-    double sedgewickTime = measureShellSort(arr, shellSortSedgewick);
-    std::cout << "Time taken for Sedgewick's Shell Sort: " << sedgewickTime << " seconds\n" << std::endl;
-
     return 0;
+
+
+
 }
 

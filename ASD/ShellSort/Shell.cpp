@@ -143,10 +143,10 @@ int main()
 {
     const std::vector<int> sizes = {10000, 100000, 1000000};
     const std::vector<std::pair<int, int>> ranges = {{-10, 10}, {-1000, 1000}, {-100000, 100000}};
-// std::pair является контейнером стандартной библиотеки C++, который позволяет хранить пару значений разных типов
+    // std::pair является контейнером стандартной библиотеки C++, который позволяет хранить пару значений разных типов
     for (int size : sizes)
     {
-        for (const auto &range: ranges)
+        for (const auto& range : ranges)
         {
             std::vector<int> arr(size);
             generateRandomArray(arr, range.first, range.second);
@@ -154,11 +154,25 @@ int main()
             std::string filename = "array_" + std::to_string(size) + "_" +
                                    std::to_string(range.first) + "_" + std::to_string(range.second) + ".txt";
             writeArrayToFile(arr, filename);
+
+
+            std::vector<int> temp = arr;
+            shellSortHibbard(temp);
+            if (isSorted(temp))
+            {
+                std::cout << "Array in " << filename << " is sorted with Hibbard's Shell Sort" << std::endl;
+            }
+            else
+            {
+                std::cerr << "Array in " << filename << " is not sorted with Hibbard's Shell Sort" << std::endl;
+
+            }
+            double hibbardTime = measureShellSort(arr, shellSortHibbard);
+            std::cout << "Time taken for Hibbard's Shell Sort in " << filename << ": "
+                      << hibbardTime << " seconds\n" << std::endl;
+
         }
     }
     return 0;
-
-
-
 }
 

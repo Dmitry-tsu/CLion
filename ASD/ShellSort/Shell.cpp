@@ -170,9 +170,39 @@ int main()
             double hibbardTime = measureShellSort(arr, shellSortHibbard);
             std::cout << "Time taken for Hibbard's Shell Sort in " << filename << ": "
                       << hibbardTime << " seconds\n" << std::endl;
+            std::vector<int> temp2 = arr;
+            shellSortPratt(temp2);
+            if (isSorted(temp2))
+            {
+                std::cout << "Array in " << filename << " is sorted with Pratt's Shell Sort" << std::endl;
+            }
+            else
+            {
+                std::cerr << "Array in " << filename << " is not sorted with Pratt's Shell Sort" << std::endl;
 
+            }
+            double prattTime = measureShellSort(arr, shellSortPratt);
+            std::cout << "Time taken for Pratt's Shell Sort in " << filename << ": "
+                      << prattTime << " seconds\n" << std::endl;
+
+
+
+            std::vector<int> temp3 = arr;
+            shellSortSedgewick(temp3);
+            if (isSorted(temp3))
+            {
+                std::cout << "Array in " << filename << " is sorted with Sedgewick's Shell Sort" << std::endl;
+            }
+            else
+            {
+                std::cerr << "Array in " << filename << " is not sorted with Sedgewick's Shell Sort" << std::endl;
+
+            }
+            double sedgewickTime = measureShellSort(arr, shellSortSedgewick);
+            std::cout << "Time taken for Sedgewick's Shell Sort in " << filename << ": "
+                      << sedgewickTime << " seconds\n" << std::endl;
         }
     }
+
     return 0;
 }
-

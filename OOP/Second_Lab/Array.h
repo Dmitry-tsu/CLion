@@ -1,44 +1,59 @@
 #pragma once
-
 #include<iostream>
+#include <algorithm>
+#include <cassert>
 
+template<typename ItemType>
 class Array
 {
 public:
-    Array(const int size = 10, const int value = 0);
-    Array(const Array& other);
+
+    template <typename IT, typename AT>
+    class TemplateIterator;
+    using Iterator = TemplateIterator<ItemType, Array>;
+    using ConstIterator = TemplateIterator<const ItemType, const Array>;
+    Array(const int size = 10, const ItemType &value = ItemType());
+    Array(const Array &other);
+    Array(Array&& other);
     ~Array();
-
+    int Size() const;
     void Print() const;
-
-    const int& operator[](const int index) const;
-    int& operator[](const int index);
-
-    int size() const;
-
-    Array& operator=(const Array& other);
+    ItemType&operator[](const int index);
+    const ItemType&operator[](const int index) const;
+    Array& operator= ( Array&& other);
+    Array& operator = (const Array & other);
+    void RandArray(int FirstGap, int LastGap)const;
+    void RandArrayIns(int FirstGap, int LastGap)const;
+    void RandArrayDes(int FirstGap, int LastGap)const;
+    void Swap(Array& other);
     Array operator+(const Array& other) const;
-    Array& operator+=(const Array& other);
-    void swap(Array& other);
-    void resize(int size);
-    int find(const int value) const;
-    bool insert(const int index, const int value);
-    int maxValue() const;
-    int minValue() const;
-    bool remove(const int index);
-    bool removeValue(const int value);
+    Array &operator+=(const Array& other);
+    bool operator==(const Array& other) const;
+    bool operator!=(const Array& other) const;
+    Array operator+(const ItemType& item);
+    Array operator+=(const ItemType& item);
+    void Resize(int size);
+    int ISearch(const ItemType&el, int i=0)const;
+    void Sort();
+    bool Insert(const ItemType&e, const int &in);
+    bool DelbyIndex(const int& in);
+    bool DelElement(const ItemType& el);
+    bool DelElementAll(const ItemType& el);
+    int IMax();
+    int IMin();
 
+    Iterator begin();
+    Iterator end();
+    ConstIterator begin() const;
+    ConstIterator end() const;
+    bool Insert(const ItemType& el, Iterator &it);
+    bool Remove(const Iterator gap1, Iterator &gap2);
+    bool Remove(const Iterator it);
 
 private:
-    int* m_array = nullptr;
+    ItemType* m_array = nullptr;
     int m_size = 0;
-    int m_capacity = 0; // Добавлено поле для хранения ёмкости массива
-
-    void ensureCapacity(int capacity); // Вспомогательный метод для изменения ёмкости массива
 };
 
-
-std::ostream& operator<<(std::ostream& stream, const Array& arr);
-std::istream& operator>>(std::istream& stream, Array& arr);
 
 

@@ -143,18 +143,19 @@ int main()
 {
     const std::vector<int> sizes = {10000, 100000, 1000000};
     const std::vector<std::pair<int, int>> ranges = {{-10, 10}, {-1000, 1000}, {-100000, 100000}};
-    // std::pair является контейнером стандартной библиотеки C++, который позволяет хранить пару значений разных типов
+    std::vector<double> averageSortingTimes(sizes.size() * ranges.size(), 0);
+
+    int index = 0;
+
     for (int size : sizes)
     {
         for (const auto& range : ranges)
         {
             std::vector<int> arr(size);
             generateRandomArray(arr, range.first, range.second);
-
             std::string filename = "array_" + std::to_string(size) + "_" +
                                    std::to_string(range.first) + "_" + std::to_string(range.second) + ".txt";
             writeArrayToFile(arr, filename);
-
 
             std::vector<int> temp = arr;
             shellSortHibbard(temp);
@@ -165,11 +166,12 @@ int main()
             else
             {
                 std::cerr << "Array in " << filename << " is not sorted with Hibbard's Shell Sort" << std::endl;
-
             }
             double hibbardTime = measureShellSort(arr, shellSortHibbard);
             std::cout << "Time taken for Hibbard's Shell Sort in " << filename << ": "
                       << hibbardTime << " seconds\n" << std::endl;
+            averageSortingTimes[index] += hibbardTime;
+
             std::vector<int> temp2 = arr;
             shellSortPratt(temp2);
             if (isSorted(temp2))
@@ -179,13 +181,11 @@ int main()
             else
             {
                 std::cerr << "Array in " << filename << " is not sorted with Pratt's Shell Sort" << std::endl;
-
             }
             double prattTime = measureShellSort(arr, shellSortPratt);
             std::cout << "Time taken for Pratt's Shell Sort in " << filename << ": "
                       << prattTime << " seconds\n" << std::endl;
-
-
+            averageSortingTimes[index] += prattTime;
 
             std::vector<int> temp3 = arr;
             shellSortSedgewick(temp3);
@@ -196,46 +196,29 @@ int main()
             else
             {
                 std::cerr << "Array in " << filename << " is not sorted with Sedgewick's Shell Sort" << std::endl;
-
             }
             double sedgewickTime = measureShellSort(arr, shellSortSedgewick);
             std::cout << "Time taken for Sedgewick's Shell Sort in " << filename << ": "
                       << sedgewickTime << " seconds\n" << std::endl;
+            averageSortingTimes[index] += sedgewickTime;
+
+            averageSortingTimes[index] /= 3;
+            index++;
         }
-        double hibbardAverageTime = 0.0;
-        double prattAverageTime = 0.0;
-        double sedgewickAverageTime = 0.0;
+    }
 
-        for (const auto& range : ranges)
+    // Print the average sorting times
+    for (int i = 0; i < sizes.size(); i++)
+    {
+        for (int j = 0; j < ranges.size(); j++)
         {
-            std::vector<int> arr(size);
-            generateRandomArray(arr, range.first, range.second);
-
-            hibbardAverageTime += measureShellSort(arr, shellSortHibbard);
-            prattAverageTime += measureShellSort(arr, shellSortPratt);
-            sedgewickAverageTime += measureShellSort(arr, shellSortSedgewick);
-        }
-
-        hibbardAverageTime /= ranges.size();
-        prattAverageTime /= ranges.size();
-        sedgewickAverageTime /= ranges.size();
-
-        std::string sizeString = std::to_string(size);
-        for (const auto& range : ranges)
-        {
-            std::string filename = "array_" + sizeString + "_" +
-                                   std::to_string(range.first) + "_" + std::to_string(range.second) + ".txt";
-
-            std::cout << "Average time for Hibbard's Shell Sort in " << filename << ": "
-                      << hibbardAverageTime << " seconds" << std::endl;
-            std::cout << "Average time for Pratt's Shell Sort in " << filename << ": "
-                      << prattAverageTime << " seconds" << std::endl;
-            std::cout << "Average time for Sedgewick's Shell Sort in " << filename << ": "
-                      << sedgewickAverageTime << " seconds" << std::endl;
-
-            std::cout << std::endl;
+            int arrayIndex = i * ranges.size() + j;
+            std::string filename = "array_" + std::to_string(sizes[i]) + "_" +
+                                   std::to_string(ranges[j].first) + "_" + std::to_string(ranges[j].second) + ".txt";
+            std::cout << "Average sorting time for " << filename << ": " << averageSortingTimes[arrayIndex] << " seconds" << std::endl;
         }
     }
 
     return 0;
 }
+

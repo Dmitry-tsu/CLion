@@ -1,0 +1,74 @@
+
+First start (array on GIT):
+
+Average sorting time for array_10000_-10_10.txt: 0.00172814 seconds
+Average sorting time for array_10000_-1000_1000.txt: 0.00351651 seconds
+Average sorting time for array_10000_-100000_100000.txt: 0.00543301 seconds
+Average sorting time for array_100000_-10_10.txt: 0.0319784 seconds
+Average sorting time for array_100000_-1000_1000.txt: 0.0674183 seconds
+Average sorting time for array_100000_-100000_100000.txt: 0.0742855 seconds
+Average sorting time for array_1000000_-10_10.txt: 0.191765 seconds
+Average sorting time for array_1000000_-1000_1000.txt: 0.421194 seconds
+Average sorting time for array_1000000_-100000_100000.txt: 0.561179 seconds
+
+Second run (for other arrays):
+
+Average sorting time for array_10000_-10_10.txt: 0.00160969 seconds
+Average sorting time for array_10000_-1000_1000.txt: 0.00270361 seconds
+Average sorting time for array_10000_-100000_100000.txt: 0.00281458 seconds
+Average sorting time for array_100000_-10_10.txt: 0.017447 seconds
+Average sorting time for array_100000_-1000_1000.txt: 0.0344027 seconds
+Average sorting time for array_100000_-100000_100000.txt: 0.0404431 seconds
+Average sorting time for array_1000000_-10_10.txt: 0.192893 seconds
+Average sorting time for array_1000000_-1000_1000.txt: 0.421903 seconds
+Average sorting time for array_1000000_-100000_100000.txt: 0.539247 seconds
+
+Third run (for other arrays):
+
+Average sorting time for array_10000_-10_10.txt: 0.00162939 seconds
+Average sorting time for array_10000_-1000_1000.txt: 0.00313133 seconds
+Average sorting time for array_10000_-100000_100000.txt: 0.00285596 seconds
+Average sorting time for array_100000_-10_10.txt: 0.0174388 seconds
+Average sorting time for array_100000_-1000_1000.txt: 0.0338768 seconds
+Average sorting time for array_100000_-100000_100000.txt: 0.0409062 seconds
+Average sorting time for array_1000000_-10_10.txt: 0.193424 seconds
+Average sorting time for array_1000000_-1000_1000.txt: 0.425066 seconds
+Average sorting time for array_1000000_-100000_100000.txt: 0.541417 seconds
+
+Average time for three runs:
+
+For "array_10000_-10_10.txt":
+
+Average sorting time = (0.00172814 + 0.00160969 + 0.00162939) / 3 = 0.00165574 seconds
+
+For "array_10000_-1000_1000.txt":
+
+Average sorting time = (0.00351651 + 0.00270361 + 0.00313133) / 3 = 0.00311715 seconds
+
+For "array_10000_-100000_100000.txt":
+
+Average sorting time = (0.00543301 + 0.00281458 + 0.00285596) / 3 = 0.00303452 seconds
+
+For "array_100000_-10_10.txt":
+
+Average sorting time = (0.0319784 + 0.017447 + 0.0174388) / 3 = 0.0229544 seconds
+
+For "array_100000_-1000_1000.txt":
+
+Average sorting time = (0.0674183 + 0.0344027 + 0.0338768) / 3 = 0.0455659 seconds
+
+For "array_100000_-100000_100000.txt":
+
+Average sorting time = (0.0742855 + 0.0404431 + 0.0409062) / 3 = 0.051878 seconds
+
+For "array_1000000_-10_10.txt":
+
+Average sorting time = (0.191765 + 0.192893 + 0.193424) / 3 = 0.192694 seconds
+
+For "array_1000000_-1000_1000.txt":
+
+Average sorting time = (0.421194 + 0.421903 + 0.425066) / 3 = 0.422721 seconds
+
+For "array_1000000_-100000_100000.txt":
+
+Average sorting time = (0.561179 + 0.539247 + 0.541417) / 3 = 0.547948 seconds

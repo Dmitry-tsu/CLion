@@ -4,18 +4,6 @@
 #include <random>
 #include <chrono>
 
-void generateRandomArray(std::vector<int>& arr, int minValue, int maxValue)
-{
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(minValue, maxValue);
-
-    for (int& num : arr)
-    {
-        num = dis(gen);
-    }
-}
-
 bool isSorted(const std::vector<int>& arr)
 {
     int n = arr.size();
@@ -55,34 +43,69 @@ void HoarSort(std::vector<int>& vec, const int left, const int right)
     HoarSort(vec, i, right);
 }
 
+void readArrayFromFile(std::vector<int>& arr, const std::string& filename)
+{
+    std::ifstream file(filename);
+    if (file.is_open())
+    {
+        int num;
+        while (file >> num)
+        {
+            arr.push_back(num);
+        }
+        file.close();
+        std::cout << "Array has been read from " << filename << std::endl;
+    }
+    else
+    {
+        std::cerr << "Unable to open file " << filename << std::endl;
+    }
+}
+
 int main()
 {
-    int size = 10;
-    std::vector<int> arr(size);
-    generateRandomArray(arr, 1, 100);
+    const std::vector<std::string> filenames = {
+            "array_10000_-10_10.txt",
+            "array_10000_-1000_1000.txt",
+            "array_10000_-100000_100000.txt",
+            "array_100000_-10_10.txt",
+            "array_100000_-1000_1000.txt",
+            "array_100000_-100000_100000.txt",
+            "array_1000000_-10_10.txt",
+            "array_1000000_-1000_1000.txt",
+            "array_1000000_-100000_100000.txt"
+    };
 
-    std::cout << "Before sorting:" << std::endl;
-    for (int num : arr)
+    std::vector<double> averageSortingTimes(filenames.size(), 0);
+
+    for (int i = 0; i < filenames.size(); i++)
     {
-        std::cout << num << " ";
+        std::vector<int> arr;
+        readArrayFromFile(arr, filenames[i]);
+        std::vector<int> temp = arr;
+
+        std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
+        HoarSort(temp, 0, temp.size() - 1);
+        std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+        std::chrono::duration<double> diff = end - start;
+        double sortingTime = diff.count();
+        averageSortingTimes[i] = sortingTime;
+
+        if (isSorted(temp))
+        {
+            std::cout << "The array in " << filenames[i] << " is sorted." << std::endl;
+        }
+        else
+        {
+            std::cerr << "The array in " << filenames[i] << " is not sorted." << std::endl;
+        }
     }
-    std::cout << std::endl;
 
-    HoarSort(arr, 0, size - 1);
-
-    std::cout << "After sorting:" << std::endl;
-    for (int num : arr)
+    for (int i = 0; i < filenames.size(); i++)
     {
-        std::cout << num << " ";
-    }
-    std::cout << std::endl;
-
-    if (isSorted(arr))
-    {
-        std::cout << "The array is sorted." << std::endl;
-    } else {
-        std::cout << "The array is not sorted." << std::endl;
+        std::cout << "Average sorting time for " << filenames[i] << ": " << averageSortingTimes[i] << " seconds" << std::endl;
     }
 
     return 0;
 }
+

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-//Тут сделаль
+
 std::vector<int> findAll(const std::string& text, const std::string& substring, int startIndex, int endIndex, int occurrencesCount = 0)
 {
     std::vector<int> indexes;

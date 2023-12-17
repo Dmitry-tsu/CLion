@@ -83,6 +83,5 @@ int main()
     } else {
         std::cout << "The array is not sorted." << std::endl;
     }
-
     return 0;
 }

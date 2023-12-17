@@ -54,30 +54,6 @@ private:
     ItemType* m_array = nullptr;
     int m_size = 0;
 };
-template <typename ItemType>
-template <typename IT, typename AT>
-class Array<ItemType>::TemplateIterator
-{
-public:
-    TemplateIterator(AT* array = nullptr, const int pos = 0);
-    IT& operator*();
-    IT& operator[](const int offset);
-
-    TemplateIterator& operator++();
-    TemplateIterator operator++(int);
-    TemplateIterator& operator--();
-    TemplateIterator operator--(int);
-
-    bool hasNext() const;
-    int Pos() const;
-    bool operator==(const TemplateIterator& other) const;
-    bool operator!=(const TemplateIterator & other) const;
-
-private:
-    AT* m_array;
-    int m_pos = -1;
-};
-
 
 
 

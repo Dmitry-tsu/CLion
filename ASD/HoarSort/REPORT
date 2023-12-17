@@ -1,0 +1,10 @@
+arrays on GIT:
+Average sorting time for array_10000_-10_10.txt: 0.00106475 seconds
+Average sorting time for array_10000_-1000_1000.txt: 0.00159242 seconds
+Average sorting time for array_10000_-100000_100000.txt: 0.00177208 seconds
+Average sorting time for array_100000_-10_10.txt: 0.0122261 seconds
+Average sorting time for array_100000_-1000_1000.txt: 0.0198186 seconds
+Average sorting time for array_100000_-100000_100000.txt: 0.0219177 seconds
+Average sorting time for array_1000000_-10_10.txt: 0.168602 seconds
+Average sorting time for array_1000000_-1000_1000.txt: 0.194649 seconds
+Average sorting time for array_1000000_-100000_100000.txt: 0.319768 seconds

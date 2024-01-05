@@ -148,3 +148,24 @@ std::istream& operator >> (std::istream& stream, const Array& arr)
 
     return stream;
 }
+
+void Array::Resize(int size)
+{
+    if (size < 0)
+    {
+        std::cerr << "Array::rersize: size is negative, inveert...\n";
+        size = -size;
+    }
+    Array res(size);
+    int count = std::min(m_size, size);
+    for (int i = 0; i < count; i++)
+        res.m_array[i] = m_array[i];
+}
+
+int Array::ISearch(const int e) const
+{
+    for (int i = 0; i < m_size; i++)
+        if (m_array[i] == e) return i;
+    return -1;
+
+}

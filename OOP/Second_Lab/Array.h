@@ -21,6 +21,9 @@ public:
     Array &operator+=(const Array& other);
     //
     Array &operator=( Array&& other);
+    //
+    void Resize(int size);
+    int ISearch(const int e) const;
 private:
     int* m_array = nullptr;
     int m_size = 0;

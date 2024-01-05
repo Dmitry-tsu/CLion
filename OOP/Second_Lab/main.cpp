@@ -112,8 +112,9 @@ int main()
 
     cout << "Operators + and +=: \n";
     cout<< arr_8<<"+ 10 + 15: " << arr_8 + 10 + 15 << endl;
+    cout<<arr_8<<"+= 25: ";
     arr_8 += 25;
-    cout<<arr_8<<"+= 25: " << arr_8;
+    cout<<arr_8;
     cout << endl;
 
     cout << arr_5;
@@ -124,15 +125,15 @@ int main()
     cout << endl;
 
     it = arr_5.begin();
-    index = 0;
+    index = 10;
     for (int c = 0; c != index; it++, c++);
-    el = 333;
+    el = 125;
     cout << arr_5<<"Insertion element "<<el<<" before the iterator at the position: "<<index<<endl;
     if(!arr_5.Insert(el, it))cout << "There is no such index\n";
-    else cout << arr_5;
+    else cout << arr_5<<*it;
     cout << endl;
 
-    cout << arr_5;
+    cout<<"Deleting an element or a range of elements using iterators:\n" << arr_5;
     index = 3;
     Array::Iterator gap1 = arr_5.begin();
     for (int c = 0; c != index; gap1++, c++);
@@ -143,6 +144,9 @@ int main()
     cout << arr_5;
     arr_5.Remove(gap1);
     cout << arr_5;
+    cout << endl;
 
+    Array<char> arrsh(5, 'a');
+    cout << arrsh;
     return 0;
 }

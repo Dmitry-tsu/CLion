@@ -122,6 +122,27 @@ int main()
 
     cout << endl;
 
+    cout << "Methods sum, sub, mul, div with overload:\n";
+    cout << "Method summation: ";
+    sum = f_1 + f_2;
+    cout << "f_1 + f_2 = ";
+    sum.print();
+
+    cout << "Method subtraction: ";
+    sub = f_1 - f_2;
+    cout << "f_1 - f_2 = ";
+    sub.print();
+
+    cout << "Method multiplication: ";
+    mul = f_1 * f_2;
+    cout << "f_1 * f_2 = ";
+    mul.print();
+
+    cout << "Method division: ";
+    div = f_1 / f_2;
+    cout << "f_1 / f_2 = ";
+    div.print();
+    cout << endl;
 }
 
 

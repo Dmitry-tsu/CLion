@@ -147,3 +147,21 @@ bool Fraction:: operator > (const Fraction other) const
 {
     return ((m_numerator * other.m_denominator) > (other.m_numerator * m_denominator));
 }
+
+Fraction Fraction::operator+(const Fraction other) const
+{
+    return summation(other);
+}
+
+Fraction Fraction::operator-(const Fraction other) const
+{
+    return subtraction(other);
+}
+
+Fraction Fraction::operator*(const Fraction other) const {
+    return multiplication(other);
+}
+Fraction Fraction::operator/(const Fraction other) const
+{
+    return division(other);
+}

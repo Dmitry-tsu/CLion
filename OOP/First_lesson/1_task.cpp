@@ -119,7 +119,6 @@ int main()
         cout << "True\n";
     else
         cout << "False\n";
-
     cout << endl;
 
     cout << "Methods sum, sub, mul, div with overload:\n";
@@ -142,6 +141,31 @@ int main()
     div = f_1 / f_2;
     cout << "f_1 / f_2 = ";
     div.print();
+    cout << endl;
+
+    cout << "Method representation of an integer as a fraction:\n";
+    Fraction f_4;
+    int a;
+    cout << "Enter an integer: a = ";
+    cin >> a;
+
+    f_4.intToFraction(a);
+    cout << "The number in fractional form: ";
+    f_4.print();
+    cout << endl;
+
+    f_4.multiplyByInt(a);
+    cout << "The numerator of a fraction multiplied by a given number ";
+    f_4.print();
+    cout << endl;
+
+    cout << "Enter the degree of a number: a = ";
+    cin >> a;
+    cout << endl;
+    cout << "Method exponentiation of fractions:\n";
+    f_3.exponentiation(a);
+    cout << "f_3^a = : ";
+    f_3.print();
     cout << endl;
 }
 

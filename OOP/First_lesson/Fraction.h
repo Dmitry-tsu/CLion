@@ -34,6 +34,10 @@ public:
     Fraction operator*(const Fraction other) const;
     Fraction operator/(const Fraction other) const;
     //
+    void intToFraction(const int integer);
+    void multiplyByInt(const int integer);
+    void exponentiation(const int degree);
+    //
 private:
     int m_numerator = 0;
     int m_denominator = 1;

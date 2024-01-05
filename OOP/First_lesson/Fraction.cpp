@@ -165,3 +165,33 @@ Fraction Fraction::operator/(const Fraction other) const
 {
     return division(other);
 }
+
+void Fraction::intToFraction(const int a)
+{
+    m_numerator = a;
+    m_denominator = 1;
+}
+
+void Fraction::multiplyByInt(const int integer)
+{
+    m_numerator *= integer;
+}
+
+void Fraction::exponentiation(const int degree) {
+    int num = m_numerator;
+    int den = m_denominator;
+
+    if (degree == 0) {
+        m_numerator = m_denominator = 1;
+        return;
+    }
+
+    for (int i = 1; i < abs(degree); i++) {
+        m_numerator *= num;
+        m_denominator *= den;
+    }
+
+    if (degree < 0) {
+        std::swap(m_numerator, m_denominator);
+    }
+}

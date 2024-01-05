@@ -59,10 +59,17 @@ int main() {
     else cout << arr_1;
     cout << endl;
 
-    index = 1;
+    index = 2;
     cout << "Delete an element on the index: " << index<<endl;
-    if (!arr_1.DelbyIndex(index)) cout << "There is no such index\n";
+    if (!arr_1.DeleteByIndex(index)) cout << "There is no such index\n";
     else cout << arr_1;
+    cout << endl;
+
+    el = 125;
+    cout << "Delete an element by value: " << el << endl;
+    if (!arr_1.DeleteElement(el)) cout << "There is no such element\n";
+    else cout << arr_1;
+    cout << endl;
 
     return 0;
 

@@ -180,7 +180,7 @@ void Array::Sort()
     }
 }
 
-bool Array::Insert(const int& e, int& in)
+bool Array::Insert(const int& e,const int& in)
 {
     if (in >= m_size) return false;
     Array arr(1, 0);
@@ -192,7 +192,7 @@ bool Array::Insert(const int& e, int& in)
     return true;
 }
 
-bool Array::DelbyIndex(const int& in)
+bool Array::DeleteByIndex(const int& in)
 {
     if (in >= m_size) return false;
     int i;
@@ -207,5 +207,12 @@ bool Array::DelbyIndex(const int& in)
         arr.m_array[i] = m_array[i];
     *this=arr;
     return true;
+}
+
+bool Array::DeleteElement(const int& el)
+{
+    int index = ISearch(el);
+    if (index == -1) return false;
+    return DeleteByIndex(index);
 
 }

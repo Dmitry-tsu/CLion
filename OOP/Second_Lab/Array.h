@@ -21,9 +21,9 @@ public:
     void Resize(int size);
     int ISearch(const int el) const;
     void Sort();
-    bool Insert(const int &e, int &in);
-    bool DelbyIndex(const int& in);
-    void Copy();
+    bool Insert(const int &e, const int &in);
+    bool DeleteByIndex(const int& in);
+    bool DeleteElement(const int& el);
 
 private:
     int* m_array = nullptr;

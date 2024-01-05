@@ -22,7 +22,8 @@ public:
     Fraction multiplication(const Fraction other) const;
     Fraction division(const Fraction other) const;
     //
-
+    void reduce();
+    //
 private:
     int m_numerator = 0;
     int m_denominator = 1;

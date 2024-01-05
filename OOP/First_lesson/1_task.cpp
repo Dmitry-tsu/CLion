@@ -82,6 +82,16 @@ int main()
     cout << "f_1 / f_2 = ";
     div.print();
     cout << endl;
+
+    cout << "Method reduce:\n";
+    f_1.reduce();
+    cout << "f_1 = ";
+    f_1.print();
+
+    f_2.reduce();
+    cout << "f_2 = ";
+    f_2.print();
+    cout << endl;
 }
 
 

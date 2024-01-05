@@ -99,3 +99,31 @@ Fraction Fraction::division(const Fraction f) const
     return c;
 }
 
+int GCD(int numerator, int denominator)
+{
+    if (numerator == 0)
+    {
+        return 1;
+    }
+
+    while (numerator != denominator)
+    {
+        if (numerator > denominator)
+        {
+            numerator -= denominator;
+        }
+        else
+        {
+            denominator -= numerator;
+        }
+    }
+
+    return numerator;
+}
+
+void Fraction::reduce()
+{
+    int gcd = GCD(m_numerator, m_denominator);
+    m_numerator = m_numerator / gcd;
+    m_denominator = m_denominator / gcd;
+}

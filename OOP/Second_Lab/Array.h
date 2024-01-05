@@ -1,8 +1,10 @@
+
+//#pragma once
+#ifndef ARRAY_TEMPLATE
+#define ARRAY_TEMPLATE
 #include<iostream>
 #include <algorithm>
 #include <assert.h>
-#pragma once
-
 
 template<typename ItemType>
 class Array
@@ -13,7 +15,6 @@ public:
     class TemplateIterator;
     using Iterator = TemplateIterator<ItemType, Array>;
     using ConstIterator = TemplateIterator<const ItemType, const Array>;
-
 public:
 
     Array(Array&& other);
@@ -50,9 +51,9 @@ public:
     Iterator end();
     ConstIterator begin() const;
     ConstIterator end() const;
-    bool Insert(const ItemType& el, Iterator &it);
+    bool Insert(const ItemType& el, const Iterator &it);
     bool Remove(const Iterator gap1, Iterator &gap2);
-    bool Remove(const Iterator& it);
+    bool Remove(const Iterator it);
 
 private:
     ItemType* m_array = nullptr;
@@ -84,6 +85,7 @@ private:
     AT* m_array;
     int m_pos = -1;
 };
+
 
 template <typename ItemType>
 Array<ItemType>::Array(const int size, const ItemType& value)
@@ -130,7 +132,16 @@ int Array<ItemType>::Size() const
 template <typename ItemType>
 void Array<ItemType>::Print() const
 {
+    int i = 0;
+    //int a = *this[i];
     std::cout << *this;
+
+    /*std::cout << "[";
+    for (int i = 0; i < m_size - 1; i++)
+        std::cout << m_array[i] << ",";
+
+    std::cout << m_array[m_size - 1] << "]\n";*/
+
 }
 
 template <typename ItemType>
@@ -150,6 +161,16 @@ const ItemType& Array<ItemType>::operator[](const int index) const
 template <typename ItemType>
 Array<ItemType>& Array<ItemType>::operator= (Array&& other)
 {
+
+    /*
+     //������������ ���������� ����� copy-and-swap idiom
+     //�������� �������� ������ ���� ������� �������� ����������( ������ �� ����� �������)
+      Array &Array::operator=(Array other)
+      {
+        Swap(other);
+        return *this;
+      }
+    */
     Swap(other);
     return *this;
 }
@@ -172,23 +193,23 @@ Array<ItemType>& Array<ItemType>::operator= (const Array& other)
 
 }
 
-template <>
+template <> inline
 void Array<int>::RandArray(int f_gap, int l_gap)const
 {
     if (f_gap > l_gap)
     {
         int swap = f_gap; f_gap = l_gap; l_gap = swap;
     }
-    srand(time(nullptr));
+    srand(time(0));
     for (int i = 0; i < m_size; i++) m_array[i] = rand() % l_gap + f_gap + 1;
 }
 
-template <>
+template <> inline
 void Array<int>::RandArrayIns(int f_gap, int l_gap)const
 {
     if (f_gap > l_gap) std::swap(f_gap, l_gap);
-    srand(time(nullptr));
-    m_array[0] = rand() % l_gap + f_gap + 1;
+    srand(time(0));
+    m_array[0] = rand() % l_gap + f_gap + 1; // ������ ����� �������� ��������
     int i;
     for (i = 1; i < m_size; i++)
     {
@@ -200,12 +221,12 @@ void Array<int>::RandArrayIns(int f_gap, int l_gap)const
 
 }
 
-template <>
+template <> inline
 void Array<int>::RandArrayDes(int f_gap, int l_gap)const
 {
     if (f_gap > l_gap) std::swap(f_gap, l_gap);
-    srand(time(nullptr));
-    m_array[m_size - 1] = rand() % l_gap + f_gap + 1;
+    srand(time(0));
+    m_array[m_size - 1] = rand() % l_gap + f_gap + 1; // ������ ����� �������� ��������
     int i;
     for (i = m_size - 2; i >= 0; i--)
     {
@@ -275,6 +296,8 @@ Array<ItemType> Array<ItemType>::operator+=(const ItemType& item)
 template <typename ItemType>
 std::ostream& operator<<(std::ostream& stream, const Array<ItemType>& arr)
 {
+    if (arr.Size() == 0)
+        return stream << "[]";
     stream << "[";
     for (int i = 0; i < arr.Size() - 1; i++)
         stream << arr[i] << ",";
@@ -511,11 +534,12 @@ Array<ItemType>::ConstIterator Array<ItemType>::end() const
     return ConstIterator(this, m_size);
 }
 
+
+
+
 template <typename ItemType> typename
-bool Array<ItemType>::Insert(const ItemType &el, Iterator &it)
+bool Array<ItemType>::Insert(const ItemType& el, const Iterator& it)
 {
-    Array::Iterator i = end();
-    if (it.Pos()<0 || it.Pos()>i.Pos()) assert("false");
     return Insert(el, it.Pos());
 }
 
@@ -537,9 +561,34 @@ bool Array<ItemType>::Remove(const Iterator gap1, Iterator& gap2)
 }
 
 template <typename ItemType> typename
-bool Array<ItemType>::Remove(const Iterator& it)
+bool Array<ItemType>::Remove(const Iterator it)
 {
     Iterator it2(this, it.Pos() + 1);
     return Remove(it, it2);
 }
+
+template <typename ItemType>
+template <typename IT, typename AT>
+Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, AT>::operator+(const int& index)
+{
+
+    Array<ItemType>::TemplateIterator<IT, AT> tmp(*this);
+    for (int i = 0; i < index; ++i)
+        ++tmp;
+
+    return tmp;
+}
+
+template <typename ItemType>
+template <typename IT, typename AT>
+Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, AT>::operator-(const int& index)
+{
+
+    Array<ItemType>::TemplateIterator<IT, AT> tmp(*this);
+    for (int i = 0; i < index; ++i)
+        --tmp;
+
+    return tmp;
+}
+#endif
 

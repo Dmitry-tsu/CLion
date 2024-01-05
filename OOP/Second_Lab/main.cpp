@@ -109,5 +109,10 @@ int main()
     else cout << "Minimum element: " << arr_8[i_min] << endl;
     cout << endl;
 
+
+    cout << "Operators + and +=: \n";
+    cout<< arr_8<<" + 10 + 15: " << arr_8 + 10 + 15 << endl;
+    arr_8 += 25;
+    cout<<arr_8<<"+= 25: " << arr_8;
     return 0;
 }

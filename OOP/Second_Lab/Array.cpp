@@ -264,3 +264,16 @@ int Array::IMin()
     }
     return i_min;
 }
+
+
+Array Array::operator+(const int& item)
+{
+    Array arr(1, item);
+    return *this + arr;
+}
+
+Array Array::operator+=(const int& item)
+{
+    Array arr(1, item);
+    return *this += arr;;
+}

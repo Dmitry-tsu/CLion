@@ -29,6 +29,8 @@ public:
     bool operator!=(const Array& other) const;
     int IMax();
     int IMin();
+    Array operator+(const int& item);
+    Array operator+=(const int& item);
 private:
     int* m_array = nullptr;
     int m_size = 0;

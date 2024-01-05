@@ -34,24 +34,36 @@ int main() {
     arr_1.Swap(arr_2);
     cout << "Result:\narr_1: " << arr_1 << "arr_2: " << arr_2;
     cout << endl;
-    cout << "Searching for the index of an element in an array:\nThe desired element: 50\n";
-    int index = arr_1.ISearch(50);
+
+    int el = 50;
+    cout << "Searching for the index of an element in an array:\nThe desired element: "<<el<<"\n";
+    int index= arr_1.ISearch(el);
     if (index == -1) cout << "There are no occurrences\n";
     else cout<<"It's index: " << index;
     cout << endl;
+
     cout << "Sort the array arr_1: ";
     arr_1.Sort();
     cout << arr_1;
     cout << endl;
-    cout << "Insert an element by index:\nelement - 125, index - 5\n";
-    int el = 125; index = 5;
+
+    el = 125; index = 5;
+    cout << "Insert an element by index:\nelement - "<<el<<", index - "<<index<< endl;
     if (!arr_1.Insert(el, index)) cout<<"There is no such index\n";
     else cout << arr_1;
     cout << endl;
-    cout << "Insert an element by index:\nelement - 225, index - 20\n";
+
     el = 225; index = 20;
+    cout << "Insert an element by index:\nelement - " << el << ", index - " << index << endl;
     if (!arr_1.Insert(el, index)) cout << "There is no such index\n";
     else cout << arr_1;
     cout << endl;
+
+    index = 1;
+    cout << "Delete an element on the index: " << index<<endl;
+    if (!arr_1.DelbyIndex(index)) cout << "There is no such index\n";
+    else cout << arr_1;
+
     return 0;
+
 }

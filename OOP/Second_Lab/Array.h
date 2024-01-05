@@ -22,6 +22,9 @@ public:
     int ISearch(const int el) const;
     void Sort();
     bool Insert(const int &e, int &in);
+    bool DelbyIndex(const int& in);
+    void Copy();
+
 private:
     int* m_array = nullptr;
     int m_size = 0;

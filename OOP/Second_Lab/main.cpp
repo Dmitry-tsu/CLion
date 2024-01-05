@@ -17,11 +17,19 @@ int main()
     using std::cin;
     using std::endl;
 
-    Array arr(10, 0);
-    cout << arr[3] << ' ' << arr[9] << endl;
-    arr[3] = 4;
-    arr[5] = arr[3];
-    cout << calculateAvg(arr) << endl;
-    arr.print();
-    return 0;
+    Array arr_1(10, 0);
+    Array arr_2(10,0);
+    cout << "Creating an array of random numbers: ";
+    arr_1.RandArray(0, 100);
+    arr_1.Print();
+    cout << "Creating an array of random numbers in increasing order: ";
+    arr_1.RandArrayIns(-50, 100);
+    arr_1.Print();
+    cout << "Creating an array of random numbers in descending order: ";
+    arr_1.RandArrayDes(-50, 100);
+    arr_1.Print();
+    cout << endl;
+    arr_2.RandArray(0, 100);
+    cout << endl;
+
 }

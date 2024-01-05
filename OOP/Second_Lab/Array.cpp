@@ -162,7 +162,7 @@ void Array::Resize(int size)
         res.m_array[i] = m_array[i];
 }
 
-int Array::ISearch(const int &el, int i)
+int Array::ISearch(const int &el, int i) const
 {
     for (i; i < m_size; i++)
         if (m_array[i] == el) return i;
@@ -241,4 +241,26 @@ bool Array::operator!=(const Array& other) const
 {
     if (*this == other) return false;
     return true;
+}
+
+int Array::IMax()
+{
+    int i_max = -1,i;
+    for (i = 0; i < m_size; i++)
+    {
+        if (i_max==-1) i_max = 0;
+        if (m_array[i_max] < m_array[i]) i_max = i;
+    }
+    return i_max;
+}
+
+int Array::IMin()
+{
+    int i_min = -1, i;
+    for (i = 0; i < m_size; i++)
+    {
+        if (i_min==-1) i_min = 0;
+        if (m_array[i_min] > m_array[i]) i_min = i;
+    }
+    return i_min;
 }

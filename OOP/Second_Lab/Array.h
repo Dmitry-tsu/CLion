@@ -19,7 +19,7 @@ public:
     Array &operator+=(const Array& other);
     Array &operator=( Array&& other);
     void Resize(int size);
-    int ISearch(const int &el, int i=0);
+    int ISearch(const int &el, int i=0) const;
     void Sort();
     bool Insert(const int &e, const int &in);
     bool DeleteByIndex(const int& in);
@@ -27,7 +27,8 @@ public:
     bool DeleteAllElements(const int& el);
     bool operator==(const Array& other) const;
     bool operator!=(const Array& other) const;
-
+    int IMax();
+    int IMin();
 private:
     int* m_array = nullptr;
     int m_size = 0;

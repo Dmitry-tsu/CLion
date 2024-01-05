@@ -11,7 +11,8 @@ double calculateAvg(Array arr)
     avg /= arr.Size();
     return avg;
 }
-int main() {
+int main()
+{
     using std::cout;
     using std::cin;
     using std::endl;
@@ -95,6 +96,18 @@ int main() {
     else  cout << "Array 1 != Array 2\n";
     if (arr_5 == arr_4) cout << "Array 1 == Array 4\n";
     else  cout << "Array 1 != Array 4\n";
+    cout << endl;
+
+    Array arr_8(20, 0);
+    arr_8.RandArray(-10, 10);
+    cout << arr_8 << "Search for the maximum/minimum element: "<<endl;
+    int i_max = arr_8.IMax();
+    if (i_max==-1) cout << "The array is empty" << endl;
+    else cout << "Maximum element: " << arr_8[i_max] << endl;
+    int i_min = arr_8.IMin();
+    if (i_min==-1) cout << "The array is empty" << endl;
+    else cout << "Minimum element: " << arr_8[i_min] << endl;
+    cout << endl;
 
     return 0;
 }

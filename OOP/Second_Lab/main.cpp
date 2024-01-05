@@ -36,7 +36,11 @@ int main() {
     cout << endl;
     cout << "Searching for the index of an element in an array:\nThe desired element: 50\n";
     int index = arr_1.ISearch(50);
-    if (index == -1) cout << "There are no occurrences";
-    else cout << "It index: " << index;
+    if (index == -1) cout << "There are no occurrences\n";
+    else cout<<"It's index: " << index;
+    cout << endl;
+    cout << "Sort the array arr_1: ";
+    arr_1.Sort();
+    cout << arr_1;
     return 0;
 }

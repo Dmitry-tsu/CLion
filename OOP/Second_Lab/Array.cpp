@@ -167,5 +167,15 @@ int Array::ISearch(const int e) const
     for (int i = 0; i < m_size; i++)
         if (m_array[i] == e) return i;
     return -1;
+}
 
+void Array::Sort()
+{
+    for (int i = 1; i < m_size; i++)
+    {
+        int key = m_array[i];
+        int j;
+        for (j = i - 1; key < m_array[j] && j >= 0; j--) m_array[j + 1] = m_array[j];
+        m_array[j + 1] = key;
+    }
 }

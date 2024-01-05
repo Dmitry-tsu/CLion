@@ -24,6 +24,7 @@ public:
     //
     void Resize(int size);
     int ISearch(const int e) const;
+    void Sort();
 private:
     int* m_array = nullptr;
     int m_size = 0;

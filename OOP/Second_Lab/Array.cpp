@@ -5,7 +5,7 @@ Array::Array(const int size, const int value)
 {
     if (size < 0)
     {
-        std::cerr << "Array::Array: size is negative, invert.";
+        std::cerr << "Array::Array: Size is negative, invert.";
         m_size = -size;
     }
     else m_size = size;
@@ -28,16 +28,13 @@ Array::~Array()
     delete[] m_array;
 }
 
-int Array::size() const
+int Array::Size() const
 {
     return m_size;
 }
 void Array::Print() const
 {
-    std::cout << "[";
-    for (int i = 0; i < m_size - 1; i++)
-        std::cout << m_array[i] << ",";
-    std::cout << m_array[m_size - 1] << "]\n";
+    std::cout << *this;
 }
 
 int& Array::operator[](const int index)
@@ -55,14 +52,19 @@ const int& Array::operator[](const int index) const
 Array&Array::operator=(const Array &other)
 {
     if (this == &other) return *this;
-    if (m_size != other.m_size)
-    {
+    if (m_size != other.m_size) {
         m_size = other.m_size;
         delete[]m_array;
         m_array = new int[m_size];
     }
     for (int i = 0; i < m_size; i++)
         m_array[i] = other.m_array[i];
+    return *this;
+}
+
+Array&Array::operator=(Array&& other)
+{
+    Swap(other);
     return *this;
 }
 
@@ -129,6 +131,20 @@ Array &Array::operator+=(const Array& other)
     return *this;
 }
 
+std::ostream& operator<<(std::ostream& stream, const Array& arr)
+{
+    stream << "[";
+    for (int i = 0; i < arr.Size() - 1; i++)
+        stream << arr[i] << ",";
 
+    stream << arr[arr.Size() - 1] << "]\n";
+    return stream;
+}
 
+std::istream& operator >> (std::istream& stream, const Array& arr)
+{
+    for (int i = 0; i < arr.Size() - 1; i++)
+        stream >> arr[i];
 
+    return stream;
+}

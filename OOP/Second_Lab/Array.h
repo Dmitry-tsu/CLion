@@ -1,3 +1,4 @@
+#include<iostream>
 #pragma once
 class Array
 {
@@ -8,7 +9,7 @@ public:
     int &operator[](const int index);
     //
     Array(const Array &other);
-    int size() const;
+    int Size() const;
     const int &operator[](const int index) const;
     //
     void RandArray(int FirstGap, int LastGap)const;
@@ -18,11 +19,13 @@ public:
     Array &operator=(const Array & other);
     Array operator+(const Array& other) const;
     Array &operator+=(const Array& other);
-
+    //
+    Array &operator=( Array&& other);
 private:
     int* m_array = nullptr;
     int m_size = 0;
 };
 
-
+std::ostream& operator<<(std::ostream& stream, const Array& arr);
+std::istream& operator >> (std::istream& stream, const Array& arr);
 

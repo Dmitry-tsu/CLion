@@ -71,6 +71,30 @@ int main() {
     else cout << arr_1;
     cout << endl;
 
-    return 0;
 
+    Array arr_3(5);
+    arr_3[0] = 1; arr_3[1] = 2; arr_3[2] = 3; arr_3[3] = 4; arr_3[4] = 5;
+    cout << arr_3;
+    el = 3;
+    cout << "Deleting array: "<<el<<endl;
+    arr_3.DeleteAllElements(el);
+    cout << arr_3;
+    cout << endl;
+
+
+    cout << "Operators == and !=: \n";
+    Array arr_4(10), arr_5(10), arr_6(10), arr_7(10);
+    arr_5.RandArray(-10, 10);
+    arr_6 = arr_5;
+    cout << "Array 1: " << arr_5 << "Array 2: " << arr_6 << "Array 3: " << arr_7 << "Array 4: " << arr_4;
+    if (arr_5 == arr_6) cout << "Array 1 == Array 2\n";
+    else  cout << "Array 1 != Array 2\n";
+    if (arr_5 != arr_6) cout << "Array 1 != Array 2\n";
+    else  cout << "Array 1 == Array 2\n";
+    if (arr_5 == arr_7) cout << "Array 1 == Array 3\n";
+    else  cout << "Array 1 != Array 2\n";
+    if (arr_5 == arr_4) cout << "Array 1 == Array 4\n";
+    else  cout << "Array 1 != Array 4\n";
+
+    return 0;
 }

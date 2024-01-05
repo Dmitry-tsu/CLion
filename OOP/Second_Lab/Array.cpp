@@ -143,7 +143,7 @@ std::ostream& operator<<(std::ostream& stream, const Array& arr)
 
 std::istream& operator>>(std::istream& stream, const Array& arr)
 {
-    for (int i = 0; i < arr.Size() - 1; i++)
+    for (int i = 0; i < arr.Size(); i++)
         stream >> arr[i];
 
     return stream;
@@ -162,9 +162,9 @@ void Array::Resize(int size)
         res.m_array[i] = m_array[i];
 }
 
-int Array::ISearch(const int el) const
+int Array::ISearch(const int &el, int i)
 {
-    for (int i = 0; i < m_size; i++)
+    for (i; i < m_size; i++)
         if (m_array[i] == el) return i;
     return -1;
 }
@@ -214,5 +214,31 @@ bool Array::DeleteElement(const int& el)
     int index = ISearch(el);
     if (index == -1) return false;
     return DeleteByIndex(index);
+}
 
+
+bool Array::DeleteAllElements(const int& el)
+{
+    int index = ISearch(el);
+    if (index == -1) return false;
+    while (DeleteByIndex(index))
+    {
+        index = ISearch(el,index);
+        if (index == -1) return false;
+    }
+    return true;
+}
+
+bool Array::operator==(const Array& other) const
+{
+    if (m_size != other.m_size) return false;
+    for (int i = 0; i < m_size; i++)
+        if (m_array[i] != other.m_array[i]) return false;
+    return true;
+}
+
+bool Array::operator!=(const Array& other) const
+{
+    if (*this == other) return false;
+    return true;
 }

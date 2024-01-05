@@ -19,11 +19,14 @@ public:
     Array &operator+=(const Array& other);
     Array &operator=( Array&& other);
     void Resize(int size);
-    int ISearch(const int el) const;
+    int ISearch(const int &el, int i=0);
     void Sort();
     bool Insert(const int &e, const int &in);
     bool DeleteByIndex(const int& in);
     bool DeleteElement(const int& el);
+    bool DeleteAllElements(const int& el);
+    bool operator==(const Array& other) const;
+    bool operator!=(const Array& other) const;
 
 private:
     int* m_array = nullptr;

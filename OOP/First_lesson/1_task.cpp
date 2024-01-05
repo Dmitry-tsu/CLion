@@ -92,6 +92,36 @@ int main()
     cout << "f_2 = ";
     f_2.print();
     cout << endl;
+
+    cout << "Methods comparison:\n";
+    if (f_1 == f_2)
+        cout << "Fractions are equal\n";
+    else
+        cout << "Fractions are not equal\n";
+
+    if (f_1 != f_2)
+        cout << "Fractions are not equal\n";
+    else
+        cout << "Fractions are equal\n";
+
+    bool res = (f_1 < f_2);
+    cout << "f_1 < f_2 ";
+
+    if (res)
+        cout << "True\n";
+    else
+        cout << "False\n";
+
+    res = (f_1 > f_2);
+    cout << "f_1 > f_2 ";
+
+    if (res)
+        cout << "True\n";
+    else
+        cout << "False\n";
+
+    cout << endl;
+
 }
 
 

@@ -127,3 +127,23 @@ void Fraction::reduce()
     m_numerator = m_numerator / gcd;
     m_denominator = m_denominator / gcd;
 }
+
+bool Fraction:: operator == (const Fraction other) const
+{
+    return (m_numerator == other.m_numerator && m_denominator == other.m_denominator);
+}
+
+bool Fraction:: operator != (const Fraction other) const
+{
+    return !operator == (other);
+}
+
+bool Fraction:: operator < (const Fraction other) const
+{
+    return ((m_numerator * other.m_denominator) < (other.m_numerator * m_denominator));
+}
+
+bool Fraction:: operator > (const Fraction other) const
+{
+    return ((m_numerator * other.m_denominator) > (other.m_numerator * m_denominator));
+}

@@ -160,6 +160,7 @@ void Array::Resize(int size)
     int count = std::min(m_size, size);
     for (int i = 0; i < count; i++)
         res.m_array[i] = m_array[i];
+    res.Swap(*this);
 }
 
 int Array::ISearch(const int &el, int i) const
@@ -183,8 +184,7 @@ void Array::Sort()
 bool Array::Insert(const int& e,const int& in)
 {
     if (in >= m_size) return false;
-    Array arr(1, 0);
-    *this += arr;
+    Resize(m_size + 1);
     int i;
     for (i = m_size-2; i >= in; i--)
         m_array[i + 1] = m_array[i];
@@ -277,3 +277,110 @@ Array Array::operator+=(const int& item)
     Array arr(1, item);
     return *this += arr;;
 }
+
+Array::Array(Array&& other)
+{
+    Swap(other);
+}
+
+Array::Iterator Array::begin()
+{
+    return Iterator(this, 0);
+}
+
+Array::Iterator Array::end()
+{
+    return Iterator(this, Size());
+}
+
+Array::Iterator::Iterator(Array* array, const int pos)
+        : m_array(array)
+        , m_pos(pos)
+{}
+
+int& Array::Iterator::operator*()
+{
+    return (*m_array)[m_pos];
+}
+
+Array::Iterator& Array::Iterator::operator++()
+{
+    ++m_pos;
+    return *this;
+}
+
+Array::Iterator Array::Iterator::operator++(int)
+{
+    Iterator old(*this);
+    ++m_pos;
+    return old;
+}
+
+Array::Iterator& Array::Iterator::operator--()
+{
+    --m_pos;
+    return *this;
+}
+
+Array::Iterator Array::Iterator::operator--(int)
+{
+    Iterator old(*this);
+    --m_pos;
+    return old;
+}
+
+bool Array::Iterator::hasNext() const
+{
+    return (m_pos < m_array->Size());
+}
+
+bool Array::Iterator::operator==(const Iterator& other) const
+{
+    assert(m_array == other.m_array);
+    return (m_array == other.m_array && m_pos == other.m_pos);
+}
+
+bool Array::Iterator::operator!=(const Iterator& other) const
+{
+    return !operator==(other);
+}
+
+int Array::Iterator::Pos() const
+{
+    return m_pos;
+}
+
+bool Array::Insert(const int& el, Iterator &it)
+{
+    Array::Iterator i = end();
+    if (i == it) return false;
+    Resize(m_size + 1);
+    for (; i != it; i--)
+        *++i = *--i;
+    *i = el;
+    it++;
+    return true;
+}
+
+bool Array::Remove(Iterator& gap1, Iterator& gap2)
+{
+    if (gap1.Pos() > gap2.Pos() || gap1.Pos() < 0 || gap2.Pos() > m_size)
+        return false;
+    int numtorem = gap2.Pos() - gap1.Pos();
+    int ishift = gap2.Pos();
+    for (int i = gap1.Pos(); i < m_size - numtorem; i++)
+    {
+        m_array[i] = m_array[ishift];
+        ishift++;
+    }
+    for (int i = 0; i < numtorem ; i++, gap2--);
+    Resize(m_size - numtorem);
+    return true;
+}
+
+bool Array::Remove(Iterator& it)
+{
+    Iterator it2(this, it.Pos() + 1);
+    return Remove(it, it2);
+}
+

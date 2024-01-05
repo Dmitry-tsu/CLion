@@ -61,3 +61,41 @@ void Fraction::setDenominator(const int value)
     }
 }
 
+Fraction Fraction::summation(const Fraction f) const
+{
+    Fraction c;
+    c.m_numerator = m_numerator * f.m_denominator + f.m_numerator * m_denominator;
+    c.m_denominator = m_denominator * f.m_denominator;
+    return c;
+}
+
+Fraction Fraction::subtraction(const Fraction f) const
+{
+    Fraction c;
+    c.m_numerator = m_numerator * f.m_denominator - f.m_numerator * m_denominator;
+    c.m_denominator = m_denominator * f.m_denominator;
+    return c;
+}
+
+Fraction Fraction::multiplication(const Fraction f) const
+{
+    Fraction c;
+    c.m_numerator = m_numerator * f.m_numerator;
+    c.m_denominator = m_denominator * f.m_denominator;
+    return c;
+}
+
+Fraction Fraction::division(const Fraction f) const
+{
+    Fraction c;
+    if (f.m_numerator == 0)
+    {
+        std::cerr << "The division operation is not possible because the numerator is 0."
+                     " Result will be second fraction" << std::endl;
+        return f;
+    }
+    c.m_numerator = m_numerator * f.m_denominator;
+    c.m_denominator = m_denominator * f.m_numerator;
+    return c;
+}
+

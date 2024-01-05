@@ -61,6 +61,27 @@ int main()
     cout << "f_3 = ";
     f_3.print();
     cout << endl;
+
+    cout << "Method summation: ";
+    Fraction sum = f_1.summation(f_2);
+    cout << "f_1 + f_2 = ";
+    sum.print();
+
+    cout << "Method subtraction: ";
+    Fraction sub = f_1.subtraction(f_2);
+    cout << "f_1 - f_2 = ";
+    sub.print();
+
+    cout << "Method multiplication: ";
+    Fraction mul = f_1.multiplication(f_2);
+    cout << "f_1 * f_2 = ";
+    mul.print();
+
+    cout << "Method division: ";
+    Fraction div = f_1.division(f_2);
+    cout << "f_1 / f_2 = ";
+    div.print();
+    cout << endl;
 }
 
 

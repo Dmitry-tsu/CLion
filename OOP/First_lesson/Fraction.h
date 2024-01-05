@@ -17,6 +17,11 @@ public:
     void setNumerator(const int numerator);
     void setDenominator(const int denominator);
     //
+    Fraction summation(const Fraction other) const;
+    Fraction subtraction(const Fraction other) const;
+    Fraction multiplication(const Fraction other) const;
+    Fraction division(const Fraction other) const;
+    //
 
 private:
     int m_numerator = 0;

@@ -42,5 +42,16 @@ int main() {
     cout << "Sort the array arr_1: ";
     arr_1.Sort();
     cout << arr_1;
+    cout << endl;
+    cout << "Insert an element by index:\nelement - 125, index - 5\n";
+    int el = 125; index = 5;
+    if (!arr_1.Insert(el, index)) cout<<"There is no such index\n";
+    else cout << arr_1;
+    cout << endl;
+    cout << "Insert an element by index:\nelement - 225, index - 20\n";
+    el = 225; index = 20;
+    if (!arr_1.Insert(el, index)) cout << "There is no such index\n";
+    else cout << arr_1;
+    cout << endl;
     return 0;
 }

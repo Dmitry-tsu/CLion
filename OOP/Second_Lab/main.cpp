@@ -1,6 +1,5 @@
 #include<iostream>
 #include "Array.h"
-#include"assert.h"
 template <typename T>
 
 double calculateAvg(Array<T> arr)
@@ -33,7 +32,7 @@ int main()
     cout << endl;
 
     arr_2.RandArray(0, 100);
-    cout << "Swap contents of masives:\narr_1: " << arr_1 << "arr_2: " << arr_2;
+    cout << "Swap contents of arrays:\narr_1: " << arr_1 << "arr_2: " << arr_2;
     arr_1.Swap(arr_2);
     cout << "Result:\narr_1: " << arr_1 << "arr_2: " << arr_2;
     cout << endl;
@@ -148,7 +147,7 @@ int main()
     cout << arr_5;
     cout << endl;
 
-    Array<char> arrsh(5, 'a');
+    Array <char> arrsh(5, 'a');
     cout << arrsh;
     return 0;
 }

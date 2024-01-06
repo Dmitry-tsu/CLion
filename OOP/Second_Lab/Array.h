@@ -1,5 +1,3 @@
-
-//#pragma once
 #ifndef ARRAY_TEMPLATE
 #define ARRAY_TEMPLATE
 #include<iostream>
@@ -133,15 +131,7 @@ template <typename ItemType>
 void Array<ItemType>::Print() const
 {
     int i = 0;
-    //int a = *this[i];
     std::cout << *this;
-
-    /*std::cout << "[";
-    for (int i = 0; i < m_size - 1; i++)
-        std::cout << m_array[i] << ",";
-
-    std::cout << m_array[m_size - 1] << "]\n";*/
-
 }
 
 template <typename ItemType>
@@ -161,16 +151,6 @@ const ItemType& Array<ItemType>::operator[](const int index) const
 template <typename ItemType>
 Array<ItemType>& Array<ItemType>::operator= (Array&& other)
 {
-
-    /*
-     //������������ ���������� ����� copy-and-swap idiom
-     //�������� �������� ������ ���� ������� �������� ����������( ������ �� ����� �������)
-      Array &Array::operator=(Array other)
-      {
-        Swap(other);
-        return *this;
-      }
-    */
     Swap(other);
     return *this;
 }
@@ -200,7 +180,7 @@ void Array<int>::RandArray(int f_gap, int l_gap)const
     {
         int swap = f_gap; f_gap = l_gap; l_gap = swap;
     }
-    srand(time(0));
+    srand(time(nullptr));
     for (int i = 0; i < m_size; i++) m_array[i] = rand() % l_gap + f_gap + 1;
 }
 
@@ -208,7 +188,7 @@ template <> inline
 void Array<int>::RandArrayIns(int f_gap, int l_gap)const
 {
     if (f_gap > l_gap) std::swap(f_gap, l_gap);
-    srand(time(0));
+    srand(time(nullptr));
     m_array[0] = rand() % l_gap + f_gap + 1; // ������ ����� �������� ��������
     int i;
     for (i = 1; i < m_size; i++)
@@ -225,7 +205,7 @@ template <> inline
 void Array<int>::RandArrayDes(int f_gap, int l_gap)const
 {
     if (f_gap > l_gap) std::swap(f_gap, l_gap);
-    srand(time(0));
+    srand(time(nullptr));
     m_array[m_size - 1] = rand() % l_gap + f_gap + 1; // ������ ����� �������� ��������
     int i;
     for (i = m_size - 2; i >= 0; i--)
@@ -320,7 +300,7 @@ void Array<ItemType>::Resize(int size)
 {
     if (size < 0)
     {
-        std::cerr << "Array::rersize: size is negative, inveert...\n";
+        std::cerr << "Array::resize: size is negative, invert...\n";
         size = -size;
     }
     Array res(size);

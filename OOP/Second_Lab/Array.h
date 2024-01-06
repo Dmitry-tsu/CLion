@@ -537,13 +537,13 @@ Array<ItemType>::ConstIterator Array<ItemType>::end() const
 
 
 
-template <typename ItemType> typename
+template <typename ItemType>
 bool Array<ItemType>::Insert(const ItemType& el, const Iterator& it)
 {
     return Insert(el, it.Pos());
 }
 
-template <typename ItemType> typename
+template <typename ItemType>
 bool Array<ItemType>::Remove(const Iterator gap1, Iterator& gap2)
 {
     if (gap1.Pos() > gap2.Pos() || gap1.Pos() < 0 || gap2.Pos() > m_size)
@@ -560,7 +560,7 @@ bool Array<ItemType>::Remove(const Iterator gap1, Iterator& gap2)
     return true;
 }
 
-template <typename ItemType> typename
+template <typename ItemType>
 bool Array<ItemType>::Remove(const Iterator it)
 {
     Iterator it2(this, it.Pos() + 1);

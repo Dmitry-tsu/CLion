@@ -39,6 +39,11 @@ public:
     BoolVector operator|(const BoolVector &other) const;
     BoolVector &operator|=(const BoolVector &other);
 
+    BoolVector operator<<(const int &count) const;
+    BoolVector& operator<<=(const int &count);
+    BoolVector operator>>(const int &count) const;
+    BoolVector& operator>>=(const int &count);
+
 private:
     SizeType length = 0;
     SizeType cellCount = 0;

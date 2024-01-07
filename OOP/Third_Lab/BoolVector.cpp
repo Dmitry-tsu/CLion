@@ -134,7 +134,7 @@ void BoolVector::swap(BoolVector& other)
     std::swap(data, other.data);
 }
 
-bool& BoolVector::operator[](const int index)
+bool &BoolVector::operator[](const int index)
 {
     assert(index >= 0 && index < cellSize * cellCount);
     uint8_t mask = 1;
@@ -143,7 +143,7 @@ bool& BoolVector::operator[](const int index)
     return static_cast<bool &>(value);
 }
 
-const bool& BoolVector::operator[](const int index) const
+const bool &BoolVector::operator[](const int index) const
 {
     assert(index >= 0 && index < cellSize * cellCount);
     uint8_t mask = 1;
@@ -165,9 +165,9 @@ BoolVector BoolVector::operator^(const BoolVector& other) const
     return bvec;
 }
 
-BoolVector& BoolVector::operator^=(const BoolVector& other)
+BoolVector &BoolVector::operator^=(const BoolVector& other)
 {
-    BoolVector tmp(*this | other);
+    BoolVector tmp(*this ^ other);
     swap(tmp);
     return *this;
 }
@@ -235,6 +235,85 @@ BoolVector BoolVector::operator|(const BoolVector &other) const
 BoolVector &BoolVector::operator|=(const BoolVector &other)
 {
     BoolVector tmp(*this | other);
+    swap(tmp);
+    return *this;
+}
+
+BoolVector BoolVector::operator<<(const int& count) const
+{
+    int shift_amount = count;
+    if (count > length)
+        shift_amount = length;
+
+    BoolVector bvec = *this;
+    if (shift_amount > cellSize)
+    {
+        for (int i = 0; i + (shift_amount / cellSize) < cellCount; i++)
+        {
+            bvec.data[i] = data[i + (shift_amount / cellSize)];
+            bvec.data[i + (shift_amount / cellSize)] = false;
+        }
+    }
+
+    uint8_t mask = 1;
+    for (int j = 0; j < (shift_amount % cellSize); j++)
+        mask |= mask << 1;
+    mask <<= cellSize - (shift_amount % cellSize);
+    for (int i = 0; i < cellCount - (shift_amount / cellSize) - 1; i++)
+    {
+        uint8_t mask_cu = mask;
+        bvec.data[i] = bvec.data[i] << (shift_amount % cellSize);
+        mask_cu &= bvec.data[i + 1];
+        mask_cu >>= cellSize - (shift_amount % cellSize);
+        bvec.data[i] |= mask_cu;
+    }
+    bvec.data[cellCount - (shift_amount / cellSize) - 1] = bvec.data[cellCount - (shift_amount / cellSize) - 1] << shift_amount;
+    return bvec;
+}
+
+BoolVector& BoolVector::operator<<=(const int& count)
+{
+    BoolVector tmp(*this << count);
+    swap(tmp);
+    return *this;
+}
+
+
+BoolVector BoolVector::operator>>(const int& count) const
+{
+    int shift_amount = count;
+    if (count > length)
+        shift_amount = length;
+
+    BoolVector bvec = *this;
+    if (shift_amount > cellSize)
+    {
+        for (int i = cellCount-1; i - (shift_amount / cellSize) >= 0; i--)
+        {
+            bvec.data[i] = data[i - (shift_amount / cellSize)];
+            bvec.data[i - (shift_amount / cellSize)] = false;
+        }
+    }
+    uint8_t mask = 1;
+    for (int j = 0; j < (shift_amount % cellSize) - 1; j++)
+        mask |= mask << 1;
+
+    for (int i = cellCount - 1; i >(shift_amount / cellSize); i--)
+    {
+        uint8_t mask_cu = mask;
+        bvec.data[i] = bvec.data[i] >> (shift_amount % cellSize);
+        mask_cu &= bvec.data[i - 1];
+        mask_cu <<= cellSize - (shift_amount % cellSize);
+        bvec.data[i] |= mask_cu;
+    }
+    bvec.data[shift_amount / cellSize] = bvec.data[shift_amount / cellSize] >> shift_amount;
+    bvec.shift();
+    return bvec;
+}
+
+BoolVector& BoolVector::operator>>=(const int& count)
+{
+    BoolVector tmp(*this >> count);
     swap(tmp);
     return *this;
 }

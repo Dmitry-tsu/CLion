@@ -28,8 +28,19 @@ public:
     bool &operator[](const int index);
     const bool &operator[](const int index)const;
 
+    BoolVector operator^(const BoolVector& other) const;
+    BoolVector& operator^=(const BoolVector& other);
+    BoolVector operator~() const;
+
+    BoolVector &operator=(BoolVector &&other);
+    BoolVector &operator=(const BoolVector &other);
+    BoolVector operator&(const BoolVector &other) const;
+    BoolVector &operator&=(const BoolVector &other);
+    BoolVector operator|(const BoolVector &other) const;
+    BoolVector &operator|=(const BoolVector &other);
+
 private:
-    SizeType length=0;
+    SizeType length = 0;
     SizeType cellCount = 0;
     uint8_t insignificantPart = 0;
     Byte *data = nullptr;

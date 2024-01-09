@@ -55,7 +55,7 @@ private:
     friend BoolRank;
 };
 
-std::ostream& operator<<(std::ostream &stream, const BoolVector &bvec);
+std::ostream &operator<<(std::ostream &stream, const BoolVector &bvec);
 std::istream& operator>>(std::istream &stream, BoolVector &bvec);
 
 
@@ -66,15 +66,38 @@ private:
     uint8_t mask = 0;
     int cell = 0;
     Byte* data = nullptr;
-public:
     bool value = false;
+public:
+
     BoolRank();
     BoolRank(Byte *_data, const int &index = 0);
+    BoolRank(const BoolRank &other);
 
     void set1();
     void set0();
-    BoolRank& operator=(const int &value);
+    void swap(BoolRank &other);
+    bool returnValue() const;
 
+    BoolRank &operator=(const int &value);
+    BoolRank &operator=(BoolRank &&other);
+    BoolRank &operator=(const BoolRank &other);
+    bool operator==(const bool& value)const;
+    bool operator!=(const bool& value)const;
+
+    operator int()const;
+    operator bool()const;
+
+    bool operator&(const int& value)const;
+    BoolRank operator&=(const int& value);
+    bool operator|(const int& value)const;
+    BoolRank operator|=(const int& value);
+    bool operator~() const;
+    bool operator^(const int& value)const;
+    BoolRank operator^=(const int& value);
+    bool operator>(const bool& value)const;
+    bool operator<(const bool& value)const;
+    bool operator>=(const bool& value)const;
+    bool operator<=(const bool& value)const;
 };
 std::ostream &operator<<(std::ostream &stream, const BoolRank &rank);
 std::istream &operator>>(std::istream &stream, BoolRank &rank);

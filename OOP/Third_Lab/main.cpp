@@ -97,8 +97,30 @@ int main()
     BoolVector bvec_6 = "1010011";
 
     cout << bvec_6;
-    cout << (bvec_6[2]);
-    cin >> bvec_6[0];
+    cout << bvec_6[0]<<endl;
+    int n = 32; bvec_6[2] = n; cout << bvec_6;
+    bool b = true; bvec_6[1] = b; cout << bvec_6;
+    if (bvec_6[2] == bvec_6[1])
+        cout << "Completed"<<endl;
+    bvec_6[1] = 1;
+    if (bvec_6[0] != bvec_6[1])
+        cout << "Completed" << endl;
+    bvec_6[0]=bvec_6[1]& bvec_6[2];
     cout << bvec_6;
-    return 0;
+    bvec_6[0] &= 0;
+    cout << bvec_6;
+
+    cout << endl;
+    bvec_6[0] = 0; bvec_6[1] = 0;
+    cout << bvec_6;
+    bvec_6[0] = bvec_6[1] | bvec_6[2];
+    cout << bvec_6;
+    bvec_6[1] |= 1;
+    cout << bvec_6;
+    cout << ~bvec_6[0];
+    cout << endl;
+    cout << (bvec_6[0] ^ bvec_1[0])<<endl;
+    if(bvec_6[0]>=bvec_6[0])
+        cout << "Completed" << endl;
+
 }

@@ -2,8 +2,9 @@
 #define CLION_BOOLVECTOR_H
 #include <cstdint>
 #include <iostream>
-#include<stdint.h>
+#include<cstdint>
 #include<iostream>
+class BoolRank;
 class BoolVector
 {
 public:
@@ -25,11 +26,12 @@ public:
     void set1(const int &cell, const int& pos)const;
     void set0(const int &cell, const int& pos)const;
     void swap(BoolVector &other);
-    bool &operator[](const int index);
-    const bool &operator[](const int index)const;
+
+    BoolRank &operator[](const int index);
+    const BoolRank &operator[](const int index)const;
 
     BoolVector operator^(const BoolVector& other) const;
-    BoolVector& operator^=(const BoolVector& other);
+    BoolVector &operator^=(const BoolVector& other);
     BoolVector operator~() const;
 
     BoolVector &operator=(BoolVector &&other);
@@ -40,18 +42,41 @@ public:
     BoolVector &operator|=(const BoolVector &other);
 
     BoolVector operator<<(const int &count) const;
-    BoolVector& operator<<=(const int &count);
+    BoolVector &operator<<=(const int &count);
     BoolVector operator>>(const int &count) const;
-    BoolVector& operator>>=(const int &count);
+    BoolVector &operator>>=(const int &count);
 
 private:
     SizeType length = 0;
     SizeType cellCount = 0;
     uint8_t insignificantPart = 0;
     Byte *data = nullptr;
+    BoolRank rank( const int &index=0);
+    friend BoolRank;
 };
 
-std::ostream& operator<<(std::ostream& stream, const BoolVector& bvec);
-std::istream& operator>>(std::istream& stream, BoolVector& bvec);
+std::ostream& operator<<(std::ostream &stream, const BoolVector &bvec);
+std::istream& operator>>(std::istream &stream, BoolVector &bvec);
+
+
+class BoolRank
+{
+    using Byte = unsigned char;
+private:
+    uint8_t mask = 0;
+    int cell = 0;
+    Byte* data = nullptr;
+public:
+    bool value = false;
+    BoolRank();
+    BoolRank(Byte *_data, const int &index = 0);
+
+    void set1();
+    void set0();
+    BoolRank& operator=(const int &value);
+
+};
+std::ostream &operator<<(std::ostream &stream, const BoolRank &rank);
+std::istream &operator>>(std::istream &stream, BoolRank &rank);
 
 #endif //CLION_BOOLVECTOR_H

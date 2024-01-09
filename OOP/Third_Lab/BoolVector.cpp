@@ -103,14 +103,13 @@ void BoolVector::inverse()
 {
     for (int i = 0; i < length; i++)
     {
-        BoolVector a(*this);
-        if (a[i])
-            set0(i / cellSize, i % cellSize);
+        if (rank(i).value)
+            rank(i).set0();
         else
-            set1(i / cellSize, i % cellSize);
+            rank(i).set1();
     }
-
 }
+
 
 void  BoolVector::set1(const int& cell, const int& pos)const
 {
@@ -134,22 +133,18 @@ void BoolVector::swap(BoolVector& other)
     std::swap(data, other.data);
 }
 
-bool &BoolVector::operator[](const int index)
+BoolRank& BoolVector::operator[](const int index)
 {
     assert(index >= 0 && index < cellSize * cellCount);
-    uint8_t mask = 1;
-    mask = mask << (7 - index % cellSize);
-    bool value = data[index / cellSize] & mask;
-    return static_cast<bool &>(value);
+    BoolRank rank(data,index);
+    return static_cast<BoolRank &>(rank);
 }
 
-const bool &BoolVector::operator[](const int index) const
+const BoolRank& BoolVector::operator[](const int index) const
 {
     assert(index >= 0 && index < cellSize * cellCount);
-    uint8_t mask = 1;
-    mask = mask << (7 - index % cellSize);
-    bool value = data[index / cellSize] & mask;
-    return value;
+    BoolRank rank(data, index);
+    return rank;
 }
 
 BoolVector BoolVector::operator^(const BoolVector& other) const
@@ -196,11 +191,12 @@ BoolVector &BoolVector::operator=(const BoolVector &other)
         length = other.length;
         cellCount = other.cellCount;
         insignificantPart = other.insignificantPart;
-        delete[] data;
-        data = new Byte[length];
     }
+    delete[] data;
+    data = new Byte[length];
     for (int i = 0; i < cellCount; i++)
         data[i] = other.data[i];
+    return *this;
 }
 
 BoolVector BoolVector::operator&(const BoolVector &other) const
@@ -286,6 +282,7 @@ BoolVector BoolVector::operator>>(const int& count) const
         shift_amount = length;
 
     BoolVector bvec = *this;
+    int n = 1;
     if (shift_amount > cellSize)
     {
         for (int i = cellCount-1; i - (shift_amount / cellSize) >= 0; i--)
@@ -338,11 +335,69 @@ std::istream &operator>>(std::istream &stream, BoolVector &bvec)
     for (int i = 0; i < bvec.returnLength(); i++)
     {
         stream >> s;
-        if (s == '1')
-            bvec.set1(i / bvec.cellSize, i % bvec.cellSize);
-        else
+        if (s == '0')
             bvec.set0(i / bvec.cellSize, i % bvec.cellSize);
+        else
+            bvec.set1(i / bvec.cellSize, i % bvec.cellSize);
     }
     return stream;
 }
 
+
+BoolRank BoolVector::rank(const int& index)
+{
+    BoolRank r(data, index);
+    return r;
+}
+
+//BoolRank::
+BoolRank::BoolRank()
+{
+    cell = 0;
+    mask = 0;
+    data = nullptr;
+    value =false;
+}
+BoolRank::BoolRank(Byte* _data, const int& index)
+{
+    cell = index / 8;
+    mask = 1;
+    mask <<= 7 - index % 8;
+    data = _data;
+    value = data[cell] & mask;
+}
+
+void BoolRank::set1()
+{
+    data[cell] = data[cell] | mask;
+    value = data[cell] & mask;
+}
+
+void BoolRank::set0()
+{
+    data[cell] = data[cell] & ~mask;
+    value = data[cell] & mask;
+}
+
+BoolRank &BoolRank::operator=(const int& _value)
+{
+    return *this;
+}
+
+std::ostream &operator<<(std::ostream& stream, const BoolRank& _rank)
+{
+    stream << _rank.value;
+    return stream;
+}
+
+std::istream &operator>>(std::istream& stream, BoolRank& _rank)
+{
+    char s;
+    stream >> s;
+    if (s == '0')
+        _rank.set0();
+    else
+        _rank.set1();
+
+    return stream;
+}

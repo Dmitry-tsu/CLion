@@ -94,5 +94,11 @@ int main()
     cout << (bvec_5 >> 5);
     cout << endl;
 
+    BoolVector bvec_6 = "1010011";
+
+    cout << bvec_6;
+    cout << (bvec_6[2]);
+    cin >> bvec_6[0];
+    cout << bvec_6;
     return 0;
 }

@@ -149,11 +149,6 @@ int main()
     bvec_6.set0();
     cout << bvec_6;
 
-    BoolVector bvec_7 = "11001100101001";
-    cout << bvec_7;
-    bvec_7.set1(3, 6);
-    cout << bvec_7;
-
     return 0;
 
 

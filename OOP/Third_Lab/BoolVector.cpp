@@ -181,14 +181,14 @@ void BoolVector::set0()
         data[i] = mask;
 }
 
-BoolRank BoolVector::operator[](const int index)
+BoolVector::BoolRank BoolVector::operator[](const int index)
 {
     assert(index >= 0 && index < cellSize * cellCount);
     BoolRank rank(data,index);
     return rank;
 }
 
-const BoolRank BoolVector::operator[](const int index) const
+const BoolVector::BoolRank BoolVector::operator[](const int index) const
 {
     assert(index >= 0 && index < cellSize * cellCount);
     BoolRank rank(data, index);
@@ -394,7 +394,7 @@ std::istream &operator>>(std::istream &stream, BoolVector &bvec)
 }
 
 //
-BoolRank::BoolRank()
+BoolVector::BoolRank::BoolRank()
 {
     cell = 0;
     mask = 0;
@@ -402,7 +402,7 @@ BoolRank::BoolRank()
     value =false;
 }
 
-BoolRank::BoolRank(Byte *Data, const int Index)
+BoolVector::BoolRank::BoolRank(Byte *Data, const int Index)
 {
     cell = Index / 8;
     mask = 1;
@@ -411,7 +411,7 @@ BoolRank::BoolRank(Byte *Data, const int Index)
     value = data[cell] & mask;
 }
 
-BoolRank::BoolRank(const BoolRank &other)
+BoolVector::BoolRank::BoolRank(const BoolRank &other)
 {
     cell = other.cell;
     mask = other.mask;
@@ -419,32 +419,24 @@ BoolRank::BoolRank(const BoolRank &other)
     data = other.data;
 }
 
-void BoolRank::set1()
+void BoolVector::BoolRank::set1()
 {
     data[cell] = data[cell] | mask;
     value = data[cell] & mask;
 }
 
-void BoolRank::set0()
+void BoolVector::BoolRank::set0()
 {
     data[cell] = data[cell] & ~mask;
     value = data[cell] & mask;
 }
 
-void BoolRank::swap(BoolRank &other)
-{
-    std::swap(cell, other.cell);
-    std::swap(mask, other.mask);
-    std::swap(value, other.value);
-    std::swap(data, other.data);
-}
-
-bool BoolRank::returnValue() const
+bool BoolVector::BoolRank::returnValue() const
 {
     return value;
 }
 
-BoolRank &BoolRank::operator=(const int Value)
+BoolVector::BoolRank &BoolVector::BoolRank::operator=(const int Value)
 {
     if (bool(Value))
         set1();
@@ -453,19 +445,19 @@ BoolRank &BoolRank::operator=(const int Value)
     return *this;
 }
 
-BoolRank& BoolRank::operator=(const BoolRank &other)
+BoolVector::BoolRank& BoolVector::BoolRank::operator=(const BoolRank &other)
 {
     operator=((int)other);
     return *this;
 }
 
-std::ostream &operator<<(std::ostream &Stream, const BoolRank &Rank)
+std::ostream &operator<<(std::ostream &Stream, const BoolVector::BoolRank &Rank)
 {
     Stream << Rank.returnValue();
     return Stream;
 }
 
-std::istream &operator>>(std::istream &Stream, BoolRank Rank)
+std::istream &operator>>(std::istream &Stream, BoolVector::BoolRank Rank)
 {
     char s;
     Stream >> s;
@@ -476,26 +468,26 @@ std::istream &operator>>(std::istream &Stream, BoolRank Rank)
     return Stream;
 }
 
-BoolRank::operator int()const
+BoolVector::BoolRank::operator int()const
 {
     int val = int(value);
     return val;
 }
 
-BoolRank::operator bool()const
+BoolVector::BoolRank::operator bool()const
 {
     bool val = value;
     return val;
 }
 
-bool BoolRank::operator&(const int Value)const
+bool BoolVector::BoolRank::operator&(const int Value)const
 {
     bool ans = value && bool(Value);
     return ans;
 
 }
 
-BoolRank BoolRank::operator&=(const int Value)
+BoolVector::BoolRank BoolVector::BoolRank::operator&=(const int Value)
 {
     bool ans = value && bool(Value);
     if (ans)
@@ -505,13 +497,13 @@ BoolRank BoolRank::operator&=(const int Value)
     return *this;
 }
 
-bool BoolRank::operator|(const int Value)const
+bool BoolVector::BoolRank::operator|(const int Value)const
 {
     bool ans = value || bool(Value);
     return ans;
 }
 
-BoolRank BoolRank::operator|=(const int Value)
+BoolVector::BoolRank BoolVector::BoolRank::operator|=(const int Value)
 {
     bool ans = Value || bool(value);
     if (ans)
@@ -521,19 +513,19 @@ BoolRank BoolRank::operator|=(const int Value)
     return *this;
 }
 
-bool BoolRank::operator~() const
+bool BoolVector::BoolRank::operator~() const
 {
     bool ans = !value;
     return ans;
 }
 
-bool BoolRank::operator^(const int Value)const
+bool BoolVector::BoolRank::operator^(const int Value)const
 {
     bool ans = Value ^ bool(value);
     return ans;
 }
 
-BoolRank BoolRank::operator^=(const int Value)
+BoolVector::BoolRank BoolVector::BoolRank::operator^=(const int Value)
 {
     bool ans = Value ^ bool(Value);
     if (ans)
@@ -543,42 +535,42 @@ BoolRank BoolRank::operator^=(const int Value)
     return *this;
 }
 
-bool BoolRank::operator==(const bool Value)const
+bool BoolVector::BoolRank::operator==(const bool Value)const
 {
     if (value == Value)
         return true;
     return false;
 }
 
-bool BoolRank::operator!=(const bool Value)const
+bool BoolVector::BoolRank::operator!=(const bool Value)const
 {
     if (value !=Value)
         return true;
     return false;
 }
 
-bool BoolRank::operator>(const bool Value)const
+bool BoolVector::BoolRank::operator>(const bool Value)const
 {
     if (value > Value)
         return true;
     return false;
 }
 
-bool BoolRank::operator<(const bool Value)const
+bool BoolVector::BoolRank::operator<(const bool Value)const
 {
     if (value < Value)
         return true;
     return false;
 }
 
-bool BoolRank::operator>=(const bool Value)const
+bool BoolVector::BoolRank::operator>=(const bool Value)const
 {
     if (value >= Value)
         return true;
     return false;
 }
 
-bool BoolRank::operator<=(const bool Value)const
+bool BoolVector::BoolRank::operator<=(const bool Value)const
 {
     if (value <= Value)
         return true;

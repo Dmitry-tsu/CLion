@@ -4,9 +4,11 @@
 #include <iostream>
 #include<cstdint>
 #include<iostream>
-class BoolRank;
+
 class BoolVector
 {
+private:
+    class BoolRank;
 public:
     using SizeType = unsigned int;
     using Byte = unsigned char;
@@ -53,20 +55,23 @@ public:
     BoolVector operator>>(int count) const;
     BoolVector &operator>>=(const int count);
 
+    friend std::ostream& operator<<(std::ostream &stream, const BoolRank &rank);
+    friend std::istream& operator>>(std::istream &stream, BoolRank rank);
+
+
 private:
     SizeType length = 0;
     SizeType cellCount = 0;
     uint8_t insignificantPart = 0;
     Byte *data = nullptr;
     void shift();
-    friend BoolRank;
 };
 
 std::ostream &operator<<(std::ostream &stream, const BoolVector &bvec);
 std::istream& operator>>(std::istream &stream, BoolVector &bvec);
 
 
-class BoolRank
+class BoolVector::BoolRank
 {
     using Byte = unsigned char;
 private:
@@ -82,7 +87,7 @@ public:
 
     void set1();
     void set0();
-    void swap(BoolRank &other);
+    //void swap(BoolRank &other);
     bool returnValue() const;
 
     BoolRank &operator=(const int value);
@@ -105,7 +110,5 @@ public:
     bool operator>=(const bool value)const;
     bool operator<=(const bool value)const;
 };
-std::ostream &operator<<(std::ostream &stream, const BoolRank &rank);
-std::istream &operator>>(std::istream &stream, BoolRank rank);
 
 #endif //CLION_BOOLVECTOR_H

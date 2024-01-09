@@ -6,6 +6,19 @@ int main()
     using std::cin;
     using std::endl;
 
+    BoolVector foo(41, true);
+    for (int i = 0; i <= foo.returnLength(); ++i)
+    {
+        cout << (foo << i);
+    }
+    cout << "______________________________\n";
+    for (int i = 0; i <= foo.returnLength(); ++i)
+    {
+        cout << (foo >> i);
+    }
+    cout << "______________________________\n";
+
+
     BoolVector bvec_1;
     cout << "bvec_1: ";
     bvec_1.print();
@@ -120,7 +133,28 @@ int main()
     cout << ~bvec_6[0];
     cout << endl;
     cout << (bvec_6[0] ^ bvec_1[0])<<endl;
-    if(bvec_6[0]>=bvec_6[0])
+    if (bvec_6[0]>=bvec_6[0])
         cout << "Completed" << endl;
+
+    cout << bvec_6.returnWeight();
+    bvec_6.inverse(1);
+    cout << bvec_6;
+    bvec_6.set1(2, 55);
+    cout << bvec_6;
+    bvec_6.set0(0, 55);
+    cout << bvec_6;
+
+    bvec_6.set1();
+    cout << bvec_6;
+    bvec_6.set0();
+    cout << bvec_6;
+
+    BoolVector bvec_7 = "11001100101001";
+    cout << bvec_7;
+    bvec_7.set1(3, 6);
+    cout << bvec_7;
+
+    return 0;
+
 
 }

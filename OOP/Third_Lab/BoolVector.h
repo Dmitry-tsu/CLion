@@ -17,18 +17,25 @@ public:
     BoolVector(const BoolVector &other);
     BoolVector(const SizeType length, const bool value = false);
     ~BoolVector();
-    void shift();
-    void printCell(const int &number_cell)const;
+    void printCell(const int number_cell)const;
     void print()const;
     int returnLength()const;
-    int getByteCount()const;
+    int returnCellCount()const;
     void inverse();
-    void set1(const int &cell, const int& pos)const;
-    void set0(const int &cell, const int& pos)const;
+    void set1(const int i);
+    void set0(const int i);
     void swap(BoolVector &other);
 
-    BoolRank &operator[](const int index);
-    const BoolRank &operator[](const int index)const;
+
+    void inverse(const int i);
+    int returnWeight();
+    void set1(const int position, const int count);
+    void set0(const int position, const int count);
+    void set1();
+    void set0();
+
+    BoolRank operator[](const int index);
+    const BoolRank operator[](const int index)const;
 
     BoolVector operator^(const BoolVector& other) const;
     BoolVector &operator^=(const BoolVector& other);
@@ -41,17 +48,17 @@ public:
     BoolVector operator|(const BoolVector &other) const;
     BoolVector &operator|=(const BoolVector &other);
 
-    BoolVector operator<<(const int &count) const;
-    BoolVector &operator<<=(const int &count);
-    BoolVector operator>>(const int &count) const;
-    BoolVector &operator>>=(const int &count);
+    BoolVector operator<<(int count) const;
+    BoolVector &operator<<=(const int count);
+    BoolVector operator>>(int count) const;
+    BoolVector &operator>>=(const int count);
 
 private:
     SizeType length = 0;
     SizeType cellCount = 0;
     uint8_t insignificantPart = 0;
     Byte *data = nullptr;
-    BoolRank rank( const int &index=0);
+    void shift();
     friend BoolRank;
 };
 
@@ -70,7 +77,7 @@ private:
 public:
 
     BoolRank();
-    BoolRank(Byte *_data, const int &index = 0);
+    BoolRank(Byte *Data, const int index = 0);
     BoolRank(const BoolRank &other);
 
     void set1();
@@ -78,28 +85,27 @@ public:
     void swap(BoolRank &other);
     bool returnValue() const;
 
-    BoolRank &operator=(const int &value);
-    BoolRank &operator=(BoolRank &&other);
+    BoolRank &operator=(const int value);
     BoolRank &operator=(const BoolRank &other);
-    bool operator==(const bool& value)const;
-    bool operator!=(const bool& value)const;
+    bool operator==(const bool value)const;
+    bool operator!=(const bool value)const;
 
     operator int()const;
     operator bool()const;
 
-    bool operator&(const int& value)const;
-    BoolRank operator&=(const int& value);
-    bool operator|(const int& value)const;
-    BoolRank operator|=(const int& value);
+    bool operator&(const int value)const;
+    BoolRank operator&=(const int value);
+    bool operator|(const int value)const;
+    BoolRank operator|=(const int value);
     bool operator~() const;
-    bool operator^(const int& value)const;
-    BoolRank operator^=(const int& value);
-    bool operator>(const bool& value)const;
-    bool operator<(const bool& value)const;
-    bool operator>=(const bool& value)const;
-    bool operator<=(const bool& value)const;
+    bool operator^(const int value)const;
+    BoolRank operator^=(const int value);
+    bool operator>(const bool value)const;
+    bool operator<(const bool value)const;
+    bool operator>=(const bool value)const;
+    bool operator<=(const bool value)const;
 };
 std::ostream &operator<<(std::ostream &stream, const BoolRank &rank);
-std::istream &operator>>(std::istream &stream, BoolRank &rank);
+std::istream &operator>>(std::istream &stream, BoolRank rank);
 
 #endif //CLION_BOOLVECTOR_H

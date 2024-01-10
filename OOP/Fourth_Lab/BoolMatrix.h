@@ -19,6 +19,9 @@ public:
     int returnRows() const;
     int returnCols() const;
     void swap(BoolMatrix &other);
+    void set1(const SizeType i, const SizeType j, const SizeType count=1);
+    void set0(const SizeType i, const SizeType j, const SizeType count=1);
+
 
     BoolVector &operator[](const int i);
     const BoolVector &operator[](const int i)const;

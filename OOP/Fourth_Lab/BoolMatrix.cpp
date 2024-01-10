@@ -72,6 +72,18 @@ void BoolMatrix::swap(BoolMatrix& other)
     std::swap(bm, other.bm);
 }
 
+void BoolMatrix::set1(const SizeType i, const SizeType j, const SizeType count)
+{
+    for (int u = j; u < j + count && u < cols; u++)
+        bm[i][u]=1;
+}
+
+void BoolMatrix::set0(const SizeType i, const SizeType j, const SizeType count)
+{
+    for (int u = j; u < j + count && u < cols; u++)
+        bm[i][u]=0;
+}
+
 BoolVector& BoolMatrix::operator[](const int i)
 {
     assert(i >= 0 || i < rows);

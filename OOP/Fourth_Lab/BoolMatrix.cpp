@@ -74,27 +74,152 @@ void BoolMatrix::swap(BoolMatrix& other)
 
 void BoolMatrix::set1(const SizeType i, const SizeType j, const SizeType count)
 {
-    for (int u = j; u < j + count && u < cols; u++)
+    for (int u = j; u <= j + count && u < cols; u++)
         bm[i][u]=1;
 }
 
 void BoolMatrix::set0(const SizeType i, const SizeType j, const SizeType count)
 {
-    for (int u = j; u < j + count && u < cols; u++)
+    for (int u = j; u <= j + count && u < cols; u++)
         bm[i][u]=0;
 }
 
-BoolVector& BoolMatrix::operator[](const int i)
+int BoolMatrix::returnWeight() const
+{
+    int totalWeight = 0;
+    for (int i = 0; i < rows; i++)
+        totalWeight += bm[i].returnWeight();
+    return totalWeight;
+}
+
+int BoolMatrix::returnWeight(const SizeType index)
+{
+    return bm[index].returnWeight();
+}
+
+BoolVector BoolMatrix::logicalAnd() const
+{
+    BoolVector result = bm[0];
+    for (int i = 1; i < rows; i++)
+        result &= bm[i];
+    return result;
+}
+
+BoolVector BoolMatrix::logicalOr() const
+{
+    BoolVector result = bm[0];
+    for (int i = 1; i < rows; i++)
+        result |= bm[i];
+    return result;
+}
+
+void BoolMatrix::inverse(const SizeType i, const SizeType j, const SizeType count)
+{
+    for(int u = j; u <= j + count && u < cols; u++)
+        bm[i][u] = ~bm[i][u];
+}
+
+BoolVector& BoolMatrix::operator[](const SizeType i)
 {
     assert(i >= 0 || i < rows);
     return bm[i];
 }
 
-const BoolVector& BoolMatrix::operator[](const int i) const
+const BoolVector& BoolMatrix::operator[](const SizeType i) const
 {
     assert(i >= 0 || i < rows);
     return bm[i];
 }
+
+BoolMatrix BoolMatrix::operator=(const BoolMatrix &other)
+{
+    if (bm == other.bm) return *this;
+    if (rows != other.rows)
+    {
+        rows = other.rows;
+        delete[] bm;
+        bm = new BoolVector[rows];
+    }
+    cols = other.cols;
+    for (int i = 0; i < rows; i++)
+    {
+        bm[i] = other.bm[i];
+    }
+    return *this;
+}
+
+BoolMatrix BoolMatrix::operator&(const BoolMatrix &other) const
+{
+    SizeType resultRows = std::min(rows, other.rows);
+    SizeType resultCols = std::min(cols, other.cols);
+    BoolMatrix matrix(resultRows, resultCols, false);
+    for (int i = 0; i < resultRows; i++)
+        matrix.bm[i] = bm[i] & other.bm[i];
+    return matrix;
+}
+
+BoolMatrix BoolMatrix::operator&=(const BoolMatrix &other)
+{
+    BoolMatrix tmp(*this & other);
+    swap(tmp);
+    return *this;
+}
+
+BoolMatrix BoolMatrix::operator|(const BoolMatrix &other) const
+{
+    SizeType resultRows = std::max(rows, other.rows);
+    SizeType resultCols = std::max(cols, other.cols);
+    BoolMatrix resultMatrix(resultRows, resultCols, false);
+    SizeType commonRows = std::min(rows, other.rows);
+    SizeType commonCols = std::min(cols, other.cols);
+    for (int i = 0; i < commonRows; i++)
+        resultMatrix.bm[i] = bm[i] ^ other.bm[i];
+    for (int i = commonRows; i < rows; i++)
+        resultMatrix.bm[i] = bm[i];
+    for (int i = commonRows; i < other.rows; i++)
+        resultMatrix.bm[i] = other.bm[i];
+    return resultMatrix;
+}
+
+BoolMatrix BoolMatrix::operator|=(const BoolMatrix& other)
+{
+    BoolMatrix tmp(*this | other);
+    swap(tmp);
+    return *this;
+}
+
+BoolMatrix BoolMatrix::operator^(const BoolMatrix &other) const
+{
+    SizeType resultRows = std::max(rows, other.rows);
+    SizeType resultCols = std::max(cols, other.cols);
+    BoolMatrix resultMatrix(resultRows, resultCols, false);
+    SizeType commonRows = std::min(rows, other.rows);
+    SizeType commonCols = std::min(cols, other.cols);
+    for (int i = 0; i < commonRows; i++)
+        resultMatrix.bm[i] = bm[i] ^ other.bm[i];
+    for (int i = commonRows; i < rows; i++)
+        resultMatrix.bm[i] = bm[i];
+    for (int i = commonRows; i < other.rows; i++)
+        resultMatrix.bm[i] = other.bm[i];
+    return resultMatrix;
+}
+
+
+BoolMatrix BoolMatrix::operator^=(const BoolMatrix &other)
+{
+    BoolMatrix tmp(*this | other);
+    swap(tmp);
+    return *this;
+}
+
+BoolMatrix BoolMatrix::operator~() const
+{
+    BoolMatrix matrix(*this);
+    for (int i = 0; i < rows; i++)
+        matrix.bm[i].inverse();
+    return matrix;
+}
+
 
 std::ostream& operator<<(std::ostream &stream, const BoolMatrix &matrix)
 {

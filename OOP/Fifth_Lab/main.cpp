@@ -2,18 +2,19 @@
 
 int main()
 {
-    // Создание пустого списка и печать его содержимого
+
     List<int> list_1;
     list_1.Print();
-
-    // Создание списка из 5 элементов со значением 10 и печать его содержимого
     List<int> list_2(5, 10);
     list_2.Print();
-
-    // Создание копии списка list_2 и печать ее содержимого
-    List<int> list_3(list_2);
+    List<int> list_3(2,5);
+    list_3.Print();
+    list_2.Swap(list_3);
+    list_2.Print();
+    list_3.Print();
+    list_3.PushFront(15);
+    list_3.PopFront();
     list_3.Print();
 
     return 0;
 }
-

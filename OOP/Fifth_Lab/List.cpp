@@ -4,6 +4,8 @@
 #include "List.h"
 #include<iostream>
 
+using SizeType = unsigned int;
+
 template <typename ItemType>
 void List<ItemType>::FormHeadTail()
 {
@@ -14,18 +16,20 @@ void List<ItemType>::FormHeadTail()
 }
 
 template <typename ItemType>
-List<ItemType>::List(const List& other)
-        :m_size(other.m_size)
+void List<ItemType>::DeleteHeadTail()
 {
-    m_head = other.m_head;
-    m_tail = other.m_tail;
-    m_size = other.m_size;
-    Node* current = m_head->next;
-    while (current != m_tail)
+    delete m_head;
+    delete m_tail;
+}
+
+template <typename ItemType>
+List<ItemType>::List(const List &other)
+{
+    FormHeadTail();
+    Node* current = other.m_head->next;
+    while (current != other.m_tail)
     {
-        Node* new_node = new Node(current->data);
-        new_node->next = current->next;
-        new_node->prev = current->prev;
+        PushBack(current->data);
         current = current->next;
     }
 }
@@ -43,17 +47,39 @@ List<ItemType>::List(SizeType size, const ItemType value)
 template <typename ItemType>
 List<ItemType>::~List()
 {
-    Node* current = m_head;
-    while (current != nullptr)
+    Node* current = m_head->next;
+    while (current != m_tail)
     {
-        Node* next_node = current->next;
+        Node* next = current->next;
         delete current;
-        current = next_node;
+        current = next;
     }
+    DeleteHeadTail();
 }
 
 template <typename ItemType>
-void List<ItemType> ::PushBack(const ItemType& value)
+void List<ItemType> ::PushFront(const ItemType &value)
+{
+    Node* newNode = new Node(value);
+    newNode->prev = m_head;
+    newNode->next= m_head->next;
+    m_head->next = newNode;
+    newNode->next->prev = newNode;
+    m_size++;
+}
+
+template <typename ItemType>
+void List<ItemType> ::PopFront()
+{
+    Node* deleteNode = m_head->next;
+    deleteNode->next->prev = m_head;
+    m_head->next = deleteNode->next;
+    m_size--;
+    delete deleteNode;
+}
+
+template <typename ItemType>
+void List<ItemType> ::PushBack(const ItemType &value)
 {
     Node* new_node = new Node(value);
     new_node->prev = m_tail->prev;
@@ -63,8 +89,18 @@ void List<ItemType> ::PushBack(const ItemType& value)
     m_size++;
 }
 
+template <typename ItemType>
+void List<ItemType> ::PopBack()
+{
+    Node *deleteNode = m_tail->prev;
+    deleteNode->prev->next = m_tail;
+    m_tail->prev = deleteNode->prev;
+    m_size--;
+    delete deleteNode;
+}
+
 template<typename ItemType>
-void List<ItemType>::Print()
+void List<ItemType>::Print() const
 {
     if (m_head->next == m_tail)
         return;
@@ -78,5 +114,21 @@ void List<ItemType>::Print()
     std::cout << current->data << " ]";
     std::cout << std::endl;
 }
+
+
+template<typename ItemType>
+SizeType List<ItemType>::ReturnSize() const
+{
+    return m_size;
+}
+
+template<typename ItemType>
+void List<ItemType>::Swap(List &other)
+{
+    std::swap(m_head, other.m_head);
+    std::swap(m_size, other.m_size);
+    std::swap(m_tail, other.m_tail);
+}
+
 
 #endif

@@ -15,12 +15,21 @@ public:
     class Node;
 
     void FormHeadTail();
+    void DeleteHeadTail();
+
     List(const List& other);
-    List(SizeType size=0, const ItemType value = ItemType());
+    List(SizeType size = 0, const ItemType value = ItemType());
     ~List();
 
+    void PushFront(const ItemType& value);
+    void PopFront();
     void PushBack(const ItemType &value);
-    void Print();
+    void PopBack();
+
+    void Print() const;
+    SizeType ReturnSize() const;
+    void Swap(List &other);
+
 
 private:
 

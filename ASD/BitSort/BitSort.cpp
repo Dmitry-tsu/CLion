@@ -16,20 +16,29 @@ bool isSorted(const std::vector<int>& arr)
     return true;
 }
 
-void BitSort(std::vector<int>& arr, int left, int right, int k)
+int FindMax(std::vector<int>& arr)
 {
-    if (left >= right || k < 0) return;
+    int max = arr[0];
+    for (int i = 1; i < arr.size(); i++)
+    {
+        if (arr[i] > max)
+            max = arr[i];
+    }
+    return max;
+}
 
-    int i = left, j = right;
-
+void BitwiseSort(std::vector<int>& arr, int left_lim, int right_lim, int k)
+{
+    if (left_lim >= right_lim || k < 0)
+        return;
+    int i = left_lim, j = right_lim;
+    int mask = 1 << k;
     while (i <= j)
     {
-        while (i <= j && ((arr[i] >> k) & 1) == 0)
+        while (i <= j && (arr[i] & mask) == 0)
             i++;
-
-        while (i <= j && ((arr[j] >> k) & 1) == 1)
+        while (i <= j && (arr[j] & mask) != 0)
             j--;
-
         if (i < j)
         {
             std::swap(arr[i], arr[j]);
@@ -37,9 +46,36 @@ void BitSort(std::vector<int>& arr, int left, int right, int k)
             j--;
         }
     }
+    BitwiseSort(arr, left_lim, j, k - 1);
+    BitwiseSort(arr, i, right_lim, k - 1);
+}
 
-    BitSort(arr, left, j, k - 1);
-    BitSort(arr, i, right, k - 1);
+void BitSort(std::vector<int> &arr)
+{
+    int max = FindMax(arr);
+    int k = 31;
+    int mask = 1 << 30;
+    while ((max & mask) == 0)
+    {
+        mask >>= 1;
+        k--;
+    }
+    int i = 0, j = arr.size() - 1;
+    while (i <= j)
+    {
+        while (i < arr.size() && arr[i] < 0)
+            i++;
+        while (j >= 0 && arr[j] >= 0 )
+            j--;
+        if (i <= j)
+        {
+            std::swap(arr[i], arr[j]);
+            i++;
+            j--;
+        }
+    }
+    BitwiseSort(arr, 0, j, k);
+    BitwiseSort(arr, i, arr.size() - 1, k);
 }
 
 void readArrayFromFile(std::vector<int>& arr, const std::string& filename)
@@ -81,16 +117,18 @@ int main()
     {
         std::vector<int> arr;
         readArrayFromFile(arr, filenames[i]);
-        std::vector<int> temp = arr;
+
+        std::vector<int> temp = arr;  // Делаем копию массива для проверки, отсортирован он или нет
 
         std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-        BitSort(temp, 0, temp.size() - 1, 31);  // Assuming 32-bit integers
+        BitSort(arr);  // Используем вашу функцию BitSort для сортировки массива
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+
         std::chrono::duration<double> diff = end - start;
         double sortingTime = diff.count();
         averageSortingTimes[i] = sortingTime;
 
-        if (isSorted(temp))
+        if (isSorted(arr))
         {
             std::cout << "The array in " << filenames[i] << " is sorted." << std::endl;
         }

@@ -16,7 +16,7 @@ bool isSorted(const std::vector<int>& arr)
     return true;
 }
 
-void RadixSort(std::vector<int>& arr, int left, int right, int k)
+void BitSort(std::vector<int>& arr, int left, int right, int k)
 {
     if (left >= right || k < 0) return;
 
@@ -38,8 +38,8 @@ void RadixSort(std::vector<int>& arr, int left, int right, int k)
         }
     }
 
-    RadixSort(arr, left, j, k - 1);
-    RadixSort(arr, i, right, k - 1);
+    BitSort(arr, left, j, k - 1);
+    BitSort(arr, i, right, k - 1);
 }
 
 void readArrayFromFile(std::vector<int>& arr, const std::string& filename)
@@ -84,7 +84,7 @@ int main()
         std::vector<int> temp = arr;
 
         std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-        RadixSort(temp, 0, temp.size() - 1, 31);  // Assuming 32-bit integers
+        BitSort(temp, 0, temp.size() - 1, 31);  // Assuming 32-bit integers
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
         std::chrono::duration<double> diff = end - start;
         double sortingTime = diff.count();

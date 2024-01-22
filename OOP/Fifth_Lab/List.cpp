@@ -222,6 +222,25 @@ List<ItemType> &List<ItemType>::operator=(const List &other)
 }
 
 template <typename ItemType>
+List<ItemType> List<ItemType>::operator+(const List &other) const
+{
+    List tmp(*this);
+    for (int i = 0; i < other.m_size; i++)
+    {
+        tmp.PushBack(other[i]);
+    }
+    return tmp;
+}
+
+template <typename ItemType>
+List<ItemType>& List<ItemType>::operator+=(const List &other)
+{
+    List tmp(*this + other);
+    this->Swap(tmp);
+    return *this;
+}
+
+template <typename ItemType>
 std::ostream &operator<<(std::ostream &stream, const List<ItemType> &list)
 {
     stream << "[";

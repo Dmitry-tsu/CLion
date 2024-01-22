@@ -32,12 +32,15 @@ public:
     void Clear();
     bool isEmpty() const;
 
-    ItemType &operator[] (const SizeType index);
-    const ItemType &operator[] (const SizeType index) const;
-    bool operator== (const List &other) const;
-    bool operator!= (const List &other) const;
-    List& operator= (List &&other);
-    List& operator= (const List &other);
+    ItemType &operator[](const SizeType index);
+    const ItemType &operator[](const SizeType index) const;
+    bool operator==(const List &other) const;
+    bool operator!=(const List &other) const;
+    List& operator=(List &&other);
+    List& operator=(const List &other);
+    List operator+(const List& other) const;
+    List& operator+=(const List& other);
+
 
 private:
 

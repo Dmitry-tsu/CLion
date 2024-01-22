@@ -29,7 +29,15 @@ public:
     void Print() const;
     SizeType ReturnSize() const;
     void Swap(List &other);
+    void Clear();
+    bool isEmpty() const;
 
+    ItemType &operator[] (const SizeType index);
+    const ItemType &operator[] (const SizeType index) const;
+    bool operator== (const List &other) const;
+    bool operator!= (const List &other) const;
+    List& operator= (List &&other);
+    List& operator= (const List &other);
 
 private:
 
@@ -38,6 +46,10 @@ private:
     Node* m_tail;
 };
 
+template <typename ItemType>
+std::ostream& operator<<(std::ostream &stream, const List<ItemType> &list);
+template <typename ItemType>
+std::istream& operator >> (std::istream &stream, List<ItemType> &list);
 
 template<typename ItemType>
 class List<ItemType>::Node

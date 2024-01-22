@@ -58,6 +58,14 @@ List<ItemType>::~List()
 }
 
 template <typename ItemType>
+List<ItemType>::List(const Array<ItemType> &arr)
+{
+    FormHeadTail();
+    for (int i = 0; i < arr.Size(); i++)
+        PushBack(arr[i]);
+}
+
+template <typename ItemType>
 void List<ItemType> ::PushFront(const ItemType &value)
 {
     Node* newNode = new Node(value);
@@ -201,14 +209,14 @@ ItemType  List<ItemType>::Min() const
 
 /*
 template<typename ItemType>
-List<ItemType>::Node *List<ItemType>::Search(const ItemType& key) const
+List<ItemType>::Iterator *List<ItemType>::Search(const ItemType& key) const
 {
-    Node* current = m_head->next;
-    while(current != m_tail)
+    Iterator current = begin();
+    while (current != end())
     {
-        if (current->data == key)
+        if (*current == key)
             return  current;
-        current = current->next;
+        current++;
     }
     return nullptr;
 }
@@ -327,6 +335,53 @@ std::istream& operator >> (std::istream &stream, List<ItemType> &list)
         stream >> list[i];
 
     return stream;
+}
+
+template <typename ItemType>
+template <typename IT, typename LT>
+List<ItemType>::TemplateIterator<IT,LT>::TemplateIterator(LT *list, Node *node)
+        : m_list(list), m_node(node)
+{
+}
+
+template <typename ItemType>
+template <typename IT, typename LT>
+IT& List<ItemType>::TemplateIterator<IT, LT>::operator*()
+{
+    assert(m_node != nullptr);
+    return m_node->data;
+}
+
+template <typename ItemType> typename
+List<ItemType>::Iterator List<ItemType>::begin()
+{
+    return Iterator(this, m_head->next);
+}
+
+template <typename ItemType> typename
+List<ItemType>::Iterator List<ItemType>::end()
+{
+    return Iterator(this, m_tail);
+}
+
+template <typename ItemType> typename
+List<ItemType>::ConstIterator List<ItemType>::begin() const
+{
+    return ConstIterator(this, m_head->next);
+}
+
+template <typename ItemType> typename
+List<ItemType>::ConstIterator List<ItemType>::end() const
+{
+    return ConstIterator(this, m_tail);
+}
+
+template <typename ItemType>
+template <typename IT, typename LT>
+typename List<ItemType>::template TemplateIterator<IT, LT>& List<ItemType>::TemplateIterator<IT, LT>::operator++()
+{
+    m_node = m_node->next;
+    return *this;
 }
 
 #endif

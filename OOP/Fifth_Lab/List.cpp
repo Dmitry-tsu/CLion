@@ -146,6 +146,75 @@ bool List<ItemType>::isEmpty() const
 }
 
 template<typename ItemType>
+void  List<ItemType>::Insert(const int position, const ItemType& value)
+{
+    assert(m_size >= position && position >= 0);
+    Node* newNode = new Node(value);
+    Node* current = m_head->next;
+    for (int i=0; i < position; i++)
+        current = current->next;
+    newNode->prev = current->prev;
+    newNode->next = current;
+    current->prev->next = newNode;
+    current->prev = newNode;
+    m_size++;
+}
+
+template<typename ItemType>
+void  List<ItemType>::Remove(const int position)
+{
+    assert(m_size >= position && position >= 0);
+    Node* current = m_head->next;
+    for (int i = 0; i < position; i++)
+        current = current->next;
+    Node* deleteNode = current;
+    current = current->next;
+    deleteNode->prev->next = current;
+    current->prev = deleteNode->prev;
+    m_size--;
+    delete deleteNode;
+
+}
+template<typename ItemType>
+ItemType  List<ItemType>::Max() const
+{
+    if (m_size <= 0)
+        return ItemType();
+    ItemType max = (*this)[0];
+    for (int i = 1; i < m_size; i++)
+        if ((*this)[i] > max)
+            max = (*this)[i];
+    return max;
+}
+
+template<typename ItemType>
+ItemType  List<ItemType>::Min() const
+{
+    if (m_size <= 0)
+        return ItemType();
+    ItemType min = (*this)[0];
+    for (int i = 1; i < m_size; i++)
+        if ((*this)[i] < min)
+            min = (*this)[i];
+    return min;
+}
+
+/*
+template<typename ItemType>
+List<ItemType>::Node *List<ItemType>::Search(const ItemType& key) const
+{
+    Node* current = m_head->next;
+    while(current != m_tail)
+    {
+        if (current->data == key)
+            return  current;
+        current = current->next;
+    }
+    return nullptr;
+}
+*/
+
+template<typename ItemType>
 ItemType& List<ItemType>::operator[](const SizeType index)
 {
     assert(index < m_size);

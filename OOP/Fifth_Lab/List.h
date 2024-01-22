@@ -31,6 +31,12 @@ public:
     void Swap(List &other);
     void Clear();
     bool isEmpty() const;
+    void Insert(const int position, const ItemType& value);
+    void Remove(const int position);
+    ItemType Max() const;
+    ItemType Min() const;
+
+    //Node* Search(const ItemType& key) const;
 
     ItemType &operator[](const SizeType index);
     const ItemType &operator[](const SizeType index) const;

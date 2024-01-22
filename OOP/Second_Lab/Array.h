@@ -2,7 +2,8 @@
 #define ARRAY_TEMPLATE
 #include<iostream>
 #include <algorithm>
-#include <assert.h>
+#include <cassert>
+#include <random>
 
 template<typename ItemType>
 class Array
@@ -313,7 +314,7 @@ void Array<ItemType>::Resize(int size)
 template <typename ItemType>
 int Array<ItemType>::ISearch(const ItemType& el, int i)const
 {
-    for (i; i < m_size; i++)
+    for (; i < m_size; i++)
         if (m_array[i] == el) return i;
     return -1;
 }
@@ -429,7 +430,8 @@ IT& Array<ItemType>::TemplateIterator<IT, AT>::operator[](const int offset)
 
 template <typename ItemType>
 template <typename IT, typename AT>
-Array<ItemType>::TemplateIterator<IT, AT>& Array<ItemType>::TemplateIterator<IT, AT>::operator++()
+typename Array<ItemType>::template TemplateIterator<IT, AT>& Array<ItemType>::template TemplateIterator<IT, AT>::operator++()
+
 {
     ++m_pos;
     return *this;
@@ -437,7 +439,8 @@ Array<ItemType>::TemplateIterator<IT, AT>& Array<ItemType>::TemplateIterator<IT,
 
 template <typename ItemType>
 template <typename IT, typename AT>
-Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, AT>::operator++(int)
+typename Array<ItemType>::template TemplateIterator<IT,
+        AT> Array<ItemType>::TemplateIterator<IT, AT>::operator++(int)
 {
     Array<ItemType>::TemplateIterator<IT, AT> old(*this);
     ++m_pos;
@@ -446,7 +449,8 @@ Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, 
 
 template <typename ItemType>
 template <typename IT, typename AT>
-Array<ItemType>::TemplateIterator<IT, AT> &Array<ItemType>::TemplateIterator<IT, AT>::operator--()
+typename Array<ItemType>::template TemplateIterator<IT,
+        AT>& Array<ItemType>::TemplateIterator<IT, AT>::operator--()
 {
     --m_pos;
     return *this;
@@ -454,7 +458,9 @@ Array<ItemType>::TemplateIterator<IT, AT> &Array<ItemType>::TemplateIterator<IT,
 
 template <typename ItemType>
 template <typename IT, typename AT>
-Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, AT>::operator--(int)
+typename Array<ItemType>::template TemplateIterator<IT,
+        AT> Array<ItemType>::TemplateIterator<IT, AT>::operator--(int)
+
 {
     Array<ItemType>::TemplateIterator<IT, AT> old(*this);
     --m_pos;
@@ -549,7 +555,8 @@ bool Array<ItemType>::Remove(const Iterator it)
 
 template <typename ItemType>
 template <typename IT, typename AT>
-Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, AT>::operator+(const int& index)
+typename Array<ItemType>::template TemplateIterator<IT,
+        AT> Array<ItemType>::TemplateIterator<IT, AT>::operator+(const int& index)
 {
 
     Array<ItemType>::TemplateIterator<IT, AT> tmp(*this);
@@ -561,7 +568,9 @@ Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, 
 
 template <typename ItemType>
 template <typename IT, typename AT>
-Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, AT>::operator-(const int& index)
+typename Array<ItemType>::template TemplateIterator<IT,
+        AT> Array<ItemType>::TemplateIterator<IT, AT>::operator-(const int& index)
+
 {
 
     Array<ItemType>::TemplateIterator<IT, AT> tmp(*this);
@@ -571,4 +580,3 @@ Array<ItemType>::TemplateIterator<IT, AT> Array<ItemType>::TemplateIterator<IT, 
     return tmp;
 }
 #endif
-

@@ -1,7 +1,6 @@
 #ifndef CLION_BOOLMATRIX_H
 #define CLION_BOOLMATRIX_H
-#include "/Users/diman4ik/CLion/OOP/Third_Lab/BoolVector.h"
-//#include "/Users/diman4ik /CLion/OOP/Third_Lab/BoolVector.cpp"
+#include "../../CLion/OOP/Third_Lab/BoolVector.h"
 #include <cstdint>
 #include <iostream>
 using SizeType = unsigned int;

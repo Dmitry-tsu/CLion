@@ -1,6 +1,6 @@
 #ifndef ARRAY_TEMPLATE
 #define ARRAY_TEMPLATE
-#include<iostream>
+#include <iostream>
 #include <algorithm>
 #include <cassert>
 #include <random>
@@ -55,11 +55,10 @@ public:
     bool Remove(const Iterator gap1, Iterator &gap2);
     bool Remove(const Iterator it);
 
+    static bool Move(Iterator element, Iterator before);
     /*bool IRemove(const Iterator it);
-    bool Move(Iterator element, Iterator before);
     bool Move(Iterator element, Array& other, Iterator before);
     */
-    static bool Move(Iterator element, Iterator before);
 
 private:
     ItemType* m_array = nullptr;
@@ -146,7 +145,6 @@ int Array<ItemType>::Size() const
 template <typename ItemType>
 void Array<ItemType>::Print() const
 {
-    int i = 0;
     std::cout << *this;
 }
 
@@ -483,7 +481,7 @@ template<typename ItemType>
 template <typename IT, typename AT>
 bool Array<ItemType>::TemplateIterator<IT, AT>::isValid() const
 {
-    return m_array && m_pos >= 0 && m_pos< m_array->Size();
+    return m_array && m_pos >= 0 && m_pos <= m_array->Size();
 }
 
 template <typename ItemType>
@@ -504,7 +502,6 @@ template <typename ItemType>
 template <typename IT, typename AT>
 bool Array<ItemType>::TemplateIterator<IT, AT>::operator==(const TemplateIterator& other) const
 {
-    assert(m_array == other.m_array);
     return (m_array == other.m_array && m_pos == other.m_pos);
 }
 
@@ -677,8 +674,9 @@ typename Array<ItemType>::template TemplateIterator<IT,
     return tmp;
 }
 
-///нужно реализовать
-/*template <typename ItemType>
+/// метод move
+
+template <typename ItemType>
 bool Array<ItemType>::Move(Iterator element, Iterator before)
 {
     if (element.isValid() && before.isValid())
@@ -688,32 +686,16 @@ bool Array<ItemType>::Move(Iterator element, Iterator before)
             return true;
         }
 
-        ItemType temp = *element;
+        before.m_array->Insert(*element, before.m_pos);
+        element.m_array->DeleteByIndex(*element);
 
-        if (element.Pos() < before.Pos())
-        {
-            for (int i = element.Pos(); i < before.Pos(); ++i)
-            {
-                m_array[i] = m_array[i + 1];
-            }
-        }
-        else
-        {
-            for (int i = element.Pos(); i > before.Pos(); --i)
-            {
-                m_array[i] = m_array[i - 1];
-            }
-        }
-
-
-       m_array[before.Pos()] = temp;
 
         return true;
     }
 
     return false;
 }
-*/
+
 
 
 #endif

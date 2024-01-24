@@ -47,13 +47,7 @@ List<ItemType>::List(SizeType size, const ItemType value)
 template <typename ItemType>
 List<ItemType>::~List()
 {
-    Node* current = m_head->next;
-    while (current != m_tail)
-    {
-        Node* next = current->next;
-        delete current;
-        current = next;
-    }
+    Clear();
     DeleteHeadTail();
 }
 
@@ -79,11 +73,14 @@ void List<ItemType> ::PushFront(const ItemType &value)
 template <typename ItemType>
 void List<ItemType> ::PopFront()
 {
-    Node* deleteNode = m_head->next;
-    deleteNode->next->prev = m_head;
-    m_head->next = deleteNode->next;
-    m_size--;
-    delete deleteNode;
+    if (m_size != 0)
+    {
+        Node* delNode = m_head->next;
+        delNode -> next -> prev = m_head;
+        m_head->next = delNode->next;
+        m_size--;
+        delete delNode;
+    }
 }
 
 template <typename ItemType>
@@ -98,28 +95,34 @@ void List<ItemType> ::PushBack(const ItemType &value)
 }
 
 template <typename ItemType>
-void List<ItemType> ::PopBack()
+void List<ItemType>::PopBack()
 {
-    Node *deleteNode = m_tail->prev;
-    deleteNode->prev->next = m_tail;
-    m_tail->prev = deleteNode->prev;
-    m_size--;
-    delete deleteNode;
+    if (m_size != 0)
+    {
+        Node *delNode = m_tail -> prev;
+        delNode -> prev -> next = m_tail;
+        m_tail -> prev = delNode -> prev;
+        m_size--;
+        delete delNode;
+    }
 }
 
 template<typename ItemType>
 void List<ItemType>::Print() const
 {
-    if (m_head->next == m_tail)
+    if (isEmpty())
+    {
+        std::cout << "[ ]\n";
         return;
-    Node* current = m_head->next;
+    }
+    Node *current = m_head->next;
     std::cout << "[ ";
     while (current != m_tail->prev)
     {
-        std::cout<< current->data << ", ";
-        current = current->next;
+        std::cout << current->data << ", ";
+        current = current -> next;
     }
-    std::cout << current->data << " ]";
+    std::cout << current -> data << " ]";
     std::cout << std::endl;
 }
 
@@ -154,7 +157,7 @@ bool List<ItemType>::isEmpty() const
 }
 
 template<typename ItemType>
-void  List<ItemType>::Insert(const int position, const ItemType& value)
+void  List<ItemType>::Insert(const int position, const ItemType &value)
 {
     assert(m_size >= position && position >= 0);
     Node* newNode = new Node(value);

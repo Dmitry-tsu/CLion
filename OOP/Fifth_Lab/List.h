@@ -5,7 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cassert>
-#include "../../Error/Array/Array.h"
+#include "../../CLion/OOP/Second_Lab/Array.h"
 
 template<typename ItemType>
 class List
@@ -22,7 +22,7 @@ public:
     void FormHeadTail();
     void DeleteHeadTail();
 
-    List(const List& other);
+    List(const List &other);
     List(SizeType size = 0, const ItemType value = ItemType());
     ~List();
     List(const Array<ItemType>& arr);
@@ -51,8 +51,8 @@ public:
     bool operator!=(const List &other) const;
     List& operator=(List &&other);
     List& operator=(const List &other);
-    List operator+(const List& other) const;
-    List& operator+=(const List& other);
+    List operator+(const List &other) const;
+    List& operator+=(const List &other);
 
     Iterator begin();
     Iterator end();

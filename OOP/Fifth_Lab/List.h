@@ -1,10 +1,10 @@
 #ifndef IS_TEMPLATE_LIST_DECLARED
 #define IS_TEMPLATE_LIST_DECLARED
 
-//#pragma once
 #include <iostream>
 #include <algorithm>
 #include <cassert>
+#include "../../CLion/OOP/Second_Lab/Array.h"
 
 template<typename ItemType>
 class List

@@ -5,7 +5,6 @@
 #include <iostream>
 #include <algorithm>
 #include <cassert>
-#include "../../CLion/OOP/Second_Lab/Array.h"
 
 template<typename ItemType>
 class List
@@ -38,38 +37,46 @@ public:
     void Swap(List &other);
     void Clear();
     bool isEmpty() const;
-    void Insert(const int position, const ItemType& value);
+    void Insert(const int position, const ItemType &value);
+    void Insert(const Iterator &it, const ItemType &value);
+    void InsertAfter(const ItemType &key, const ItemType &value);
     void Remove(const int position);
+    Iterator Remove(Iterator it);
+    bool RemoveKey(const ItemType &key);
+    void RemoveRange(Iterator first, Iterator last);
     ItemType Max() const;
     ItemType Min() const;
 
-    //Iterator Search(const ItemType& key) const;
+    Iterator Search(const ItemType &key);
+    ConstIterator Search(const ItemType &key) const;
+    void Sort();
 
     ItemType &operator[](const SizeType index);
     const ItemType &operator[](const SizeType index) const;
     bool operator==(const List &other) const;
     bool operator!=(const List &other) const;
-    List& operator=(List &&other);
-    List& operator=(const List &other);
+    List &operator=(List &&other);
+    List &operator=(const List &other);
     List operator+(const List &other) const;
-    List& operator+=(const List &other);
+    List &operator+=(const List &other);
 
     Iterator begin();
     Iterator end();
     ConstIterator begin() const;
     ConstIterator end() const;
-
+    Iterator position(const int index);
+    ConstIterator position(const int index) const;
 private:
 
     SizeType m_size{};
-    Node* m_head;
-    Node* m_tail;
+    Node  *m_head;
+    Node *m_tail;
 };
 
 template <typename ItemType>
-std::ostream& operator<<(std::ostream &stream, const List<ItemType> &list);
+std::ostream &operator<<(std::ostream &stream, const List<ItemType> &list);
 template <typename ItemType>
-std::istream& operator >> (std::istream &stream, List<ItemType> &list);
+std::istream &operator >> (std::istream &stream, List<ItemType> &list);
 
 template<typename ItemType>
 class List<ItemType>::Node
@@ -77,7 +84,7 @@ class List<ItemType>::Node
 public:
     friend class List;
 private:
-    Node(const ItemType& data)
+    Node(const ItemType &data)
             :data(data)
     {}
 
@@ -91,15 +98,20 @@ template <typename IT, typename LT>
 class List<ItemType>::TemplateIterator
 {
 public:
-    TemplateIterator(LT *list = nullptr, Node *node = nullptr);
+
+    friend class List;
+    TemplateIterator(Node *node = nullptr);
     IT &operator*();
+    TemplateIterator &operator++();
+    TemplateIterator &operator--();
+    TemplateIterator &operator+(const int &index);
+    TemplateIterator &operator-(const int &index);
 
-    TemplateIterator& operator++();
-    TemplateIterator& operator--();
 
+    bool operator == (const TemplateIterator &other) const;
+    bool operator != (const TemplateIterator &other) const;
 
 private:
-    LT* m_list;
     Node* m_node = nullptr;
 };
 

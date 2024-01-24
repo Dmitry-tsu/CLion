@@ -93,7 +93,10 @@ class List<ItemType>::TemplateIterator
 public:
     TemplateIterator(LT *list = nullptr, Node *node = nullptr);
     IT &operator*();
+
     TemplateIterator& operator++();
+    TemplateIterator& operator--();
+
 
 private:
     LT* m_list;
@@ -102,5 +105,4 @@ private:
 
 #include "List.cpp"
 #endif
-
 

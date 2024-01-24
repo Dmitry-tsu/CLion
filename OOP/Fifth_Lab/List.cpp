@@ -387,4 +387,13 @@ typename List<ItemType>::template TemplateIterator<IT, LT>& List<ItemType>::Temp
     return *this;
 }
 
+template <typename ItemType>
+template <typename IT, typename LT>
+List<ItemType>::TemplateIterator<IT, LT>& List<ItemType>::TemplateIterator<IT, LT>::operator--()
+{
+    m_node = m_node->prev;
+    return *this;
+}
+
+
 #endif

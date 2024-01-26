@@ -5,124 +5,124 @@
 #include <set>
 #include <vector>
 
-typedef size_t                 TownIndex;
-typedef std::vector<TownIndex> PathValue;
-typedef int                    Distance;
-typedef std::vector<Distance>  DistanceRow;
-typedef std::vector<DistanceRow>  DistanceMatrix;
-typedef std::set<TownIndex>    TownSet;
+typedef size_t                 Index;
+typedef std::vector<Index>     Val;
+typedef int                    Dist;
+typedef std::vector<Dist>      Row;
+typedef std::vector<Row>       Matrix;
+typedef std::set<Index>        Towns;
 
 class TravelingSalesman
 {
-    DistanceMatrix      distanceMatrix;
-    PathValue           currentPath;
-    Distance            currentPathLength{};
-    PathValue           shortestPath;
-    Distance            shortestPathLength;
-    TownSet             unvisitedTowns;
+    Matrix       distMatrix;
+    Val          currPath;
+    Dist         currPathLen{};
+    Val          shortestPath;
+    Dist         shortestPathLen;
+    Towns        unvisitedTowns;
 
 public:
-    void printDistanceMatrix()
+    void printDistMatrix()
     {
-        std::cout << "Distance Matrix:\n";
-        for (const auto& row : distanceMatrix)
+        std::cout << "\nDistance Matrix:\n";
+        for (const auto& row : distMatrix)
         {
-            for (const auto& distance : row) {
+            for (const auto& distance : row)
+            {
                 std::cout << distance << "\t";
             }
             std::cout << "\n";
         }
     }
 
-    explicit TravelingSalesman(const DistanceMatrix &distances)
-            : distanceMatrix(distances), shortestPathLength(std::numeric_limits<Distance>::max())
+    explicit TravelingSalesman(const Matrix &distances)
+            : distMatrix(distances), shortestPathLen(std::numeric_limits<Dist>::max())
     {
-        for (TownIndex townIndex{}; townIndex < distances.size(); ++townIndex)
+        for (Index townIndex{}; townIndex < distances.size(); ++townIndex)
         {
             unvisitedTowns.insert(townIndex);
         }
-        addTownWithDeltaDistance(0);
+        addTown(0);
     }
 
-    void findAndPrintShortestPath()
+    void findPrintShortestPath()
     {
         findShortestPath();
         printShortestPath();
     }
 
 private:
-    void printCurrentPath()
+    void printCurrPath()
     {
         std::cout << "Current Path: ";
-        for (auto townIndex : currentPath)
+        for (auto townIndex : currPath)
         {
             std::cout << townIndex + 1 << '\t';
         }
-        std::cout << "Length: " << currentPathLength << std::endl;
+        std::cout << "Length: " << currPathLen << std::endl;
     }
 
-    void addTownWithDeltaDistance(TownIndex town, Distance deltaDistance = 0)
+    void addTown(Index town, Dist deltaDist = 0)
     {
-        currentPath.emplace_back(town);
+        currPath.emplace_back(town);
         unvisitedTowns.erase(town);
-        currentPathLength += deltaDistance;
-        printCurrentPath();
+        currPathLen += deltaDist;
+        printCurrPath();
     }
 
     void findShortestPath()
     {
         do
         {
-            if (tryToImproveCurrentPath())
+            if (improveCurrPath())
             {
-                shortestPath = currentPath;
-                shortestPathLength = currentPathLength;
+                shortestPath = currPath;
+                shortestPathLen = currPathLen;
             }
         } while (tryBackingUpTown());
     }
 
-    bool tryToImproveCurrentPath()
+    bool improveCurrPath()
     {
-        while (!isPathComplete() && tryToAddNextOptimalTown()) {}
+        while (!isPathComplete() && addNextOptimalTown()) {}
         return isPathComplete();
     }
 
     bool isPathComplete()
     {
-        return currentPath.size() >= distanceMatrix.size() + 1;
+        return currPath.size() >= distMatrix.size() + 1;
     }
 
-    bool tryToAddNextOptimalTown()
+    bool addNextOptimalTown()
     {
-        return currentPath.size() == distanceMatrix.size()
-               ? tryToAddOptimalTown(0)
-               : tryToAddNextOptimalUnvisitedTownNotLessThan(0);
+        return currPath.size() == distMatrix.size()
+               ? addOptimalTown(0)
+               : addNextOptimalUnvisitedTownNotLessThan(0);
     }
 
-    bool tryToAddOptimalTown(TownIndex town)
+    bool addOptimalTown(Index town)
     {
-        auto deltaDistance = distanceMatrix[currentPath.back()][town];
-        bool result = currentPathLength + deltaDistance < shortestPathLength;
-        if (result)
-        {
-            addTownWithDeltaDistance(town, deltaDistance);
+        auto deltaDist = distMatrix[currPath.back()][town];
+        bool result = currPathLen + deltaDist < shortestPathLen;
+        if (result) {
+            addTown(town, deltaDist);
         }
         return result;
     }
 
-    bool tryToAddNextOptimalUnvisitedTownNotLessThan(TownIndex townStart)
+    bool addNextOptimalUnvisitedTownNotLessThan(Index townStart)
     {
         return std::find_if(
                 unvisitedTowns.lower_bound(townStart),
                 unvisitedTowns.end(),
-                [&](auto town) { return this->tryToAddOptimalTown(town); }) != unvisitedTowns.end();
+                [&](auto town) { return this->addOptimalTown(town); }) != unvisitedTowns.end();
     }
 
     bool tryBackingUpTown()
     {
-        while (currentPath.size() > 1)
+        while (currPath.size() > 1)
         {
-            if (tryToAddNextOptimalUnvisitedTownNotLessThan(popAndGetCurrentTown() + 1))
+            if (addNextOptimalUnvisitedTownNotLessThan(popAndGetCurrentTown() + 1))
             {
                 return true;
             }
@@ -130,16 +130,16 @@ private:
         return false;
     }
 
-    TownIndex popAndGetCurrentTown()
+    Index popAndGetCurrentTown()
     {
-        auto currentTown = currentPath.back();
-        currentPath.pop_back();
+        auto currentTown = currPath.back();
+        currPath.pop_back();
         if (currentTown)
         {
             unvisitedTowns.insert(currentTown);
         }
-        auto previousTown = currentPath.back();
-        currentPathLength -= distanceMatrix[previousTown][currentTown];
+        auto previousTown = currPath.back();
+        currPathLen -= distMatrix[previousTown][currentTown];
         return currentTown;
     }
 
@@ -152,13 +152,13 @@ private:
         }
         std::cout << std::endl;
     }
-
 };
 
 int main()
 {
     std::ios::sync_with_stdio(false);
     int totalTowns{};
+
     do {
         std::cout << "Total towns (>= 2): ";
         std::cin >> totalTowns;
@@ -168,26 +168,27 @@ int main()
     std::cout << "Enter lower and upper limits for random distances: ";
     std::cin >> lowerLimit >> upperLimit;
 
-    std::default_random_engine generator;
+    std::random_device rd;
+    std::default_random_engine generator(rd());
     std::uniform_int_distribution<int> distribution(lowerLimit, upperLimit);
 
-
-    DistanceMatrix distances(totalTowns, DistanceRow(totalTowns));
-    for (TownIndex from{}; from < TownIndex(totalTowns); ++from)
+    Matrix distances(totalTowns, Row(totalTowns));
+    for (Index from{}; from < Index(totalTowns); ++from)
     {
-        for (TownIndex to{}; to < TownIndex(totalTowns); ++to)
+        for (Index to{}; to < Index(totalTowns); ++to)
         {
             if (from == to)
             {
                 distances[from][to] = 0;
-            } else {
+            }
+            else
+            {
                 distances[from][to] = distribution(generator);
             }
         }
     }
 
-
     TravelingSalesman salesman(distances);
-    salesman.printDistanceMatrix();
-    salesman.findAndPrintShortestPath();
+    salesman.printDistMatrix();
+    salesman.findPrintShortestPath();
 }

@@ -1,28 +1,26 @@
 #include <algorithm>
 #include <iostream>
-#include <random>
 #include <limits>
 #include <set>
-#include <utility>
 #include <vector>
 
-typedef size_t TownIndex;
+typedef size_t                 TownIndex;
 typedef std::vector<TownIndex> PathValue;
-typedef int Distance;
-typedef std::vector<Distance> DistanceRow;
-typedef std::vector<DistanceRow> DistanceMatrix;
-typedef std::set<TownIndex> TownSet;
-
+typedef int                    Distance;
+typedef std::vector<Distance>  DistanceRow;
+typedef std::vector<DistanceRow>  DistanceMatrix;
+typedef std::set<TownIndex>    TownSet;
 class TravelingSalesman
 {
-    DistanceMatrix distanceMatrix;
-    PathValue currentPath;
-    Distance currentPathLength;
-    PathValue shortestPath;
-    Distance shortestPathLength;
-    TownSet unvisitedTowns;
+    DistanceMatrix      distanceMatrix;
+    PathValue           currentPath;
+    Distance            currentPathLength;
+    PathValue           shortestPath;
+    Distance            shortestPathLength;
+    TownSet             unvisitedTowns;
 
 public:
+
     void printDistanceMatrix()
     {
         std::cout << "\nDistance Matrix:\n";
@@ -35,15 +33,20 @@ public:
         }
     }
 
-    TravelingSalesman(DistanceMatrix distances)
-            : distanceMatrix(std::move(distances)), shortestPathLength(std::numeric_limits<Distance>::max())
+    TravelingSalesman(const DistanceMatrix &distances)
+            : distanceMatrix(distances), shortestPathLength(std::numeric_limits<Distance>::max())
     {
-
+        for (TownIndex townIndex{}; townIndex < distances.size(); ++townIndex)
+        {
+            unvisitedTowns.insert(townIndex);
+        }
+        addTownWithDeltaDistance(0);
     }
 
     void findAndPrintShortestPath()
     {
-
+        findShortestPath();
+        printShortestPath();
     }
 
 private:
@@ -59,17 +62,28 @@ private:
 
     void addTownWithDeltaDistance(TownIndex town, Distance deltaDistance = 0)
     {
-
+        currentPath.emplace_back(town);
+        unvisitedTowns.erase(town);
+        currentPathLength += deltaDistance;
+        printCurrentPath();
     }
 
     void findShortestPath()
     {
-
+        do
+        {
+            if (tryToImproveCurrentPath())
+            {
+                shortestPath = currentPath;
+                shortestPathLength = currentPathLength;
+            }
+        } while (tryBackingUpTown());
     }
 
     bool tryToImproveCurrentPath()
     {
-
+        while (!isPathComplete() && tryToAddNextOptimalTown()) {}
+        return isPathComplete();
     }
 
     bool isPathComplete()
@@ -112,7 +126,15 @@ private:
 
     TownIndex popAndGetCurrentTown()
     {
-
+        auto currentTown = currentPath.back();
+        currentPath.pop_back();
+        if (currentTown)
+        {
+            unvisitedTowns.insert(currentTown);
+        }
+        auto previousTown = currentPath.back();
+        currentPathLength -= distanceMatrix[previousTown][currentTown];
+        return currentTown;
     }
 
     void printShortestPath()
@@ -131,8 +153,7 @@ int main()
 {
     std::ios::sync_with_stdio(false);
     int totalTowns{};
-
-    do  {
+    do {
         std::cout << "Total towns (>= 2): ";
         std::cin >> totalTowns;
     } while (totalTowns < 2);
@@ -154,4 +175,5 @@ int main()
 
     TravelingSalesman salesman(distances);
     salesman.printDistanceMatrix();
+    salesman.findAndPrintShortestPath();
 }

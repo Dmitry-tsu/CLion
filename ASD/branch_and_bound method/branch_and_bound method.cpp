@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <iostream>
+#include <random>
 #include <limits>
 #include <set>
 #include <vector>
@@ -21,10 +22,9 @@ class TravelingSalesman
     TownSet             unvisitedTowns;
 
 public:
-
     void printDistanceMatrix()
     {
-        std::cout << "\nDistance Matrix:\n";
+        std::cout << "Distance Matrix:\n";
         for (const auto& row : distanceMatrix)
         {
             for (const auto& distance : row) {
@@ -164,7 +164,14 @@ int main()
         std::cin >> totalTowns;
     } while (totalTowns < 2);
 
-    std::cout << "Enter distances between towns:" << std::endl;
+    int lowerLimit, upperLimit;
+    std::cout << "Enter lower and upper limits for random distances: ";
+    std::cin >> lowerLimit >> upperLimit;
+
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(lowerLimit, upperLimit);
+
+
     DistanceMatrix distances(totalTowns, DistanceRow(totalTowns));
     for (TownIndex from{}; from < TownIndex(totalTowns); ++from)
     {
@@ -172,12 +179,13 @@ int main()
         {
             if (from == to)
             {
-                continue;
+                distances[from][to] = 0;
+            } else {
+                distances[from][to] = distribution(generator);
             }
-            std::cout << from + 1 << " - " << to + 1 << "\t: ";
-            std::cin >> distances[from][to];
         }
     }
+
 
     TravelingSalesman salesman(distances);
     salesman.printDistanceMatrix();

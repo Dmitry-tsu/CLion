@@ -13,10 +13,10 @@ class List
 public:
     class Node;
 
-    template <typename IT, typename LT>
+    template <typename IT>
     class TemplateIterator;
-    using Iterator = TemplateIterator<ItemType, List>;
-    using ConstIterator = TemplateIterator<const ItemType, const List>;
+    using Iterator = TemplateIterator<ItemType>;
+    using ConstIterator = TemplateIterator<const ItemType>;
 
     void FormHeadTail();
     void DeleteHeadTail();
@@ -24,7 +24,7 @@ public:
     List(const List &other);
     List(SizeType size = 0, const ItemType value = ItemType());
     ~List();
-    List(const Array<ItemType>& arr);
+    List(const Array<ItemType> &arr);
 
 
     void PushFront(const ItemType& value);
@@ -71,6 +71,10 @@ private:
     SizeType m_size{};
     Node  *m_head;
     Node *m_tail;
+    void TakeNode(Iterator &it);
+    void InsertNode(Iterator &current, const Iterator &other);
+    void SwapNode(Iterator &current, Iterator &other);
+    int PosNode(Iterator &current);
 };
 
 template <typename ItemType>
@@ -94,7 +98,7 @@ private:
 };
 
 template <typename ItemType>
-template <typename IT, typename LT>
+template <typename IT>
 class List<ItemType>::TemplateIterator
 {
 public:
@@ -102,8 +106,11 @@ public:
     friend class List;
     TemplateIterator(Node *node = nullptr);
     IT &operator*();
+    const IT& operator*() const;
     TemplateIterator &operator++();
     TemplateIterator &operator--();
+    TemplateIterator &operator++(int);
+    TemplateIterator &operator--(int);
     TemplateIterator &operator+(const int &index);
     TemplateIterator &operator-(const int &index);
 

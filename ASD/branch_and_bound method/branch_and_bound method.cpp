@@ -79,22 +79,35 @@ private:
 
     bool tryToAddNextOptimalTown()
     {
-
+        return currentPath.size() == distanceMatrix.size()
+               ? tryToAddOptimalTown(0)
+               : tryToAddNextOptimalUnvisitedTownNotLessThan(0);
     }
 
     bool tryToAddOptimalTown(TownIndex town)
     {
-
+        auto deltaDistance = distanceMatrix[currentPath.back()][town];
+        bool result = currentPathLength + deltaDistance < shortestPathLength;
+        if (result)
+        {
+            addTownWithDeltaDistance(town, deltaDistance);
+        }
+        return result;
     }
 
     bool tryToAddNextOptimalUnvisitedTownNotLessThan(TownIndex townStart)
     {
-
+        return std::find_if(
+                unvisitedTowns.lower_bound(townStart),
+                unvisitedTowns.end(),
+                [&](auto town) { return this->tryToAddOptimalTown(town); }) != unvisitedTowns.end();
     }
 
     bool tryBackingUpTown()
     {
-
+        return currentPath.size() > 1 &&
+               (tryToAddNextOptimalUnvisitedTownNotLessThan(popAndGetCurrentTown() + 1) ||
+                tryBackingUpTown());
     }
 
     TownIndex popAndGetCurrentTown()
@@ -138,6 +151,7 @@ int main()
             std::cin >> distances[from][to];
         }
     }
+
     TravelingSalesman salesman(distances);
     salesman.printDistanceMatrix();
 }

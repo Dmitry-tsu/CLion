@@ -10,11 +10,12 @@ typedef int                    Distance;
 typedef std::vector<Distance>  DistanceRow;
 typedef std::vector<DistanceRow>  DistanceMatrix;
 typedef std::set<TownIndex>    TownSet;
+
 class TravelingSalesman
 {
     DistanceMatrix      distanceMatrix;
     PathValue           currentPath;
-    Distance            currentPathLength;
+    Distance            currentPathLength{};
     PathValue           shortestPath;
     Distance            shortestPathLength;
     TownSet             unvisitedTowns;
@@ -33,7 +34,7 @@ public:
         }
     }
 
-    TravelingSalesman(const DistanceMatrix &distances)
+    explicit TravelingSalesman(const DistanceMatrix &distances)
             : distanceMatrix(distances), shortestPathLength(std::numeric_limits<Distance>::max())
     {
         for (TownIndex townIndex{}; townIndex < distances.size(); ++townIndex)
@@ -119,9 +120,14 @@ private:
 
     bool tryBackingUpTown()
     {
-        return currentPath.size() > 1 &&
-               (tryToAddNextOptimalUnvisitedTownNotLessThan(popAndGetCurrentTown() + 1) ||
-                tryBackingUpTown());
+        while (currentPath.size() > 1)
+        {
+            if (tryToAddNextOptimalUnvisitedTownNotLessThan(popAndGetCurrentTown() + 1))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     TownIndex popAndGetCurrentTown()

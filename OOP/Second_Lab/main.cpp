@@ -12,7 +12,8 @@ double calculateAvg(Array<T> arr)
     avg /= arr.Size();
     return avg;
 }
-int main() {
+int main()
+{
     using std::cout;
     using std::cin;
     using std::endl;
@@ -43,13 +44,11 @@ int main() {
 
     cout << "\nFor 1 array_____________" << endl;
 
-
     //auto iter = arr1.begin() + 2;
     //auto iter = arr1.begin();
     //iter = array.begin() + 2;
     //Array<int>::Iterator iter_new = iter;
     //Array<int>::Move(arr1.begin(), iter);
-
 
     Array<int>::Move(arr1.begin(), arr1.end());
 

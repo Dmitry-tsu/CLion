@@ -341,6 +341,7 @@ void Array<ItemType>::Sort()
     }
 }
 
+/*
 template <typename ItemType>
 bool Array<ItemType>::Insert(const ItemType& e, const int& in)
 {
@@ -351,8 +352,39 @@ bool Array<ItemType>::Insert(const ItemType& e, const int& in)
         m_array[i + 1] = m_array[i];
     m_array[i + 1] = e;
     return true;
-
 }
+*/
+
+/*
+template <typename ItemType>
+bool Array<ItemType>::Insert(const ItemType& e, const int& in)
+{
+    if (in > m_size || in < 0) return false;
+    Resize(m_size + 1);
+    for (int i = m_size - 2; i >= in; i--)
+        m_array[i + 1] = m_array[i];
+    m_array[in] = e; //
+    return true;
+}
+*/
+
+
+template <typename ItemType>
+bool Array<ItemType>::Insert(const ItemType& e, const int& in)
+{
+    if (in < 0 || in > m_size) return false;
+
+    Resize(m_size + 1);
+    for (int i = m_size - 1; i > in; --i)
+    {
+        m_array[i] = m_array[i - 1];
+    }
+    m_array[in] = e;
+
+    return true;
+}
+
+
 
 template <typename ItemType>
 bool Array<ItemType>::DeleteByIndex(const int& in)
@@ -569,84 +601,6 @@ bool Array<ItemType>::Remove(const Iterator it)
     return Remove(it, it2);
 }
 
-//работает но это не static
-/*
-template<typename ItemType>
-bool Array<ItemType>::IRemove(Iterator it)
-{
-    if (it.Pos() < 0 || it.Pos() >= m_size)
-    {
-        return false;
-    }
-
-    for (int i = it.Pos(); i < m_size - 1; ++i)
-    {
-        m_array[i] = m_array[i + 1];
-    }
-
-    m_size--;
-    return true;
-}
-
-template<typename ItemType>
-bool Array<ItemType>::Move(Iterator element, Iterator before)
-{
-    if (element.Pos() < 0 || element.Pos() >= m_size || before.Pos() < 0 || before.Pos() > m_size)
-    {
-        return false;
-    }
-    if (element.Pos() == before.Pos())
-    {
-        return true;
-    }
-    ItemType temp = m_array[element.Pos()];
-
-    if (element.Pos() < before.Pos())
-    {
-        for (int i = element.Pos(); i < before.Pos(); ++i)
-        {
-            m_array[i] = m_array[i + 1];
-        }
-    }
-    else
-    {
-        for (int i = element.Pos(); i > before.Pos(); --i)
-        {
-            m_array[i] = m_array[i - 1];
-        }
-    }
-
-    m_array[before.Pos() - 1] = temp;
-
-
-    return true;
-}
-
-
-template<typename ItemType>
-bool Array<ItemType>::Move(Iterator element, Array& other, Iterator before) {
-
-    if (element.Pos() < 0 || element.Pos() >= m_size || before.Pos() < 0 || before.Pos() > other.m_size)
-    {
-        return false;
-    }
-
-    ItemType temp = *element;
-
-    if (!IRemove(element))
-    {
-        return false;
-    }
-
-    if (!other.Insert(temp, before))
-    {
-        Insert(temp, element);
-        return false;
-    }
-    return true;
-}
-*/
-
 template <typename ItemType>
 template <typename IT, typename AT>
 typename Array<ItemType>::template TemplateIterator<IT,
@@ -686,8 +640,15 @@ bool Array<ItemType>::Move(Iterator element, Iterator before)
             return true;
         }
 
+        //before.m_array->Insert(element.m_pos, before.m_pos);
+
         before.m_array->Insert(*element, before.m_pos);
-        element.m_array->DeleteByIndex(*element);
+        element.m_array->DeleteByIndex(element.m_pos);
+
+        //ItemType temp = *element;
+        //element.m_array->DeleteByIndex(element.m_pos);
+        //before.m_array->Insert(temp, before.m_pos);
+
 
 
         return true;
@@ -696,7 +657,34 @@ bool Array<ItemType>::Move(Iterator element, Iterator before)
     return false;
 }
 
+/*
+template <typename ItemType>
+bool Array<ItemType>::Move(Iterator element, Iterator before)
+{
+    if (element.isValid() && before.isValid())
+    {
+        if (element == before)
+        {
+            return true;
+        }
 
+        ItemType temp = *element;
+
+
+        element.m_array->DeleteByIndex(element.m_pos);
+
+        for(int i = element.m_pos; i < before.m_pos; ++i)
+        {
+            ItemType next = (*element.m_array)[i];
+            (*element.m_array)[i] = temp;
+            temp = next;
+        }
+
+        return true;
+    }
+    return false;
+}
+*/
 
 #endif
 

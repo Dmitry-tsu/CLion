@@ -120,13 +120,13 @@ void BoolMatrix::inverse(const SizeType i, const SizeType j, const SizeType coun
 
 BoolVector& BoolMatrix::operator[](const SizeType i)
 {
-    assert(i >= 0 || i < rows);
+    assert(i >= 0 && i < rows);
     return bm[i];
 }
 
 const BoolVector& BoolMatrix::operator[](const SizeType i) const
 {
-    assert(i >= 0 || i < rows);
+    assert(i >= 0 && i < rows);
     return bm[i];
 }
 
@@ -149,8 +149,8 @@ BoolMatrix BoolMatrix::operator=(const BoolMatrix &other)
 
 BoolMatrix BoolMatrix::operator&(const BoolMatrix &other) const
 {
-    SizeType resultRows = std::min(rows, other.rows);
-    SizeType resultCols = std::min(cols, other.cols);
+    SizeType resultRows = std::max(rows, other.rows);
+    SizeType resultCols = std::max(cols, other.cols);
     BoolMatrix matrix(resultRows, resultCols, false);
     for (int i = 0; i < resultRows; i++)
         matrix.bm[i] = bm[i] & other.bm[i];
@@ -169,8 +169,7 @@ BoolMatrix BoolMatrix::operator|(const BoolMatrix &other) const
     SizeType resultRows = std::max(rows, other.rows);
     SizeType resultCols = std::max(cols, other.cols);
     BoolMatrix resultMatrix(resultRows, resultCols, false);
-    SizeType commonRows = std::min(rows, other.rows);
-    SizeType commonCols = std::min(cols, other.cols);
+    SizeType commonRows = std::max(rows, other.rows);
     for (int i = 0; i < commonRows; i++)
         resultMatrix.bm[i] = bm[i] ^ other.bm[i];
     for (int i = commonRows; i < rows; i++)
@@ -192,8 +191,7 @@ BoolMatrix BoolMatrix::operator^(const BoolMatrix &other) const
     SizeType resultRows = std::max(rows, other.rows);
     SizeType resultCols = std::max(cols, other.cols);
     BoolMatrix resultMatrix(resultRows, resultCols, false);
-    SizeType commonRows = std::min(rows, other.rows);
-    SizeType commonCols = std::min(cols, other.cols);
+    SizeType commonRows = std::max(rows, other.rows);
     for (int i = 0; i < commonRows; i++)
         resultMatrix.bm[i] = bm[i] ^ other.bm[i];
     for (int i = commonRows; i < rows; i++)
@@ -218,7 +216,6 @@ BoolMatrix BoolMatrix::operator~() const
         matrix.bm[i].inverse();
     return matrix;
 }
-
 
 std::ostream& operator<<(std::ostream &stream, const BoolMatrix &matrix)
 {

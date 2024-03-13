@@ -217,6 +217,32 @@ BoolMatrix BoolMatrix::operator~() const
     return matrix;
 }
 
+/*
+bool BoolMatrix::compareSize() const
+{
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            if (bm[i].returnLength() != cols)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+}
+*/
+
+bool BoolMatrix::compareSize() const
+{
+    for (int i = 0; i < rows; i++)
+    {
+        assert(bm[i].returnLength() == cols && "Количество элементов в строке не равно числу столбцов!");
+    }
+    return true;
+}
+
 std::ostream& operator<<(std::ostream &stream, const BoolMatrix &matrix)
 {
     for (int i = 0; i < matrix.returnRows(); i++)

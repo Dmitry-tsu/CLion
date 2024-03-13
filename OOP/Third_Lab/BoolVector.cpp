@@ -58,6 +58,16 @@ BoolVector::~BoolVector()
 
 void BoolVector::shift()
 {
+    if (cellCount == 0)
+    {
+        return;
+    }
+
+    if (insignificantPart > 8)
+    {
+        return;
+    }
+
     data[cellCount - 1] = data[cellCount - 1] >> insignificantPart;
     data[cellCount - 1] = data[cellCount - 1] << insignificantPart;
 }

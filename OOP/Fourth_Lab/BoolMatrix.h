@@ -27,10 +27,13 @@ public:
     BoolVector logicalOr() const;
     void inverse(const SizeType i, const SizeType j, const SizeType count=0);
 
+    bool compareSize() const; //
+
+
 
     BoolVector &operator[](const SizeType i);
     const BoolVector &operator[](const SizeType i)const;
-    BoolMatrix operator=(const BoolMatrix &other);
+    BoolMatrix operator=(const BoolMatrix &other);///
     BoolMatrix operator&(const BoolMatrix &other) const;
     BoolMatrix operator&=(const BoolMatrix &other);
     BoolMatrix operator|(const BoolMatrix &other) const;

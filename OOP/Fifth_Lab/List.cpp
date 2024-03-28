@@ -293,8 +293,6 @@ void List<ItemType>::Sort()
         }
     }
 }
-//Ошибка SIGSTOP (сигнал SIGSTOP) обычно возникает, когда процесс был остановлен внешним источником, например,
-//отладчиком или другой программой. Этот сигнал не является ошибкой в коде, а скорее результатом внешнего вмешательства.
 
 template<typename ItemType>
 ItemType &List<ItemType>::operator[](const SizeType index)

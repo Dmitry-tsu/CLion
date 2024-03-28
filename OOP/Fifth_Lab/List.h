@@ -109,12 +109,10 @@ public:
     const IT& operator*() const;
     TemplateIterator &operator++();
     TemplateIterator &operator--();
-
-    // здесь неправильно
-    TemplateIterator operator++(int);
-    TemplateIterator operator--(int);
-    TemplateIterator operator+(const int &index);
-    TemplateIterator operator-(const int &index);
+    TemplateIterator &operator++(int);
+    TemplateIterator &operator--(int);
+    TemplateIterator &operator+(const int &index);
+    TemplateIterator &operator-(const int &index);
 
 
     bool operator == (const TemplateIterator &other) const;
@@ -122,7 +120,6 @@ public:
 
 private:
     Node* m_node = nullptr;
-    //List* m_list = nullptr;
 };
 
 #include "List.cpp"

@@ -110,6 +110,7 @@ public:
     TemplateIterator &operator++();
     TemplateIterator &operator--();
 
+    // исправлено
     TemplateIterator operator++(int);
     TemplateIterator operator--(int);
     TemplateIterator operator+(const int &index);
@@ -121,7 +122,12 @@ public:
 
 private:
     Node* m_node = nullptr;
+    //Node* m_head = nullptr;
+    //Node* m_tail = nullptr;
 };
+
+
+
 
 #include "List.cpp"
 #endif

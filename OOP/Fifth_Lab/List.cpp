@@ -380,14 +380,20 @@ List<ItemType> List<ItemType>::operator+(const List &other) const
     return tmp;
 }
 
+
 template <typename ItemType>
 List<ItemType> &List<ItemType>::operator+=(const List &other)
 {
+    int temp = other.ReturnSize();
     for (const ItemType& item : other)
+    {
         PushBack(item);
+        --temp;
+        if(!temp)
+            break;
+    }
     return *this;
 }
-
 
 template <typename ItemType>
 std::ostream &operator<<(std::ostream &stream, const List<ItemType> &list)
@@ -423,7 +429,7 @@ template <typename ItemType>
 template <typename IT>
 IT& List<ItemType>::TemplateIterator<IT>::operator*()
 {
-    assert(m_node != nullptr);
+    assert(m_node != nullptr && m_node->prev != nullptr && m_node->next != nullptr);
     return m_node->data;
 }
 
@@ -431,7 +437,7 @@ template <typename ItemType>
 template <typename IT>
 const IT& List<ItemType>::TemplateIterator<IT>::operator*()const
 {
-    assert(m_node != nullptr);
+    assert(m_node != nullptr && m_node->prev != nullptr && m_node->next != nullptr);
     return m_node->data;
 }
 
@@ -475,22 +481,27 @@ List<ItemType>::ConstIterator List<ItemType>::position(const int index) const
     return it;
 }
 
+//добавить что Node не хвост
 template <typename ItemType>
 template <typename IT>
 typename List<ItemType>::template TemplateIterator<IT>& List<ItemType>::TemplateIterator<IT>::operator++()
 {
-    if (m_node != nullptr)
+    assert(m_node != nullptr && m_node->next != nullptr);
+    if (m_node != nullptr && m_node->next != nullptr)
     {
         m_node = m_node->next;
     }
     return *this;
 }
 
+
+//добавить что Node не голова
 template <typename ItemType>
 template <typename IT>
 typename List<ItemType>::template TemplateIterator<IT>& List<ItemType>::TemplateIterator<IT>::operator--()
 {
-    if (m_node != nullptr)
+    assert(m_node != nullptr && m_node->prev != nullptr);
+    if (m_node != nullptr && m_node->prev != nullptr)
     {
         m_node = m_node->prev;
     }

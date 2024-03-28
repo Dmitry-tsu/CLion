@@ -56,9 +56,24 @@ int main()
     List<int> list_3(4, 7);
     List<int> list_4 = (list_3 + list_1);
     list_4.Print();
+    list_4 += list_3;
     List<int>::Iterator iy = list_4.end() - 1;
     iy--;
     std::cout<<" "<< *iy<<"\n";
+
+
+
+    List<std::string> strList(10);
+    for (int i = 0; i < strList.ReturnSize(); i++)
+    {
+        strList[i] = std::to_string(i + 1);
+    }
+    strList += strList;
+    for (auto &str : strList)
+    {
+        std::cout<< str <<"\n";
+    }
+
     return 0;
 }
 

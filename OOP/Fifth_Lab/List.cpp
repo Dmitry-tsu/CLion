@@ -275,11 +275,75 @@ List<ItemType>::ConstIterator  List<ItemType>::Search(const ItemType &key) const
 }
 
 template <typename ItemType>
+#include<iostream>
+#include "List.h"
+int main()
+{
+    List<int> list_1;
+    list_1.Print();
+
+    for (int i = 0; i < 5; ++i)
+    {
+        list_1.PopFront();
+        list_1.PopBack();
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        list_1.Insert(i,i);
+        list_1.Print();
+    }
+
+    for (int i = 9; i >=0; i--)
+    {
+        list_1.Remove(i);
+        list_1.Print();
+    }
+
+    for (int i = 0; i < 10; i++)
+        list_1.Insert(i, i);
+    list_1.Print();
+
+    if ( list_1.RemoveKey(5))
+        list_1.Print();
+    list_1.Print();
+    List<int>::Iterator t = list_1.end() - 1;
+    list_1.RemoveRange(list_1.begin(),t);
+    list_1.Print();
+
+    for (int i = 0; i < 10; i++)
+        list_1.Insert(i, i);
+    list_1.InsertAfter(5, 400);
+    list_1.Print();
+    std::cout << list_1.Max()<<std::endl<< list_1.Min() << std::endl;
+
+    List<char> list_2;
+    list_2.PushBack('h');
+    list_2.PushBack('e');
+    list_2.PushBack('l');
+    list_2.PushBack('l');
+    list_2.PushBack('o');
+    list_2.PushBack('W');
+    std::cout << "Before sorting: ";
+    list_2.Print();
+    list_2.Sort();
+    std::cout << "After sorting: ";
+    list_2.Print();
+
+    List<int> list_3(4, 7);
+    List<int> list_4 = (list_3 + list_1);
+    list_4.Print();
+    List<int>::Iterator iy = list_4.end() - 1;
+    iy--;
+    std::cout<<" "<< *iy<<"\n";
+    return 0;
+}
+
 void List<ItemType>::Sort()
 {
     if (isEmpty())
         return;
-    for (Iterator i = begin() + 1; i != end(); ++i)
+    for (Iterator i = position(1); i != end(); ++i)
     {
         Iterator  j = i-1;
         while (*j > *i)
@@ -287,11 +351,14 @@ void List<ItemType>::Sort()
             Iterator k = j + 1;
             SwapNode(k, j);
             --j;
-            if (j == begin()) break;
+            if (j == begin())
+                break;
             --j;
         }
     }
 }
+//Ошибка SIGSTOP (сигнал SIGSTOP) обычно возникает, когда процесс был остановлен внешним источником, например,
+//отладчиком или другой программой. Этот сигнал не является ошибкой в коде, а скорее результатом внешнего вмешательства.
 
 template<typename ItemType>
 ItemType &List<ItemType>::operator[](const SizeType index)
@@ -476,68 +543,83 @@ List<ItemType>::ConstIterator List<ItemType>::position(const int index) const
 
 template <typename ItemType>
 template <typename IT>
-typename List<ItemType>::template TemplateIterator<IT> &List<ItemType>::TemplateIterator<IT>::operator++()
+typename List<ItemType>::template TemplateIterator<IT>& List<ItemType>::TemplateIterator<IT>::operator++()
 {
-    m_node = m_node->next;
+    if (m_node != nullptr)
+    {
+        m_node = m_node->next;
+    }
     return *this;
 }
 
 template <typename ItemType>
 template <typename IT>
-typename List<ItemType>::template TemplateIterator <IT> &List<ItemType>::TemplateIterator<IT>::operator--()
+typename List<ItemType>::template TemplateIterator<IT>& List<ItemType>::TemplateIterator<IT>::operator--()
 {
-    m_node = m_node->prev;
+    if (m_node != nullptr)
+    {
+        m_node = m_node->prev;
+    }
     return *this;
 }
 
 template <typename ItemType>
 template <typename IT>
-typename List<ItemType>::template TemplateIterator<IT> &List<ItemType>::TemplateIterator<IT>::operator++(int)
+typename List<ItemType>::template TemplateIterator<IT> List<ItemType>::TemplateIterator<IT>::operator++(int)
 {
-    m_node = m_node->next;
-    return *this;
+    TemplateIterator old(m_node);
+    ++(*this);
+    return old;
 }
 
 template <typename ItemType>
 template <typename IT>
-typename List<ItemType>::template TemplateIterator<IT> &List<ItemType>::TemplateIterator<IT>::operator--(int)
+typename List<ItemType>::template TemplateIterator<IT> List<ItemType>::TemplateIterator<IT>::operator--(int)
 {
-    m_node = m_node->prev;
-    return *this;
-}
-
-
-template <typename ItemType>
-template <typename IT>
-bool List<ItemType>::TemplateIterator<IT>::operator == (const TemplateIterator &other) const
-{
-    return (m_node == other.m_node);
+    TemplateIterator old(m_node);
+    --(*this);
+    return old;
 }
 
 
 template <typename ItemType>
 template <typename IT>
-bool List<ItemType>::TemplateIterator<IT>::operator != (const TemplateIterator &other) const
+bool List<ItemType>::TemplateIterator<IT>::operator==(const TemplateIterator& other) const
 {
-    return !operator==(other);
+    return m_node == other.m_node;
+}
+
+
+template <typename ItemType>
+template <typename IT>
+bool List<ItemType>::TemplateIterator<IT>::operator!=(const TemplateIterator& other) const
+{
+    return !(*this == other);
 }
 
 template <typename ItemType>
 template <typename IT>
-typename List<ItemType>::template TemplateIterator<IT> &List<ItemType>::TemplateIterator<IT>::operator+(const int &index)
+typename List<ItemType>::template TemplateIterator<IT> List<ItemType>::TemplateIterator<IT>::operator+(const int& index)
 {
+    TemplateIterator result(m_node);
     for (int i = 0; i < index; ++i)
-        ++*this;
-    return *this;
+    {
+        ++result;
+    }
+    return result;
 }
+
 template <typename ItemType>
 template <typename IT>
-typename List<ItemType>::template TemplateIterator<IT> &List<ItemType>::TemplateIterator<IT>::operator-(const int &index)
+typename List<ItemType>::template TemplateIterator<IT> List<ItemType>::TemplateIterator<IT>::operator-(const int& index)
 {
-    for (int i = 0; i < index; ++i)
-        --*this;
-    return *this;
+    TemplateIterator result(m_node);
+    for (int i = 0; i < index; ++i) {
+        --result;
+    }
+    return result;
 }
+
 ////////////
 template<typename ItemType>
 void List<ItemType>::TakeNode(Iterator &it)
